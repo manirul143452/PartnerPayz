@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn more about PartnerPayz - The financial platform built specifically for couples">
+    <meta name="keywords" content="financial platform, couples finance, relationship goals, about us">
+    <title>About Us - PartnerPayz</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .about-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 5rem 0;
+            color: white;
+            text-align: center;
+        }
+        
+        .about-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .about-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .about-section {
+            padding: 5rem 0;
+        }
+        
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .about-story {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .about-story-content h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-story-content p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        
+        .about-image {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .mission-values {
+            background: #f8f9fa;
+            padding: 5rem 0;
+        }
+        
+        .mission-values-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        
+        .mission-box, .values-box {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .mission-box h2, .values-box h2 {
+            font-size: 1.75rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #6a11cb;
+        }
+        
+        .mission-box p {
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        .values-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .values-list li {
+            margin-bottom: 1.5rem;
+            padding-left: 2.5rem;
+            position: relative;
+        }
+        
+        .values-list li:before {
+            content: "\f058";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #6a11cb;
+            font-size: 1.5rem;
+        }
+        
+        .values-list li h3 {
+            font-size: 1.25rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .values-list li p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .team-section {
+            padding: 5rem 0;
+        }
+        
+        .team-heading {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .team-heading h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .team-heading p {
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .team-member {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .member-image {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .member-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .member-info h3 {
+            font-size: 1.25rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .member-info p {
+            color: #6a11cb;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .member-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .member-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(106, 17, 203, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6a11cb;
+            transition: all 0.3s ease;
+        }
+        
+        .member-social a:hover {
+            background: #6a11cb;
+            color: white;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 5rem 0;
+            color: white;
+            text-align: center;
+        }
+        
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .cta-container h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-container p {
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .cta-btn {
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-btn-primary {
+            background: white;
+            color: #6a11cb;
+        }
+        
+        .cta-btn-primary:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-3px);
+        }
+        
+        .cta-btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .cta-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        @media (max-width: 992px) {
+            .about-story, 
+            .mission-values-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .about-story-content {
+                order: 1;
+            }
+            
+            .about-image {
+                order: 2;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .about-header {
+                padding: 3rem 0;
+            }
+            
+            .about-header h1 {
+                font-size: 2rem;
+            }
+            
+            .about-section,
+            .mission-values,
+            .team-section,
+            .cta-section {
+                padding: 3rem 0;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .mission-box, 
+            .values-box {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo.svg" alt="PartnerPayz Logo">
+                <h1>PartnerPayz</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Dashboard</a>
+                <a href="features.html">Features</a>
+                <a href="about.html" class="active">About Us</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="auth-buttons">
+                <div class="user-menu">
+                    <div class="user-avatar">
+                        <img src="images/user-avatar.svg" alt="User Avatar">
+                    </div>
+                    <span class="user-name">Rajiv Sharma</span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="dropdown-menu">
+                        <a href="#"><i class="fas fa-user"></i> Profile</a>
+                        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- About Header -->
+        <section class="about-header">
+            <div class="container">
+                <h1>About PartnerPayz</h1>
+                <p>We're on a mission to help couples build stronger relationships through better financial partnerships.</p>
+            </div>
+        </section>
+
+        <!-- Our Story Section -->
+        <section class="about-section">
+            <div class="about-container">
+                <div class="about-story">
+                    <div class="about-story-content">
+                        <h2>Our Story</h2>
+                        <p>PartnerPayz was born from a simple realization: money matters are the leading cause of stress in relationships, yet most financial tools aren't designed with couples in mind.</p>
+                        <p>Founded in 2023 by a team of financial experts and relationship counselors, we set out to create a platform that addresses the unique financial challenges couples face. We believe that financial harmony is a cornerstone of healthy relationships.</p>
+                        <p>After countless interviews with couples at different relationship stages, we built PartnerPayz to be more than just a financial tool – it's a relationship enhancer that helps partners communicate better, plan together, and celebrate their journey.</p>
+                    </div>
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Couple looking at finances together">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission & Values Section -->
+        <section class="mission-values">
+            <div class="about-container">
+                <div class="mission-values-container">
+                    <div class="mission-box">
+                        <h2>Our Mission</h2>
+                        <p>Our mission is to transform how couples manage money together by providing intuitive tools that foster transparency, teamwork, and shared financial success.</p>
+                        <p>We believe that when couples align their financial goals and work together, they can achieve more than they ever could individually. Our platform is designed to eliminate financial friction and strengthen the bond between partners.</p>
+                        <p>By 2025, we aim to help over 1 million couples achieve financial harmony and build stronger relationships through better money management.</p>
+                    </div>
+                    <div class="values-box">
+                        <h2>Our Values</h2>
+                        <ul class="values-list">
+                            <li>
+                                <h3>Transparency</h3>
+                                <p>We believe honest communication about finances is essential for healthy relationships.</p>
+                            </li>
+                            <li>
+                                <h3>Partnership</h3>
+                                <p>We champion equality and teamwork in financial decision-making.</p>
+                            </li>
+                            <li>
+                                <h3>Empowerment</h3>
+                                <p>We equip couples with knowledge and tools to take control of their financial future.</p>
+                            </li>
+                            <li>
+                                <h3>Celebration</h3>
+                                <p>We encourage couples to celebrate financial milestones and relationship growth.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <div class="about-container">
+                <div class="team-heading">
+                    <h2>Meet Our Team</h2>
+                    <p>We're a diverse group of professionals passionate about helping couples thrive financially and emotionally.</p>
+                </div>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Team Member">
+                        </div>
+                        <div class="member-info">
+                            <h3>Rajiv Sharma</h3>
+                            <p>CEO & Co-Founder</p>
+                            <p>Former financial advisor with a passion for helping couples navigate money matters.</p>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Team Member">
+                        </div>
+                        <div class="member-info">
+                            <h3>Priya Patel</h3>
+                            <p>COO & Co-Founder</p>
+                            <p>Relationship counselor who understands the emotional aspects of couples' finances.</p>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Team Member">
+                        </div>
+                        <div class="member-info">
+                            <h3>David Chen</h3>
+                            <p>CTO</p>
+                            <p>Fintech expert who builds secure, intuitive platforms for financial management.</p>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Team Member">
+                        </div>
+                        <div class="member-info">
+                            <h3>Sophia Rodriguez</h3>
+                            <p>Head of Product</p>
+                            <p>User experience designer focused on creating delightful financial tools for couples.</p>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="cta-container">
+                <h2>Ready to Transform Your Financial Relationship?</h2>
+                <p>Join thousands of couples who are building stronger relationships through better financial partnership.</p>
+                <div class="cta-buttons">
+                    <a href="register.html" class="cta-btn cta-btn-primary">Get Started Free</a>
+                    <a href="contact.html" class="cta-btn cta-btn-secondary">Contact Us</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="images/logo.svg" alt="PartnerPayz Logo">
+                <h3>PartnerPayz</h3>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PartnerPayz. All rights reserved.</p>
+                <div class="social-icons">
+                    <a href="https://github.com/manirul143452"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('show');
+            });
+        }
+    </script>
+</body>
+</html> 

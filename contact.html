@@ -3,242 +3,383 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Contact PartnerPayz - Get in touch with our team for support and inquiries about our relationship and financial planning platform">
-    <meta name="keywords" content="contact, support, help, couples finance, relationship finance, partnerpayz">
+    <meta name="description" content="Contact PartnerPayz - Get in touch with our team">
+    <meta name="keywords" content="contact, support, help, financial platform, couples finance">
     <title>Contact Us - PartnerPayz</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/relationship-features.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Contact Page Specific Styles */
         .contact-header {
-            background: var(--gradient-mixed);
-            padding: 3rem 0;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 5rem 0;
+            color: white;
             text-align: center;
-            color: var(--white);
+        }
+        
+        .contact-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .contact-section {
+            padding: 5rem 0;
         }
         
         .contact-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 4rem 2rem;
+            padding: 0 1.5rem;
+        }
+        
+        .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 3rem;
         }
         
-        .contact-form {
-            background: var(--white);
-            border-radius: var(--radius-lg);
+        .contact-form-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             padding: 2.5rem;
-            box-shadow: var(--shadow-md);
         }
         
-        .contact-form h2 {
-            color: var(--dark-blue);
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-        
-        .contact-form h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: var(--gradient-blue);
-            border-radius: var(--radius-full);
-        }
-        
-        .form-group {
+        .contact-form-container h2 {
+            font-size: 1.75rem;
+            color: #333;
             margin-bottom: 1.5rem;
         }
         
-        .form-group label {
+        .contact-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .contact-form label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
-            color: var(--dark-gray);
+            color: #333;
         }
         
-        .form-control {
+        .contact-form input,
+        .contact-form select,
+        .contact-form textarea {
             width: 100%;
             padding: 0.75rem 1rem;
-            border: 1px solid var(--medium-gray);
-            border-radius: var(--radius-md);
-            font-family: 'Poppins', sans-serif;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            font-family: inherit;
             font-size: 1rem;
-            transition: all var(--transition-normal);
+            transition: border-color 0.3s ease;
         }
         
-        .form-control:focus {
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.1);
+        .contact-form input:focus,
+        .contact-form select:focus,
+        .contact-form textarea:focus {
+            border-color: #6a11cb;
             outline: none;
         }
         
-        .form-control::placeholder {
-            color: var(--medium-gray);
-        }
-        
-        select.form-control {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 16px;
-            padding-right: 2.5rem;
-        }
-        
-        textarea.form-control {
+        .contact-form textarea {
             min-height: 150px;
             resize: vertical;
+        }
+        
+        .contact-form button {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-form button:hover {
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+            transform: translateY(-2px);
         }
         
         .contact-info {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            justify-content: space-between;
         }
         
         .info-card {
-            background: var(--white);
-            border-radius: var(--radius-lg);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             padding: 2rem;
-            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+        
+        .info-card:last-child {
+            margin-bottom: 0;
         }
         
         .info-card h3 {
-            color: var(--dark-blue);
-            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            color: #333;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
         }
         
         .info-card h3 i {
-            color: var(--primary-blue);
-            font-size: 1.25rem;
+            color: #6a11cb;
+            font-size: 1.5rem;
         }
         
         .info-card p {
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
         }
         
-        .info-card p i {
-            color: var(--primary-blue);
-            margin-top: 0.25rem;
+        .info-card a {
+            color: #6a11cb;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
         
-        .social-links {
+        .info-card a:hover {
+            color: #2575fc;
+        }
+        
+        .contact-social {
             display: flex;
             gap: 1rem;
             margin-top: 1rem;
         }
         
-        .social-links a {
+        .contact-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(106, 17, 203, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius-full);
-            background: var(--light-blue);
-            color: var(--primary-blue);
-            transition: all var(--transition-normal);
+            color: #6a11cb;
+            transition: all 0.3s ease;
         }
         
-        .social-links a:hover {
-            background: var(--gradient-blue);
-            color: var(--white);
+        .contact-social a:hover {
+            background: #6a11cb;
+            color: white;
             transform: translateY(-3px);
         }
         
-        .faq-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            background-color: var(--light-gray);
+        .support-options {
+            margin-top: 4rem;
+            background: #f8f9fa;
+            padding: 3rem 0;
+            text-align: center;
         }
         
-        .faq-header {
+        .support-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .support-heading {
+            margin-bottom: 3rem;
+        }
+        
+        .support-heading h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .support-heading p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .support-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .support-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .support-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .support-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.75rem;
+        }
+        
+        .support-card h3 {
+            font-size: 1.25rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .support-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .support-card a {
+            color: #6a11cb;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .support-card a:hover {
+            color: #2575fc;
+            gap: 0.75rem;
+        }
+        
+        .faq-section {
+            padding: 5rem 0;
+        }
+        
+        .faq-heading {
             text-align: center;
             margin-bottom: 3rem;
         }
         
-        .faq-header h2 {
-            color: var(--dark-blue);
+        .faq-heading h2 {
+            font-size: 2rem;
+            color: #333;
             margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
         }
         
-        .faq-header h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--gradient-blue);
-            border-radius: var(--radius-full);
+        .faq-heading p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
-        .faq-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 1.5rem;
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
         }
         
         .faq-item {
-            background: var(--white);
-            border-radius: var(--radius-md);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .faq-question {
             padding: 1.5rem;
-            box-shadow: var(--shadow-sm);
-            transition: all var(--transition-normal);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #333;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
         
-        .faq-item:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
+        .faq-question:hover {
+            background: rgba(106, 17, 203, 0.05);
         }
         
-        .faq-item h3 {
-            color: var(--dark-blue);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
+        .faq-question i {
+            color: #6a11cb;
+            transition: transform 0.3s ease;
         }
         
-        .faq-item p {
-            color: var(--dark-gray);
-            font-size: 0.95rem;
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 300px;
+        }
+        
+        .faq-answer p {
+            color: #666;
+            line-height: 1.6;
         }
         
         @media (max-width: 992px) {
-            .contact-container {
+            .contact-grid {
                 grid-template-columns: 1fr;
             }
             
-            .faq-grid {
-                grid-template-columns: 1fr;
+            .contact-form-container {
+                order: 2;
+            }
+            
+            .contact-info {
+                order: 1;
             }
         }
         
         @media (max-width: 768px) {
-            .contact-container,
-            .faq-section {
-                padding: 3rem 1.5rem;
+            .contact-header {
+                padding: 3rem 0;
             }
             
-            .contact-form,
-            .info-card {
-                padding: 1.5rem;
+            .contact-header h1 {
+                font-size: 2rem;
+            }
+            
+            .contact-section,
+            .support-options,
+            .faq-section {
+                padding: 3rem 0;
+            }
+            
+            .support-cards {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -247,19 +388,28 @@
     <header>
         <nav class="navbar">
             <div class="logo">
-                <img src="images/logo (2).svg" alt="PartnerPayz Logo">
+                <img src="images/logo.svg" alt="PartnerPayz Logo">
                 <h1>PartnerPayz</h1>
             </div>
             <div class="nav-links">
-                <a href="index.html">Home</a>
+                <a href="index.html">Dashboard</a>
                 <a href="features.html">Features</a>
-                <a href="pricing.html">Pricing</a>
-                <a href="blog.html">Blog</a>
+                <a href="about.html">About Us</a>
                 <a href="contact.html" class="active">Contact</a>
             </div>
             <div class="auth-buttons">
-                <a href="login.html" class="btn btn-secondary">Log In</a>
-                <a href="register.html" class="btn btn-primary">Sign Up</a>
+                <div class="user-menu">
+                    <div class="user-avatar">
+                        <img src="images/user-avatar.svg" alt="User Avatar">
+                    </div>
+                    <span class="user-name">Rajiv Sharma</span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="dropdown-menu">
+                        <a href="#"><i class="fas fa-user"></i> Profile</a>
+                        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
             </div>
             <div class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
@@ -271,113 +421,164 @@
         <!-- Contact Header -->
         <section class="contact-header">
             <div class="container">
-                <h1>Get in Touch</h1>
-                <p>We're here to help you strengthen your relationship through better financial management</p>
+                <h1>Contact Us</h1>
+                <p>Have questions or feedback? We'd love to hear from you. Get in touch with our team.</p>
             </div>
         </section>
 
-        <!-- Contact Content -->
-        <section class="contact-container">
-            <div class="contact-form">
-                <h2>Send us a Message</h2>
-                <form action="#" method="POST">
-                    <div class="form-group">
-                        <label for="fullname">Full Name</label>
-                        <input type="text" id="fullname" name="fullname" class="form-control" placeholder="Your name" required>
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <div class="contact-container">
+                <div class="contact-grid">
+                    <div class="contact-form-container">
+                        <h2>Send Us a Message</h2>
+                        <form class="contact-form">
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="topic">Topic</label>
+                                <select id="topic" name="topic" required>
+                                    <option value="" disabled selected>Select a topic</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="billing">Billing Question</option>
+                                    <option value="feedback">Feature Feedback</option>
+                                    <option value="partnership">Partnership Opportunity</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Your Message</label>
+                                <textarea id="message" name="message" placeholder="Type your message here..." required></textarea>
+                            </div>
+                            <button type="submit">
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </button>
+                        </form>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="Your email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <select id="subject" name="subject" class="form-control" required>
-                            <option value="" disabled selected>Select a subject</option>
-                            <option value="general">General Inquiry</option>
-                            <option value="support">Technical Support</option>
-                            <option value="billing">Billing Question</option>
-                            <option value="partnership">Partnership Opportunity</option>
-                            <option value="feedback">Feedback</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" class="form-control" placeholder="Your message" required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
-            </div>
-            
-            <div class="contact-info">
-                <div class="info-card">
-                    <h3><i class="fas fa-map-marker-alt"></i> Our Location</h3>
-                    <p>
-                        <i class="fas fa-building"></i>
-                        <span>123 Finance Street<br>New York, NY 10001</span>
-                    </p>
-                </div>
-                
-                <div class="info-card">
-                    <h3><i class="fas fa-phone-alt"></i> Phone Number</h3>
-                    <p>
-                        <i class="fas fa-phone"></i>
-                        <span>+1 (555) 123-4567<br>Mon-Fri, 9am-6pm EST</span>
-                    </p>
-                </div>
-                
-                <div class="info-card">
-                    <h3><i class="fas fa-envelope"></i> Email Address</h3>
-                    <p>
-                        <i class="fas fa-envelope"></i>
-                        <span>support@partnerpayz.com</span>
-                    </p>
-                    <p>
-                        <i class="fas fa-envelope"></i>
-                        <span>info@partnerpayz.com</span>
-                    </p>
-                </div>
-                
-                <div class="info-card">
-                    <h3><i class="fas fa-share-alt"></i> Follow Us</h3>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <div class="contact-info">
+                        <div class="info-card">
+                            <h3><i class="fas fa-map-marker-alt"></i> Our Location</h3>
+                            <p>1234 Financial District</p>
+                            <p>Suite 500</p>
+                            <p>New York, NY 10004</p>
+                        </div>
+                        <div class="info-card">
+                            <h3><i class="fas fa-phone-alt"></i> Phone Contact</h3>
+                            <p>Support: <a href="tel:+18005551234">+1 (800) 555-1234</a></p>
+                            <p>Sales: <a href="tel:+18005555678">+1 (800) 555-5678</a></p>
+                            <p>Hours: Monday - Friday, 9am - 6pm EST</p>
+                        </div>
+                        <div class="info-card">
+                            <h3><i class="fas fa-envelope"></i> Email Us</h3>
+                            <p>Support: <a href="mailto:support@partnerpayz.com">support@partnerpayz.com</a></p>
+                            <p>Inquiries: <a href="mailto:info@partnerpayz.com">info@partnerpayz.com</a></p>
+                            <p>Partnerships: <a href="mailto:partners@partnerpayz.com">partners@partnerpayz.com</a></p>
+                            <h3 class="mt-4"><i class="fas fa-share-alt"></i> Follow Us</h3>
+                            <div class="contact-social">
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
-        
+
+        <!-- Support Options Section -->
+        <section class="support-options">
+            <div class="support-container">
+                <div class="support-heading">
+                    <h2>Support Options</h2>
+                    <p>We offer multiple ways to get the help you need. Choose the option that works best for you.</p>
+                </div>
+                <div class="support-cards">
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3>Knowledge Base</h3>
+                        <p>Find answers to common questions in our comprehensive help center.</p>
+                        <a href="#">Browse Articles <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Live Chat</h3>
+                        <p>Chat with our support team for immediate assistance with your questions.</p>
+                        <a href="#">Start Chat <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3>Video Tutorials</h3>
+                        <p>Watch step-by-step guides to get the most out of PartnerPayz.</p>
+                        <a href="#">Watch Now <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- FAQ Section -->
         <section class="faq-section">
-            <div class="faq-header">
-                <h2>Common Questions</h2>
+            <div class="faq-heading">
+                <h2>Frequently Asked Questions</h2>
+                <p>Find quick answers to common questions about PartnerPayz.</p>
             </div>
-            
-            <div class="faq-grid">
+            <div class="faq-container">
                 <div class="faq-item">
-                    <h3>How quickly do you respond?</h3>
-                    <p>We typically respond to all inquiries within 24 hours during business days.</p>
+                    <div class="faq-question">
+                        Is PartnerPayz secure for managing our finances?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, PartnerPayz uses bank-level security protocols including 256-bit encryption, two-factor authentication, and regular security audits. We never store your banking passwords, and all data is protected with the highest security standards.</p>
+                    </div>
                 </div>
-                
                 <div class="faq-item">
-                    <h3>Do you offer live chat support?</h3>
-                    <p>Yes, live chat support is available for Premium and Enterprise users.</p>
+                    <div class="faq-question">
+                        How do I add my partner to my account?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Once you've created your account, navigate to Settings > Partner Integration and enter your partner's email address. They'll receive an invitation to join your financial partnership, which they can accept to link your accounts.</p>
+                    </div>
                 </div>
-                
                 <div class="faq-item">
-                    <h3>Can I schedule a call?</h3>
-                    <p>Yes, you can schedule a call with our support team through the contact form.</p>
+                    <div class="faq-question">
+                        What's the difference between free and premium plans?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The free plan includes basic financial tracking, budget creation, and expense splitting features. Premium plans add advanced analytics, financial advisor access, tax planning tools, and unlimited goal tracking for couples who want more comprehensive financial management.</p>
+                    </div>
                 </div>
-                
                 <div class="faq-item">
-                    <h3>What languages do you support?</h3>
-                    <p>We currently support English, Spanish, and French.</p>
+                    <div class="faq-question">
+                        Can we connect our existing bank accounts?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, PartnerPayz integrates with over 10,000 financial institutions worldwide. You can securely connect your bank accounts, credit cards, loans, and investment accounts to get a complete picture of your financial situation as a couple.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I cancel my subscription?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can cancel your subscription at any time by going to Settings > Billing > Subscription and clicking "Cancel Subscription." Your premium features will remain active until the end of your current billing period.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -386,59 +587,64 @@
     <footer>
         <div class="footer-content">
             <div class="footer-logo">
-                <img src="images/logo (2).svg" alt="PartnerPayz Logo">
+                <img src="images/logo.svg" alt="PartnerPayz Logo">
                 <h3>PartnerPayz</h3>
-                <p>Strengthening relationships through better financial management</p>
             </div>
-            <div class="footer-links">
-                <div class="link-group">
-                    <h4>Quick Links</h4>
-                    <a href="index.html">Home</a>
-                    <a href="features.html">Features</a>
-                    <a href="pricing.html">Pricing</a>
-                    <a href="blog.html">Blog</a>
-                    <a href="contact.html">Contact</a>
-                </div>
-                <div class="link-group">
-                    <h4>Connect With Us</h4>
-                    <div class="social-icons">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PartnerPayz. All rights reserved.</p>
+                <div class="social-icons">
+                    <a href="https://github.com/manirul143452"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 PartnerPayz. All rights reserved.</p>
         </div>
     </footer>
-    
-    <!-- Mobile Menu -->
-    <div class="mobile-menu-overlay">
-        <div class="mobile-menu-header">
-            <div class="logo">
-                <img src="images/logo (2).svg" alt="PartnerPayz Logo">
-                <h1>PartnerPayz</h1>
-            </div>
-            <div class="mobile-menu-close">
-                <i class="fas fa-times"></i>
-            </div>
-        </div>
-        <div class="mobile-nav-links">
-            <a href="index.html">Home</a>
-            <a href="features.html">Features</a>
-            <a href="pricing.html">Pricing</a>
-            <a href="blog.html">Blog</a>
-            <a href="contact.html" class="active">Contact</a>
-        </div>
-        <div class="mobile-auth-buttons">
-            <a href="login.html" class="btn btn-secondary">Log In</a>
-            <a href="register.html" class="btn btn-primary">Sign Up</a>
-        </div>
-    </div>
 
-    <script src="js/main.js"></script>
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('show');
+            });
+        }
+        
+        // FAQ toggle
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+        
+        // Form submission
+        const contactForm = document.querySelector('.contact-form');
+        
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Simulating form submission
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                submitButton.disabled = true;
+                
+                setTimeout(() => {
+                    alert('Thank you for contacting us! We will get back to you soon.');
+                    this.reset();
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                }, 1500);
+            });
+        }
+    </script>
 </body>
 </html> 

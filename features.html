@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PartnerPayz - Features and tools to strengthen your financial bond">
+    <meta name="keywords" content="financial planning, couples finance, relationship goals, financial bond">
+    <title>Features - PartnerPayz</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .features-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 5rem 0;
+            color: white;
+            text-align: center;
+        }
+        
+        .features-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .features-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .features-section {
+            padding: 5rem 0;
+        }
+        
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 2rem auto;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        .feature-content {
+            padding: 0 2rem 2rem;
+            text-align: center;
+        }
+        
+        .feature-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .feature-content p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card.premium {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        }
+        
+        .feature-card.premium .feature-icon {
+            background: white;
+            color: #ff6b6b;
+        }
+        
+        .feature-card.premium .feature-content h3,
+        .feature-card.premium .feature-content p {
+            color: #333;
+        }
+        
+        .cta-section {
+            background: #f8f9fa;
+            padding: 5rem 0;
+            text-align: center;
+        }
+        
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .cta-container h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        
+        .cta-container p {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 768px) {
+            .features-header {
+                padding: 3rem 0;
+            }
+            
+            .features-header h1 {
+                font-size: 2rem;
+            }
+            
+            .features-section {
+                padding: 3rem 0;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-section {
+                padding: 3rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo.svg" alt="PartnerPayz Logo">
+                <h1>PartnerPayz</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Dashboard</a>
+                <a href="features.html" class="active">Features</a>
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="auth-buttons">
+                <div class="user-menu">
+                    <div class="user-avatar">
+                        <img src="images/user-avatar.svg" alt="User Avatar">
+                    </div>
+                    <span class="user-name">Rajiv Sharma</span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="dropdown-menu">
+                        <a href="#"><i class="fas fa-user"></i> Profile</a>
+                        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Features Header -->
+        <section class="features-header">
+            <div class="container">
+                <h1>Features & Benefits</h1>
+                <p>Discover how PartnerPayz helps couples manage finances, build stronger relationships, and achieve financial goals together.</p>
+            </div>
+        </section>
+
+        <!-- Core Features Section -->
+        <section class="features-section">
+            <div class="features-container">
+                <h2 class="text-center">Core Features</h2>
+                <p class="text-center" style="max-width: 800px; margin: 1rem auto 2rem; color: #666;">Our platform offers a comprehensive suite of tools designed specifically for couples who want to strengthen their financial bond.</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Joint Financial Planning</h3>
+                            <p>Create and manage budgets together, track expenses, and set financial goals as a couple.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Shared Investment Portfolio</h3>
+                            <p>Invest together with customized portfolios that match your relationship goals and risk tolerance.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Bill Reminders & Splitting</h3>
+                            <p>Never miss a bill payment and easily split expenses between partners with automated tracking.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Savings Goals</h3>
+                            <p>Set and track joint savings goals for vacations, home buying, or other major life events.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-comment-dollar"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Financial Communication Tools</h3>
+                            <p>Improve how you talk about money with built-in tools for healthy financial discussions.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Secure Data Protection</h3>
+                            <p>Your financial data is protected with bank-level security and encryption protocols.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Relationship Features Section -->
+        <section class="features-section" style="background-color: #f8f9fa;">
+            <div class="features-container">
+                <h2 class="text-center">Relationship Features</h2>
+                <p class="text-center" style="max-width: 800px; margin: 1rem auto 2rem; color: #666;">Beyond finances, we provide tools to strengthen your relationship and celebrate your journey together.</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Anniversary Reminders</h3>
+                            <p>Never forget important dates with customizable reminders for anniversaries and special occasions.</p>
+                            <a href="relationship-features.html" class="btn btn-primary">Explore</a>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Date Planning Assistant</h3>
+                            <p>Get personalized date ideas based on your interests, budget, and relationship preferences.</p>
+                            <a href="relationship-features.html" class="btn btn-primary">Explore</a>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Relationship Timeline</h3>
+                            <p>Document and celebrate your journey together with a customizable digital timeline.</p>
+                            <a href="relationship-features.html" class="btn btn-primary">Explore</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Premium Features Section -->
+        <section class="features-section">
+            <div class="features-container">
+                <h2 class="text-center">Premium Features</h2>
+                <p class="text-center" style="max-width: 800px; margin: 1rem auto 2rem; color: #666;">Upgrade to Premium for access to advanced features that take your financial partnership to the next level.</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card premium">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Financial Advisor Access</h3>
+                            <p>Get personalized advice from certified financial advisors specializing in couple finances.</p>
+                            <a href="#" class="btn btn-primary">Upgrade Now</a>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card premium">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Advanced Analytics</h3>
+                            <p>Deep insights into your spending patterns, investment performance, and financial health.</p>
+                            <a href="#" class="btn btn-primary">Upgrade Now</a>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card premium">
+                        <div class="feature-icon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Tax Planning Tools</h3>
+                            <p>Optimize your taxes as a couple with specialized tools and professional guidance.</p>
+                            <a href="#" class="btn btn-primary">Upgrade Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="cta-container">
+                <h2>Ready to Transform Your Financial Relationship?</h2>
+                <p>Join thousands of couples who have strengthened their financial bond with PartnerPayz.</p>
+                <div class="btn-group">
+                    <a href="register.html" class="btn btn-primary"><i class="fas fa-user-plus"></i> Sign Up Free</a>
+                    <a href="#" class="btn btn-secondary"><i class="fas fa-crown"></i> Explore Premium</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="images/logo.svg" alt="PartnerPayz Logo">
+                <h3>PartnerPayz</h3>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PartnerPayz. All rights reserved.</p>
+                <div class="social-icons">
+                    <a href="https://github.com/manirul143452"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('show');
+            });
+        }
+    </script>
+</body>
+</html> 
