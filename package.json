@@ -1,0 +1,24 @@
+{
+  "name": "partnerpayze",
+  "version": "1.0.0",
+  "description": "A modern web application for couples to manage finances, plan dates, and track anniversaries",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manirul143452/partnerpayze.git"
+  },
+  "keywords": [
+    "relationships",
+    "finance",
+    "couples",
+    "dashboard",
+    "anniversary",
+    "date-planning"
+  ],
+  "author": "manirul143452",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/manirul143452/partnerpayze/issues"
+  },
+  "homepage": "https://github.com/manirul143452/partnerpayze#readme"
+} 
