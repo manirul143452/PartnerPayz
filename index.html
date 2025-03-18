@@ -873,26 +873,106 @@
     <script src="js/main.js"></script>
     <script>
         // Simple navigation between sections
-        document.querySelectorAll('.menu-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const sectionId = this.dataset.section;
-                console.log(`Navigate to section: ${sectionId}`);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show dashboard overview by default
+            showSection('overview-section');
+            
+            // Navigation for menu cards
+            document.querySelectorAll('.menu-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const sectionId = this.dataset.section;
+                    showSection(sectionId);
+                    console.log(`Navigate to section: ${sectionId}`);
+                });
             });
-        });
-        
-        // Banner button click handlers
-        document.querySelectorAll('.banner-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const sectionId = this.dataset.section;
-                console.log(`Navigate to section: ${sectionId}`);
+            
+            // Banner button click handlers
+            document.querySelectorAll('.banner-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.dataset.section;
+                    showSection(sectionId);
+                    console.log(`Navigate to section: ${sectionId}`);
+                });
             });
+            
+            // Function to show a specific section
+            function showSection(sectionId) {
+                // Hide all sections first
+                document.querySelectorAll('.dashboard-content > section').forEach(section => {
+                    section.style.display = 'none';
+                });
+                
+                // Show the requested section
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.style.display = 'block';
+                }
+            }
         });
         
         // Simple toast notification
         function showToast(message, type = 'info') {
-            console.log(`Toast: ${message} (${type})`);
+            const toastContainer = document.getElementById('toastContainer');
+            if (!toastContainer) return;
+            
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            let icon = '';
+            switch(type) {
+                case 'success': icon = '<i class="fas fa-check-circle toast-icon"></i>'; break;
+                case 'error': icon = '<i class="fas fa-times-circle toast-icon"></i>'; break;
+                case 'warning': icon = '<i class="fas fa-exclamation-circle toast-icon"></i>'; break;
+                default: icon = '<i class="fas fa-info-circle toast-icon"></i>';
+            }
+            
+            toast.innerHTML = `
+                ${icon}
+                <div class="toast-content">${message}</div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Show the toast with animation
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 5000);
         }
+        
+        // Date Theme Switching
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeOptions = document.querySelectorAll('.theme-option');
+            const themeContents = document.querySelectorAll('.theme-content-details');
+            
+            themeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    themeOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Hide all theme contents
+                    themeContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Show corresponding content
+                    const themeId = this.dataset.theme;
+                    document.querySelector(`.theme-content-details[data-theme="${themeId}"]`).classList.add('active');
+                });
+            });
+        });
     </script>
 </body>
 </html>
