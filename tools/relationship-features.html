@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PartnerPayz - Relationship features and tools to strengthen your financial bond">
+    <meta name="keywords" content="financial planning, couples finance, relationship goals, financial bond">
+    <title>Relationship Features - PartnerPayz</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/relationship-features.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Frame styles for header section */
+        .feature-header-frame {
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--radius-lg);
+            margin: 3rem auto;
+            max-width: 1200px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            background-color: var(--white);
+            position: relative;
+        }
+        
+        .feature-header-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-mixed);
+        }
+        
+        .feature-header {
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .feature-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-blue);
+            font-weight: 700;
+        }
+        
+        .feature-header p {
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .feature-header-frame {
+                margin: 2rem 1rem;
+                border-radius: var(--radius-md);
+            }
+            
+            .feature-header {
+                padding: 2rem 1rem;
+            }
+            
+            .feature-header h1 {
+                font-size: 2rem;
+            }
+            
+            .feature-header p {
+                font-size: 1.1rem;
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background-color: #333;
+            color: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 9999;
+            font-size: 14px;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .toast-success {
+            background-color: #4CAF50;
+        }
+        
+        .toast-error {
+            background-color: #F44336;
+        }
+        
+        .toast-info {
+            background-color: #2196F3;
+        }
+        
+        .payment-processing, .payment-success, .payment-error {
+            text-align: center;
+            padding: 20px;
+            font-size: 16px;
+        }
+        
+        .payment-processing i, .payment-success i, .payment-error i {
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .payment-success {
+            color: #4CAF50;
+        }
+        
+        .payment-error {
+            color: #F44336;
+        }
+
+        /* Anniversary Section Styles */
+        .anniversary-section {
+            margin: 3rem auto;
+        }
+
+        .anniversary-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 992px) {
+            .anniversary-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .anniversary-card {
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .anniversary-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .anniversary-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .anniversary-date {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .anniversary-countdown {
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .countdown-number {
+            font-size: 3.5rem;
+            font-weight: bold;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .countdown-text {
+            font-size: 1.1rem;
+        }
+
+        .anniversary-message {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-top: auto;
+            font-size: 1.1rem;
+        }
+
+        /* Anniversary Form Styles */
+        .anniversary-form-container {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--light-gray);
+            padding: 2rem;
+        }
+
+        .anniversary-form-container h3 {
+            margin-bottom: 1.5rem;
+            color: var(--dark-blue);
+        }
+
+        .anniversary-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .anniversary-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .anniversary-form input,
+        .anniversary-form select,
+        .anniversary-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--medium-gray);
+            font-family: inherit;
+        }
+
+        .notification-prefs {
+            margin-bottom: 2rem;
+        }
+
+        .notification-options {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .notification-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .notification-option input[type="checkbox"] {
+            width: auto;
+        }
+
+        /* Upcoming Anniversaries Styles */
+        .upcoming-anniversaries {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--light-gray);
+            padding: 2rem;
+        }
+
+        .upcoming-anniversaries h3 {
+            margin-bottom: 1.5rem;
+            color: var(--dark-blue);
+        }
+
+        .upcoming-anniversary-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .upcoming-anniversary-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            background-color: var(--light-bg);
+            border: 1px solid var(--light-gray);
+        }
+
+        .upcoming-anniversary-info h4 {
+            margin-bottom: 0.5rem;
+            color: var(--dark-blue);
+        }
+
+        .upcoming-date {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        .upcoming-countdown {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .upcoming-days {
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .upcoming-days-text {
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Anniversary Date Planner Styles */
+        .anniversary-date-planner {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--light-gray);
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .anniversary-date-planner h3 {
+            margin-bottom: 1.5rem;
+            color: var(--dark-blue);
+            text-align: center;
+        }
+
+        .date-theme-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .date-theme-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .date-theme {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100px;
+            text-align: center;
+        }
+
+        .theme-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .theme-name {
+            font-size: 0.9rem;
+        }
+
+        /* Theme Colors */
+        .date-theme.romantic {
+            background-color: #ffecef;
+            color: #e83e8c;
+        }
+
+        .date-theme.adventure {
+            background-color: #e6f7ff;
+            color: #1890ff;
+        }
+
+        .date-theme.relaxation {
+            background-color: #e6fffb;
+            color: #13c2c2;
+        }
+
+        .date-theme.nostalgia {
+            background-color: #fff7e6;
+            color: #fa8c16;
+        }
+
+        .date-theme.culinary {
+            background-color: #f6ffed;
+            color: #52c41a;
+        }
+
+        .date-theme.active {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .date-theme.romantic.active {
+            background-color: #e83e8c;
+            color: white;
+        }
+
+        .date-theme.adventure.active {
+            background-color: #1890ff;
+            color: white;
+        }
+
+        .date-theme.relaxation.active {
+            background-color: #13c2c2;
+            color: white;
+        }
+
+        .date-theme.nostalgia.active {
+            background-color: #fa8c16;
+            color: white;
+        }
+
+        .date-theme.culinary.active {
+            background-color: #52c41a;
+            color: white;
+        }
+
+        .date-theme-content {
+            background-color: var(--light-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .theme-content {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .theme-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .theme-content.active {
+            display: grid;
+        }
+
+        .theme-image {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .theme-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .theme-ideas {
+            padding: 1.5rem;
+        }
+
+        .theme-ideas h4 {
+            margin-bottom: 1rem;
+            color: var(--dark-blue);
+        }
+
+        .theme-ideas-list {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .theme-ideas-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .theme-ideas-list li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo (2).svg" alt="PartnerPayz Logo">
+                <h1>PartnerPayz</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="features.html">Features</a>
+                <a href="community.html">Community</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="auth-buttons">
+                <div class="user-menu">
+                    <div class="user-avatar">
+                        <img src="images/user-avatar.jpg" alt="User Avatar">
+                        <span class="status"></span>
+                    </div>
+                    <span class="user-name">Sarah Johnson <i class="fas fa-chevron-down"></i></span>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">
+                            <div class="dropdown-user-info">
+                                <div class="large-avatar">
+                                    <img src="images/user-avatar.jpg" alt="Sarah Johnson">
+                                </div>
+                                <div class="user-details">
+                                    <span class="user-full-name">Sarah Johnson</span>
+                                    <a href="#" class="view-profile">View your profile</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr class="dropdown-divider">
+                        
+                        <a href="#"><i class="fas fa-user-circle"></i> Profile</a>
+                        <a href="#"><i class="fas fa-cog"></i> Settings & privacy</a>
+                        <a href="#"><i class="fas fa-question-circle"></i> Help & support</a>
+                        <a href="#"><i class="fas fa-moon"></i> Display & accessibility</a>
+                        
+                        <div class="fb-section-header">Settings</div>
+                        <div class="toggle-switch-container">
+                            <span>Dark Mode</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <a href="#" class="feedback-link"><i class="fas fa-comment-alt"></i> Give feedback</a>
+                        <a href="#" class="logout-link"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Feature Header with Frame -->
+        <div class="feature-header-frame">
+            <div class="feature-header">
+                <h1>Relationship Features</h1>
+                <p>Tools and resources to strengthen your relationship and financial bond</p>
+            </div>
+        </div>
+        
+        <!-- Features Container -->
+        <div class="relationship-features">
+            <!-- Relationship Goals Section -->
+            <section class="feature-section goals-section">
+                <div class="section-header">
+                    <div class="header-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="header-text">
+                        <h2>Relationship Goals</h2>
+                        <p>Set and track shared financial goals together</p>
+                    </div>
+                </div>
+                <div class="goal-cards">
+                    <div class="goal-card">
+                        <div class="goal-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="goal-content">
+                            <h3>Dream Home</h3>
+                            <div class="goal-description">Target: $50,000</div>
+                            <div class="goal-progress">
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 30%"></div>
+                                </div>
+                                <div class="progress-text">30%</div>
+                            </div>
+                            <div class="goal-buttons">
+                                <button class="btn btn-primary">Add Funds</button>
+                                <button class="btn btn-secondary">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="goal-card">
+                        <div class="goal-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="goal-content">
+                            <h3>Vacation Fund</h3>
+                            <div class="goal-description">Target: $5,000</div>
+                            <div class="goal-progress">
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 60%"></div>
+                                </div>
+                                <div class="progress-text">60%</div>
+                            </div>
+                            <div class="goal-buttons">
+                                <button class="btn btn-primary">Add Funds</button>
+                                <button class="btn btn-secondary">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-goal-card">
+                        <div class="add-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <div class="add-goal-content">
+                            <h3>Add New Goal</h3>
+                            <p>Create a new shared financial goal</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Date Planner Section -->
+            <section class="feature-section date-section">
+                <div class="section-header">
+                    <div class="header-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="header-text">
+                        <h2>Date Planner</h2>
+                        <p>Plan and organize your dates with budget tracking</p>
+                    </div>
+                </div>
+                <div class="date-planner">
+                    <div class="date-calendar">
+                        <div class="calendar-header">
+                            <h3>March 2024</h3>
+                            <div class="calendar-nav-buttons">
+                                <button class="calendar-nav prev"><i class="fas fa-chevron-left"></i></button>
+                                <button class="calendar-nav next"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="calendar-day-names">
+                            <span>Sun</span>
+                            <span>Mon</span>
+                            <span>Tue</span>
+                            <span>Wed</span>
+                            <span>Thu</span>
+                            <span>Fri</span>
+                            <span>Sat</span>
+                        </div>
+                        <div class="calendar-days">
+                            <!-- Calendar days will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="date-ideas">
+                        <div class="date-ideas-header">
+                            <h3>Date Ideas</h3>
+                            <div class="budget-filter">
+                                <label>Budget:</label>
+                                <select>
+                                    <option value="all">All</option>
+                                    <option value="50">Under $50</option>
+                                    <option value="100">Under $100</option>
+                                    <option value="200">Under $200</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="date-idea-cards">
+                            <div class="date-idea-card">
+                                <div class="date-idea-image">
+                                    <img src="images/date-ideas/restaurant.jpg" alt="Restaurant Date">
+                                    <div class="date-cost">$50-100</div>
+                                </div>
+                                <div class="date-idea-content">
+                                    <h4>Fine Dining</h4>
+                                    <p>Enjoy a romantic dinner at a local restaurant</p>
+                                    <button class="btn btn-primary btn-block">Plan Date</button>
+                                </div>
+                            </div>
+                            <div class="date-idea-card">
+                                <div class="date-idea-image">
+                                    <img src="images/date-ideas/movie.jpg" alt="Movie Night">
+                                    <div class="date-cost">$20-40</div>
+                                </div>
+                                <div class="date-idea-content">
+                                    <h4>Movie Night</h4>
+                                    <p>Watch a movie together at home or theater</p>
+                                    <button class="btn btn-primary btn-block">Plan Date</button>
+                                </div>
+                            </div>
+                            <div class="date-idea-card">
+                                <div class="date-idea-image">
+                                    <img src="images/date-ideas/outdoor.jpg" alt="Outdoor Activity">
+                                    <div class="date-cost">$0-30</div>
+                                </div>
+                                <div class="date-idea-content">
+                                    <h4>Outdoor Adventure</h4>
+                                    <p>Explore nature with a hike or picnic</p>
+                                    <button class="btn btn-primary btn-block">Plan Date</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Anniversary Reminder Section -->
+            <section class="feature-section anniversary-section">
+                <div class="section-header">
+                    <div class="header-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="header-text">
+                        <h2>Anniversary Reminders</h2>
+                        <p>Never miss your special moments together</p>
+                    </div>
+                </div>
+                <div class="anniversary-container">
+                    <div class="current-anniversary">
+                        <div class="anniversary-card">
+                            <div class="anniversary-header">
+                                <h3>Relationship Anniversary</h3>
+                                <div class="anniversary-date">June 15, 2024</div>
+                            </div>
+                            <div class="anniversary-countdown">
+                                <div class="countdown-number">45</div>
+                                <div class="countdown-text">days remaining</div>
+                            </div>
+                            <div class="anniversary-message">
+                                Your special day is coming up! Time to plan something memorable.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="anniversary-form-container">
+                        <h3>Add New Anniversary</h3>
+                        <form class="anniversary-form">
+                            <div class="form-group">
+                                <label for="anniversaryName">Anniversary Name</label>
+                                <input type="text" id="anniversaryName" placeholder="e.g. First Date, First Kiss" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="anniversaryDate">Date</label>
+                                <input type="date" id="anniversaryDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reminderTime">Reminder</label>
+                                <select id="reminderTime">
+                                    <option value="1">1 day before</option>
+                                    <option value="3">3 days before</option>
+                                    <option value="7">1 week before</option>
+                                    <option value="14">2 weeks before</option>
+                                    <option value="30">1 month before</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="anniversaryNotes">Notes</label>
+                                <textarea id="anniversaryNotes" rows="3" placeholder="Add any special notes or gift ideas"></textarea>
+                            </div>
+                            <div class="form-group notification-prefs">
+                                <label>Notification Preference</label>
+                                <div class="notification-options">
+                                    <div class="notification-option">
+                                        <input type="checkbox" id="emailNotification" checked>
+                                        <label for="emailNotification">Email</label>
+                                    </div>
+                                    <div class="notification-option">
+                                        <input type="checkbox" id="pushNotification" checked>
+                                        <label for="pushNotification">Push Notification</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Anniversary</button>
+                        </form>
+                    </div>
+                    
+                    <div class="upcoming-anniversaries">
+                        <h3>Upcoming Anniversaries</h3>
+                        <div class="upcoming-anniversary-list">
+                            <div class="upcoming-anniversary-card">
+                                <div class="upcoming-anniversary-info">
+                                    <h4>Relationship Anniversary</h4>
+                                    <div class="upcoming-date">August 12, 2024</div>
+                                </div>
+                                <div class="upcoming-countdown">
+                                    <div class="upcoming-days">25</div>
+                                    <div class="upcoming-days-text">days left</div>
+                                </div>
+                            </div>
+                            
+                            <div class="upcoming-anniversary-card">
+                                <div class="upcoming-anniversary-info">
+                                    <h4>Marriage Anniversary</h4>
+                                    <div class="upcoming-date">November 5, 2024</div>
+                                </div>
+                                <div class="upcoming-countdown">
+                                    <div class="upcoming-days">110</div>
+                                    <div class="upcoming-days-text">days left</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Plan Anniversary Date with Color Themes -->
+                <div class="anniversary-date-planner">
+                    <h3>Plan an Anniversary Date</h3>
+                    <div class="date-theme-selector">
+                        <div class="date-theme-options">
+                            <div class="date-theme romantic active" data-theme="romantic">
+                                <div class="theme-icon"><i class="fas fa-heart"></i></div>
+                                <div class="theme-name">Romantic</div>
+                            </div>
+                            <div class="date-theme adventure" data-theme="adventure">
+                                <div class="theme-icon"><i class="fas fa-mountain"></i></div>
+                                <div class="theme-name">Adventure</div>
+                            </div>
+                            <div class="date-theme relaxation" data-theme="relaxation">
+                                <div class="theme-icon"><i class="fas fa-spa"></i></div>
+                                <div class="theme-name">Relaxation</div>
+                            </div>
+                            <div class="date-theme nostalgia" data-theme="nostalgia">
+                                <div class="theme-icon"><i class="fas fa-camera-retro"></i></div>
+                                <div class="theme-name">Nostalgia</div>
+                            </div>
+                            <div class="date-theme culinary" data-theme="culinary">
+                                <div class="theme-icon"><i class="fas fa-utensils"></i></div>
+                                <div class="theme-name">Culinary</div>
+                            </div>
+                        </div>
+                        
+                        <div class="date-theme-content">
+                            <div class="theme-content romantic active">
+                                <div class="theme-image">
+                                    <img src="images/date-themes/romantic.jpg" alt="Romantic date">
+                                </div>
+                                <div class="theme-ideas">
+                                    <h4>Romantic Date Ideas</h4>
+                                    <ul class="theme-ideas-list">
+                                        <li>Candlelit dinner at home or restaurant</li>
+                                        <li>Sunset beach walk with champagne</li>
+                                        <li>Hot air balloon ride</li>
+                                        <li>Couples massage</li>
+                                        <li>Recreate your first date</li>
+                                    </ul>
+                                    <button class="btn btn-primary">Plan This Date</button>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-content adventure">
+                                <div class="theme-image">
+                                    <img src="images/date-themes/adventure.jpg" alt="Adventure date">
+                                </div>
+                                <div class="theme-ideas">
+                                    <h4>Adventure Date Ideas</h4>
+                                    <ul class="theme-ideas-list">
+                                        <li>Hiking to a scenic viewpoint</li>
+                                        <li>Rock climbing or zip-lining</li>
+                                        <li>White water rafting</li>
+                                        <li>Helicopter tour</li>
+                                        <li>Camping under the stars</li>
+                                    </ul>
+                                    <button class="btn btn-primary">Plan This Date</button>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-content relaxation">
+                                <div class="theme-image">
+                                    <img src="images/date-themes/relaxation.jpg" alt="Relaxation date">
+                                </div>
+                                <div class="theme-ideas">
+                                    <h4>Relaxation Date Ideas</h4>
+                                    <ul class="theme-ideas-list">
+                                        <li>Spa day with couples massage</li>
+                                        <li>Day at the beach with no agenda</li>
+                                        <li>Yoga retreat or class</li>
+                                        <li>Relaxing getaway at a resort</li>
+                                        <li>Picnic in a peaceful garden</li>
+                                    </ul>
+                                    <button class="btn btn-primary">Plan This Date</button>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-content nostalgia">
+                                <div class="theme-image">
+                                    <img src="images/date-themes/nostalgia.jpg" alt="Nostalgia date">
+                                </div>
+                                <div class="theme-ideas">
+                                    <h4>Nostalgia Date Ideas</h4>
+                                    <ul class="theme-ideas-list">
+                                        <li>Visit where you first met</li>
+                                        <li>Create a photo album together</li>
+                                        <li>Visit your childhood neighborhood</li>
+                                        <li>Watch your favorite classic movies</li>
+                                        <li>Recreate old photos</li>
+                                    </ul>
+                                    <button class="btn btn-primary">Plan This Date</button>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-content culinary">
+                                <div class="theme-image">
+                                    <img src="images/date-themes/culinary.jpg" alt="Culinary date">
+                                </div>
+                                <div class="theme-ideas">
+                                    <h4>Culinary Date Ideas</h4>
+                                    <ul class="theme-ideas-list">
+                                        <li>Cooking class together</li>
+                                        <li>Food tour in your city</li>
+                                        <li>Wine tasting event</li>
+                                        <li>Create a multi-course meal at home</li>
+                                        <li>Book a chef's table experience</li>
+                                    </ul>
+                                    <button class="btn btn-primary">Plan This Date</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Communication Tools Section -->
+            <section class="feature-section communication-section">
+                <div class="section-header">
+                    <div class="header-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="header-text">
+                        <h2>Communication Tools</h2>
+                        <p>Strengthen your relationship through better communication</p>
+                    </div>
+                </div>
+                <div class="communication-tools">
+                    <div class="tools-tabs">
+                        <button class="tab-btn active" data-tab="discussion-prompts">Discussion Prompts</button>
+                        <button class="tab-btn" data-tab="financial-check-ins">Financial Check-ins</button>
+                        <button class="tab-btn" data-tab="conflict-resolution">Conflict Resolution</button>
+                    </div>
+                    <div class="tools-content">
+                        <!-- Discussion Prompts Tab -->
+                        <div id="discussion-prompts" class="tool-tab active">
+                            <div class="prompt-cards">
+                                <div class="prompt-card">
+                                    <div class="prompt-number">1</div>
+                                    <h3>Financial Goals</h3>
+                                    <p>"What are our short-term and long-term financial goals?"</p>
+                                    <div class="prompt-tags">
+                                        <span class="prompt-tag">Goals</span>
+                                        <span class="prompt-tag">Planning</span>
+                                    </div>
+                                </div>
+                                <div class="prompt-card">
+                                    <div class="prompt-number">2</div>
+                                    <h3>Spending Habits</h3>
+                                    <p>"How do we feel about our current spending habits?"</p>
+                                    <div class="prompt-tags">
+                                        <span class="prompt-tag">Budget</span>
+                                        <span class="prompt-tag">Habits</span>
+                                    </div>
+                                </div>
+                                <div class="prompt-card">
+                                    <div class="prompt-number">3</div>
+                                    <h3>Financial Values</h3>
+                                    <p>"What are our core values regarding money?"</p>
+                                    <div class="prompt-tags">
+                                        <span class="prompt-tag">Values</span>
+                                        <span class="prompt-tag">Philosophy</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Financial Check-ins Tab -->
+                        <div id="financial-check-ins" class="tool-tab">
+                            <div class="check-in-scheduler">
+                                <h3>Schedule Financial Check-ins</h3>
+                                <p>Regular check-ins help maintain financial harmony</p>
+                                <form class="check-in-form">
+                                    <div class="form-group">
+                                        <label for="checkInType">Type</label>
+                                        <select id="checkInType" required>
+                                            <option value="Weekly Budget Review">Weekly Budget Review</option>
+                                            <option value="Monthly Financial Planning">Monthly Financial Planning</option>
+                                            <option value="Quarterly Goal Assessment">Quarterly Goal Assessment</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="checkInDate">Date</label>
+                                        <input type="date" id="checkInDate" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="checkInTime">Time</label>
+                                        <input type="time" id="checkInTime" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="checkInNotes">Notes (Optional)</label>
+                                        <textarea id="checkInNotes" rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Schedule Check-in</button>
+                                </form>
+                                <div class="upcoming-check-ins">
+                                    <h4>Upcoming Check-ins</h4>
+                                    <!-- Check-in items will be added here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Conflict Resolution Tab -->
+                        <div id="conflict-resolution" class="tool-tab">
+                            <div class="conflict-resolution-tools">
+                                <div class="resolution-method">
+                                    <h3>DEAR Method</h3>
+                                    <p>A structured approach to resolving financial conflicts</p>
+                                    <div class="method-steps">
+                                        <div class="method-step">
+                                            <div class="step-letter">D</div>
+                                            <div class="step-content">
+                                                <h4>Describe</h4>
+                                                <p>Describe the situation objectively</p>
+                                            </div>
+                                        </div>
+                                        <div class="method-step">
+                                            <div class="step-letter">E</div>
+                                            <div class="step-content">
+                                                <h4>Express</h4>
+                                                <p>Express your feelings about the situation</p>
+                                            </div>
+                                        </div>
+                                        <div class="method-step">
+                                            <div class="step-letter">A</div>
+                                            <div class="step-content">
+                                                <h4>Assert</h4>
+                                                <p>Assert your needs and wants</p>
+                                            </div>
+                                        </div>
+                                        <div class="method-step">
+                                            <div class="step-letter">R</div>
+                                            <div class="step-content">
+                                                <h4>Reinforce</h4>
+                                                <p>Reinforce the positive outcome</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary dear-method">Use DEAR Method Template</button>
+                                </div>
+                                <div class="resolution-resources">
+                                    <h3>Additional Resources</h3>
+                                    <ul class="resource-list">
+                                        <li>
+                                            <a href="#" class="resource-link">
+                                                <i class="fas fa-book"></i>
+                                                <span>Financial Communication Guide</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="resource-link">
+                                                <i class="fas fa-video"></i>
+                                                <span>Conflict Resolution Videos</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="resource-link">
+                                                <i class="fas fa-file-alt"></i>
+                                                <span>Financial Agreement Templates</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Section -->
+            <section class="feature-section dashboard-overview-section">
+                <div class="section-header">
+                    <div class="header-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="header-text">
+                        <h2>Your Financial Dashboard</h2>
+                        <p>Quick overview of your financial health and relationship goals</p>
+                    </div>
+                </div>
+                <div class="dashboard-container">
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <div class="dashboard-card-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div>
+                                <h3 class="dashboard-card-title">Total Savings</h3>
+                                <p class="dashboard-card-subtitle">Joint Accounts</p>
+                            </div>
+                        </div>
+                        <div class="dashboard-card-content">
+                            <div class="dashboard-stat">₹12,450</div>
+                            <div class="dashboard-stat-label">+8.5% this month</div>
+                            <div class="dashboard-chart"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <div class="dashboard-card-icon">
+                                <i class="fas fa-piggy-bank"></i>
+                            </div>
+                            <div>
+                                <h3 class="dashboard-card-title">Goals Progress</h3>
+                                <p class="dashboard-card-subtitle">3 active goals</p>
+                            </div>
+                        </div>
+                        <div class="dashboard-card-content">
+                            <div class="dashboard-progress">
+                                <div class="dashboard-progress-title">
+                                    <span>Dream Home</span>
+                                    <span>30%</span>
+                                </div>
+                                <div class="dashboard-progress-bar">
+                                    <div class="dashboard-progress-bar-fill" style="width: 30%"></div>
+                                </div>
+                            </div>
+                            <div class="dashboard-progress">
+                                <div class="dashboard-progress-title">
+                                    <span>Vacation Fund</span>
+                                    <span>60%</span>
+                                </div>
+                                <div class="dashboard-progress-bar">
+                                    <div class="dashboard-progress-bar-fill" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <div class="dashboard-progress">
+                                <div class="dashboard-progress-title">
+                                    <span>Emergency Fund</span>
+                                    <span>45%</span>
+                                </div>
+                                <div class="dashboard-progress-bar">
+                                    <div class="dashboard-progress-bar-fill" style="width: 45%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <div class="dashboard-card-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div>
+                                <h3 class="dashboard-card-title">Upcoming Events</h3>
+                                <p class="dashboard-card-subtitle">Next 7 days</p>
+                            </div>
+                        </div>
+                        <div class="dashboard-card-content">
+                            <ul class="event-list">
+                                <li class="event-item">
+                                    <div class="event-date">Mar 15</div>
+                                    <div class="event-info">
+                                        <div class="event-title">Weekly Budget Review</div>
+                                        <div class="event-time">7:00 PM</div>
+                                    </div>
+                                </li>
+                                <li class="event-item">
+                                    <div class="event-date">Mar 18</div>
+                                    <div class="event-info">
+                                        <div class="event-title">Date Night</div>
+                                        <div class="event-time">8:30 PM</div>
+                                    </div>
+                                </li>
+                                <li class="event-item">
+                                    <div class="event-date">Mar 21</div>
+                                    <div class="event-info">
+                                        <div class="event-title">Goal Assessment</div>
+                                        <div class="event-time">10:00 AM</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Community Section -->
+            <section class="feature-section community-section">
+                <div class="section-header">
+                    <div class="header-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="header-text">
+                        <h2>Community Hub</h2>
+                        <p>Connect with other couples and share financial insights</p>
+                    </div>
+                </div>
+                <div class="community-container">
+                    <div class="community-tabs">
+                        <div class="community-tab active">Trending Discussions</div>
+                        <div class="community-tab">Success Stories</div>
+                        <div class="community-tab">Q&A</div>
+                        <div class="community-tab">Resources</div>
+                    </div>
+                    <div class="community-posts">
+                        <div class="community-post">
+                            <div class="community-post-header">
+                                <div class="community-post-avatar">
+                                    <img src="images/avatars/user1.jpg" alt="User Avatar">
+                                </div>
+                                <div>
+                                    <div class="community-post-author">Rahul & Priya</div>
+                                    <div class="community-post-time">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="community-post-content">
+                                <h3 class="community-post-title">How we saved for our dream wedding</h3>
+                                <p class="community-post-text">We managed to save ₹3 lakhs in just 8 months using the envelope method and cutting back on unnecessary expenses.</p>
+                            </div>
+                            <div class="community-post-footer">
+                                <div class="community-post-actions">
+                                    <div class="community-post-action">
+                                        <i class="fas fa-heart"></i>
+                                        <span>24</span>
+                                    </div>
+                                    <div class="community-post-action">
+                                        <i class="fas fa-comment"></i>
+                                        <span>8</span>
+                                    </div>
+                                </div>
+                                <div class="community-post-action">
+                                    <i class="fas fa-share"></i>
+                                    <span>Share</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="community-post">
+                            <div class="community-post-header">
+                                <div class="community-post-avatar">
+                                    <img src="images/avatars/user2.jpg" alt="User Avatar">
+                                </div>
+                                <div>
+                                    <div class="community-post-author">Arjun & Nisha</div>
+                                    <div class="community-post-time">1 day ago</div>
+                                </div>
+                            </div>
+                            <div class="community-post-content">
+                                <h3 class="community-post-title">Investment strategies for new couples</h3>
+                                <p class="community-post-text">We started with mutual funds and then diversified to stocks and fixed deposits. Here's our journey.</p>
+                            </div>
+                            <div class="community-post-footer">
+                                <div class="community-post-actions">
+                                    <div class="community-post-action">
+                                        <i class="fas fa-heart"></i>
+                                        <span>36</span>
+                                    </div>
+                                    <div class="community-post-action">
+                                        <i class="fas fa-comment"></i>
+                                        <span>12</span>
+                                    </div>
+                                </div>
+                                <div class="community-post-action">
+                                    <i class="fas fa-share"></i>
+                                    <span>Share</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="community-post">
+                            <div class="community-post-header">
+                                <div class="community-post-avatar">
+                                    <img src="images/avatars/user3.jpg" alt="User Avatar">
+                                </div>
+                                <div>
+                                    <div class="community-post-author">Vikram & Meera</div>
+                                    <div class="community-post-time">3 days ago</div>
+                                </div>
+                            </div>
+                            <div class="community-post-content">
+                                <h3 class="community-post-title">Monthly budget template - Free download</h3>
+                                <p class="community-post-text">We created this budget template that helped us save an extra ₹5,000 per month. Feel free to use it!</p>
+                            </div>
+                            <div class="community-post-footer">
+                                <div class="community-post-actions">
+                                    <div class="community-post-action">
+                                        <i class="fas fa-heart"></i>
+                                        <span>52</span>
+                                    </div>
+                                    <div class="community-post-action">
+                                        <i class="fas fa-comment"></i>
+                                        <span>16</span>
+                                    </div>
+                                </div>
+                                <div class="community-post-action">
+                                    <i class="fas fa-download"></i>
+                                    <span>Download</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pricing Section -->
+            <section class="feature-section pricing-section">
+                <div class="section-header">
+                    <div class="header-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="header-text">
+                        <h2>Pricing Plans</h2>
+                        <p>Choose the plan that's right for your relationship journey</p>
+                    </div>
+                </div>
+                <div class="pricing-container">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">Basic</h3>
+                            <div class="pricing-price">₹0</div>
+                            <div class="pricing-period">Forever Free</div>
+                        </div>
+                        <div class="pricing-features">
+                            <div class="pricing-feature">
+                                <i class="fas fa-check"></i>
+                                <span>Joint goal setting</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <i class="fas fa-check"></i>
+                                <span>Basic budget tools</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <i class="fas fa-check"></i>
+                                <span>3 relationship goals</span>
+                            </div>
+                            <div class="pricing-feature disabled">
+                                <i class="fas fa-times"></i>
+                                <span>Advanced analytics</span>
+                            </div>
+                            <div class="pricing-feature disabled">
+                                <i class="fas fa-times"></i>
+                                <span>Priority support</span>
+                            </div>
+                        </div>
+                        <div class="pricing-footer">
+                            <button class="btn btn-secondary">Current Plan</button>
+                        </div>
+                    </div>
+                    
+                    <div class="pricing-card featured">
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">Premium</h3>
+                            <div class="pricing-price">₹499</div>
+                            <div class="pricing-period">per month</div>
+                        </div>
+                        <div class="pricing-features">
+                            <div class="pricing-feature">
+                                <i class="fas fa-check"></i>
+                                <span>Everything in Basic</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <i class="fas fa-check"></i>
+                                <span>Unlimited goals</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <i class="fas fa-check"></i>
+                                <span>Advanced budget analysis</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <i class="fas fa-check"></i>
+                                <span>Financial health score</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <i class="fas fa-check"></i>
+                                <span>Priority customer support</span>
+                            </div>
+                        </div>
+                        <div class="pricing-footer">
+                            <button class="btn btn-primary" onclick="showPaymentModal()">Upgrade Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">Family</h3>
+                            <div class="pricing-price">₹999</div>
+                            <div class="pricing-period">per month</div>
+                        </div>
+                        <div class="pricing-features">
+                            <div class="pricing-feature">
+                                <i class="fas fa-check"></i>
+                                <span>Everything in Premium</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <i class="fas fa-check"></i>
+                                <span>Family financial planning</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <i class="fas fa-check"></i>
+                                <span>Kids' education planning</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <i class="fas fa-check"></i>
+                                <span>Tax optimization</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <i class="fas fa-check"></i>
+                                <span>24/7 financial advisor</span>
+                            </div>
+                        </div>
+                        <div class="pricing-footer">
+                            <button class="btn btn-primary" onclick="showPaymentModal()">Upgrade Now</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Premium CTA Section -->
+            <section class="feature-section premium-cta-section">
+                <div class="premium-cta">
+                    <div class="cta-content">
+                        <h2>Upgrade to Premium</h2>
+                        <p>Get access to all premium features and enhance your relationship journey</p>
+                        <button class="btn btn-primary" onclick="showPaymentModal()">Upgrade Now</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>PartnerPayz</h3>
+                <p>Strengthening relationships through better financial management</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="features.html">Features</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 PartnerPayz. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Add this script for copy to clipboard functionality -->
+    <script>
+    function copyToClipboard(text) {
+        const tempInput = document.createElement('input');
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        
+        showToast('UPI ID copied to clipboard!', 'success');
+    }
+
+    // Toast notification function
+    function showToast(message, type) {
+        // Create toast element
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type || 'info'}`;
+        toast.innerHTML = message;
+        
+        // Add to document
+        document.body.appendChild(toast);
+        
+        // Force a reflow to trigger CSS transition
+        toast.offsetHeight;
+        
+        // Show the toast
+        toast.classList.add('show');
+        
+        // Auto hide after 3 seconds
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 300);
+        }, 3000);
+    }
+
+    // Payment modal functionality
+    function showPaymentModal() {
+        document.getElementById('paymentModal').style.display = 'flex';
+    }
+
+    function hidePaymentModal() {
+        document.getElementById('paymentModal').style.display = 'none';
+        // Reset payment method displays
+        document.getElementById('upiDetails').style.display = 'none';
+        document.getElementById('cardDetails').style.display = 'none';
+        document.getElementById('netbankingDetails').style.display = 'none';
+        document.getElementById('paymentStatus').style.display = 'none';
+    }
+
+    function selectPaymentMethod(method) {
+        // Hide all payment details sections
+        document.getElementById('upiDetails').style.display = 'none';
+        document.getElementById('cardDetails').style.display = 'none';
+        document.getElementById('netbankingDetails').style.display = 'none';
+        document.getElementById('paymentStatus').style.display = 'none';
+        
+        // Show the selected payment details section
+        if (method === 'upi') {
+            document.getElementById('upiDetails').style.display = 'block';
+        } else if (method === 'card') {
+            document.getElementById('cardDetails').style.display = 'block';
+        } else if (method === 'netbanking') {
+            document.getElementById('netbankingDetails').style.display = 'block';
+        }
+    }
+
+    function processUPIPayment() {
+        const amount = document.getElementById('upiAmount').value;
+        if (!amount || amount <= 0) {
+            showToast('Please enter a valid amount', 'error');
+            return;
+        }
+        
+        // Show payment processing status
+        const statusDiv = document.getElementById('paymentStatus');
+        statusDiv.innerHTML = '<div class="payment-processing"><i class="fas fa-spinner fa-spin"></i> Processing payment...</div>';
+        statusDiv.style.display = 'block';
+        
+        // Simulate payment processing
+        setTimeout(() => {
+            statusDiv.innerHTML = '<div class="payment-success"><i class="fas fa-check-circle"></i> Payment successful!</div>';
+            
+            // Redirect to dashboard after successful payment
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 2000);
+        }, 2000);
+    }
+
+    function processCardPayment() {
+        const cardNumber = document.getElementById('cardNumber').value;
+        const cardExpiry = document.getElementById('cardExpiry').value;
+        const cardCvv = document.getElementById('cardCvv').value;
+        const cardName = document.getElementById('cardName').value;
+        
+        if (!cardNumber || !cardExpiry || !cardCvv || !cardName) {
+            showToast('Please fill all the required fields', 'error');
+            return;
+        }
+        
+        // Show payment processing status
+        const statusDiv = document.getElementById('paymentStatus');
+        statusDiv.innerHTML = '<div class="payment-processing"><i class="fas fa-spinner fa-spin"></i> Processing payment...</div>';
+        statusDiv.style.display = 'block';
+        
+        // Simulate payment processing
+        setTimeout(() => {
+            statusDiv.innerHTML = '<div class="payment-success"><i class="fas fa-check-circle"></i> Payment successful!</div>';
+            
+            // Redirect to dashboard after successful payment
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 2000);
+        }, 2000);
+    }
+
+    function processNetBankingPayment() {
+        const selectedBank = document.querySelector('input[name="bank"]:checked');
+        
+        if (!selectedBank) {
+            showToast('Please select a bank', 'error');
+            return;
+        }
+        
+        // Show payment processing status
+        const statusDiv = document.getElementById('paymentStatus');
+        statusDiv.innerHTML = '<div class="payment-processing"><i class="fas fa-spinner fa-spin"></i> Redirecting to bank...</div>';
+        statusDiv.style.display = 'block';
+        
+        // Simulate redirection
+        setTimeout(() => {
+            window.location.href = 'dashboard.html';
+        }, 2000);
+    }
+
+    // Close modal when clicking the close button
+    document.addEventListener('DOMContentLoaded', function() {
+        const closeButtons = document.querySelectorAll('.modal-close');
+        closeButtons.forEach(button => {
+            button.addEventListener('click', hidePaymentModal);
+        });
+
+        // Also close when clicking outside the modal
+        document.getElementById('paymentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hidePaymentModal();
+            }
+        });
+
+        // Set up calendar days (simplified)
+        const calendarDays = document.querySelector('.calendar-days');
+        if (calendarDays) {
+            let daysHTML = '';
+            for (let i = 1; i <= 31; i++) {
+                const hasEvent = [15, 18, 21].includes(i);
+                daysHTML += `<div class="calendar-day ${hasEvent ? 'has-event' : ''}">${i}</div>`;
+            }
+            calendarDays.innerHTML = daysHTML;
+        }
+
+        // Set up tabs functionality
+        const tabs = document.querySelectorAll('.tab-btn');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tool-tab').forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                this.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Community tabs
+        const communityTabs = document.querySelectorAll('.community-tab');
+        communityTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.community-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Anniversary Date Themes
+        const dateThemes = document.querySelectorAll('.date-theme');
+        dateThemes.forEach(theme => {
+            theme.addEventListener('click', function() {
+                // Remove active class from all themes
+                document.querySelectorAll('.date-theme').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.theme-content').forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked theme
+                this.classList.add('active');
+                
+                // Show corresponding content
+                const themeType = this.getAttribute('data-theme');
+                document.querySelector(`.theme-content.${themeType}`).classList.add('active');
+            });
+        });
+    });
+    </script>
+    
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal-overlay" style="display: none;">
+        <div class="modal payment-modal">
+            <div class="modal-header">
+                <h3>Choose Payment Method</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-options">
+                    <div class="payment-option" onclick="selectPaymentMethod('upi')">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h4>UPI Payment</h4>
+                        <span class="payment-option-desc">Pay directly with any UPI app</span>
+                    </div>
+                    <div class="payment-option" onclick="selectPaymentMethod('card')">
+                        <i class="fas fa-credit-card"></i>
+                        <h4>Card Payment</h4>
+                        <span class="payment-option-desc">Credit/Debit cards</span>
+                    </div>
+                    <div class="payment-option" onclick="selectPaymentMethod('netbanking')">
+                        <i class="fas fa-university"></i>
+                        <h4>Net Banking</h4>
+                        <span class="payment-option-desc">All major banks</span>
+                    </div>
+                </div>
+                
+                <div id="upiDetails" class="upi-details" style="display: none;">
+                    <h4>UPI Payment Details</h4>
+                    <div class="upi-info">
+                        <div class="upi-qr">
+                            <div class="qr-placeholder">
+                                <i class="fas fa-qrcode"></i>
+                                <span>Scan QR Code</span>
+                            </div>
+                        </div>
+                        <div class="upi-text-details">
+                            <div class="upi-detail-item">
+                                <span class="label">UPI ID:</span>
+                                <span class="value">partnerpayz@upi</span>
+                                <button class="btn-copy" onclick="copyToClipboard('partnerpayz@upi')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="upi-detail-item">
+                                <span class="label">Name:</span>
+                                <span class="value">PartnerPayz</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="upiAmount">Amount (₹)</label>
+                        <input type="number" id="upiAmount" class="upi-input" min="0" step="0.01" required placeholder="Enter amount">
+                    </div>
+                    <button class="btn btn-primary" onclick="processUPIPayment()">Pay Now</button>
+                </div>
+
+                <div id="cardDetails" class="card-payment-form" style="display: none;">
+                    <h4>Card Payment</h4>
+                    <div class="card-type-icons">
+                        <div class="card-type-icon visa active"><i class="fab fa-cc-visa"></i></div>
+                        <div class="card-type-icon mastercard"><i class="fab fa-cc-mastercard"></i></div>
+                        <div class="card-type-icon amex"><i class="fab fa-cc-amex"></i></div>
+                        <div class="card-type-icon discover"><i class="fab fa-cc-discover"></i></div>
+                    </div>
+                    <div class="card-input-group">
+                        <label class="card-input-label" for="cardNumber">Card Number</label>
+                        <div class="card-input-wrapper">
+                            <input type="text" id="cardNumber" class="card-input" placeholder="1234 5678 9012 3456" maxlength="19">
+                            <i class="card-icon fas fa-credit-card"></i>
+                        </div>
+                    </div>
+                    <div class="card-row">
+                        <div class="card-input-group half">
+                            <label class="card-input-label" for="cardExpiry">Expiry Date</label>
+                            <input type="text" id="cardExpiry" class="card-input" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="card-input-group half">
+                            <label class="card-input-label" for="cardCvv">CVV</label>
+                            <input type="password" id="cardCvv" class="card-input" placeholder="123" maxlength="4">
+                        </div>
+                    </div>
+                    <div class="card-input-group">
+                        <label class="card-input-label" for="cardName">Cardholder Name</label>
+                        <input type="text" id="cardName" class="card-input" placeholder="John Smith">
+                    </div>
+                    <button class="btn btn-primary" onclick="processCardPayment()">Pay ₹499</button>
+                </div>
+
+                <div id="netbankingDetails" class="card-payment-form" style="display: none;">
+                    <h4>Net Banking</h4>
+                    <div class="bank-options">
+                        <div class="bank-option">
+                            <input type="radio" name="bank" id="sbi" value="sbi">
+                            <label for="sbi">State Bank of India</label>
+                        </div>
+                        <div class="bank-option">
+                            <input type="radio" name="bank" id="hdfc" value="hdfc">
+                            <label for="hdfc">HDFC Bank</label>
+                        </div>
+                        <div class="bank-option">
+                            <input type="radio" name="bank" id="icici" value="icici">
+                            <label for="icici">ICICI Bank</label>
+                        </div>
+                        <div class="bank-option">
+                            <input type="radio" name="bank" id="axis" value="axis">
+                            <label for="axis">Axis Bank</label>
+                        </div>
+                        <div class="bank-option">
+                            <input type="radio" name="bank" id="other" value="other">
+                            <label for="other">Other Banks</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="processNetBankingPayment()">Continue to Net Banking</button>
+                </div>
+                
+                <div id="paymentStatus" class="payment-status" style="display: none;"></div>
+                
+                <div class="payment-security-note">
+                    <i class="fas fa-shield-alt"></i>
+                    <p>Your payment is secure. We use industry-standard encryption to protect your financial information.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main JavaScript -->
+    <script src="js/relationship-features.js"></script>
+</body>
+</html> 
