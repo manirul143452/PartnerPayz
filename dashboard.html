@@ -8,6 +8,55 @@
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/toast.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .debug-panel {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-width: 400px;
+            max-height: 200px;
+            overflow: auto;
+            z-index: 9999;
+            display: none;
+        }
+        .debug-panel.show {
+            display: block;
+        }
+        .debug-toggle {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: #6a11cb;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            z-index: 10000;
+        }
+        .debug-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 5px;
+        }
+        .debug-actions button {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 3px 6px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .debug-actions button:hover {
+            background: #555;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -179,27 +228,89 @@
         </div>
     </footer>
 
+    <!-- Debug Panel -->
+    <button class="debug-toggle" id="debugToggle">Debug</button>
+    <div class="debug-panel" id="debugPanel">
+        <h4>Debug Info</h4>
+        <div id="debugInfo">No information yet</div>
+        <div class="debug-actions">
+            <button id="checkStorage">Check Storage</button>
+            <button id="skipLoginCheck">Skip Login Check</button>
+            <button id="goToLogin">Go to Login</button>
+        </div>
+    </div>
+
     <div id="toastContainer" class="toast-container"></div>
 
     <script type="module">
         import { isLoggedIn, getCurrentUser, logoutUser } from './js/local-auth.js';
         import { getUnreadNotificationCount, updateNotificationBadge, getNotificationHistory } from './js/local-notifications.js';
-        import { fixUserData } from './js/local-storage-debug.js';
+        import { fixUserData, verifyLocalStorage, displayAllUsers } from './js/local-storage-debug.js';
+        
+        // Debug functionality
+        const debugToggle = document.getElementById('debugToggle');
+        const debugPanel = document.getElementById('debugPanel');
+        const debugInfo = document.getElementById('debugInfo');
+        let skipLoginCheck = false;
+        
+        if (debugToggle) {
+            debugToggle.addEventListener('click', () => {
+                debugPanel.classList.toggle('show');
+            });
+        }
+        
+        // Add debug listeners
+        document.getElementById('checkStorage').addEventListener('click', () => {
+            const storageWorks = verifyLocalStorage();
+            updateDebugInfo('Storage check: ' + (storageWorks ? 'WORKING' : 'FAILED'));
+            displayAllUsers();
+            
+            const user = getCurrentUser();
+            updateDebugInfo('Current user: ' + (user ? user.email : 'None'));
+        });
+        
+        document.getElementById('skipLoginCheck').addEventListener('click', () => {
+            skipLoginCheck = true;
+            updateDebugInfo('Login check skipped. Will not redirect to login page.');
+            showToast('Login check disabled', 'warning');
+        });
+        
+        document.getElementById('goToLogin').addEventListener('click', () => {
+            updateDebugInfo('Redirecting to login page');
+            window.location.href = 'login.html';
+        });
+        
+        function updateDebugInfo(info) {
+            const timestamp = new Date().toLocaleTimeString();
+            debugInfo.innerHTML = `<div>[${timestamp}] ${info}</div>` + debugInfo.innerHTML;
+        }
         
         document.addEventListener('DOMContentLoaded', function() {
             // Fix any corrupted localStorage data
             fixUserData();
+            updateDebugInfo('localStorage fixed');
             
             // Check if user is logged in
-            if (!isLoggedIn()) {
-                window.location.href = 'login.html';
+            if (!isLoggedIn() && !skipLoginCheck) {
+                updateDebugInfo('Not logged in. Redirecting to login page...');
+                showToast('You must be logged in to view this page.', 'error');
+                
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
                 return;
             }
+            
+            // If we got here, either the user is logged in or we're skipping the check
+            updateDebugInfo(skipLoginCheck ? 'Skipped login check' : 'User is logged in');
             
             // Get user data
             const user = getCurrentUser();
             if (user) {
                 updateUserInfo(user);
+                updateDebugInfo('User info updated: ' + user.email);
+            } else if (!skipLoginCheck) {
+                updateDebugInfo('No user data found but skipping login check');
             }
             
             // Initialize notifications
@@ -249,9 +360,7 @@
             
             // Generate a test notification if there are no notifications
             const notifications = getNotificationHistory();
-            if (notifications.length === 0) {
-                // We'll create a demo notification in the next session
-            }
+            updateDebugInfo('Notifications count: ' + notifications.length);
         }
         
         function addEventListeners() {
@@ -262,8 +371,10 @@
                     e.preventDefault();
                     try {
                         await logoutUser();
+                        updateDebugInfo('User logged out');
                         window.location.href = 'login.html';
                     } catch (error) {
+                        updateDebugInfo('Logout error: ' + error.message);
                         showToast('Failed to log out', 'error');
                     }
                 });
@@ -276,11 +387,13 @@
                     e.preventDefault();
                     try {
                         await logoutUser();
+                        updateDebugInfo('User logged out');
                         showToast('Logged out successfully!', 'success');
                         setTimeout(() => {
                             window.location.href = 'index.html';
                         }, 1000);
                     } catch (error) {
+                        updateDebugInfo('Logout error: ' + error.message);
                         showToast('Failed to log out', 'error');
                     }
                 });
@@ -305,6 +418,7 @@
             const icon = document.createElement('i');
             icon.className = type === 'success' ? 'fas fa-check-circle' : 
                            type === 'error' ? 'fas fa-exclamation-circle' : 
+                           type === 'warning' ? 'fas fa-exclamation-triangle' :
                            'fas fa-info-circle';
             
             const content = document.createElement('span');

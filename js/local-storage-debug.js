@@ -1,263 +1,241 @@
 /**
- * LocalStorage Debug Utilities
- * This file provides debugging tools for localStorage data
+ * PartnerPayz localStorage Debug Utilities
+ * This file contains utility functions for diagnosing and fixing localStorage issues
  */
 
-// Constants for storage keys
-const USERS_STORAGE_KEY = 'partnerpayz_users';
-const CURRENT_USER_KEY = 'partnerpayz_current_user';
+// Storage keys
+const USERS_STORAGE_KEY = 'users';
+const CURRENT_USER_KEY = 'currentUserId';
+const NOTIFICATIONS_KEY = 'notifications';
 
-// Check if a key exists in localStorage
-export function checkKeyExists(key) {
+/**
+ * Verifies if localStorage is working correctly
+ * @returns {boolean} True if localStorage is working, false otherwise
+ */
+export function verifyLocalStorage() {
     try {
-        return localStorage.getItem(key) !== null;
+        // Test if localStorage is available
+        const testKey = 'partnerPayzTest';
+        localStorage.setItem(testKey, 'test');
+        const value = localStorage.getItem(testKey);
+        localStorage.removeItem(testKey);
+        
+        // If we successfully stored and retrieved the value, localStorage is working
+        return value === 'test';
     } catch (error) {
-        console.error(`Error checking if key '${key}' exists:`, error);
+        console.error('localStorage test failed:', error);
         return false;
     }
 }
 
-// Display all user data in the console (for debugging)
+/**
+ * Displays all users in localStorage in the console
+ */
 export function displayAllUsers() {
     try {
-        const usersJSON = localStorage.getItem(USERS_STORAGE_KEY);
-        if (!usersJSON) {
-            console.log('No users found in localStorage');
-            return [];
-        }
-        
-        const users = JSON.parse(usersJSON);
-        console.log('All users:', users);
-        return users;
-    } catch (error) {
-        console.error('Error displaying all users:', error);
-        return [];
-    }
-}
-
-// Display current user data in the console (for debugging)
-export function displayCurrentUser() {
-    try {
-        const userJSON = localStorage.getItem(CURRENT_USER_KEY);
-        if (!userJSON) {
-            console.log('No current user found in localStorage');
-            return null;
-        }
-        
-        const user = JSON.parse(userJSON);
-        console.log('Current user:', user);
-        return user;
-    } catch (error) {
-        console.error('Error displaying current user:', error);
-        return null;
-    }
-}
-
-// Reset user data (for debugging)
-export function resetUserData() {
-    try {
-        localStorage.removeItem(USERS_STORAGE_KEY);
-        localStorage.removeItem(CURRENT_USER_KEY);
-        console.log('User data has been reset');
-        return true;
-    } catch (error) {
-        console.error('Error resetting user data:', error);
-        return false;
-    }
-}
-
-// Fix corrupted user data (creates empty users array if missing or corrupted)
-export function fixUserData() {
-    try {
-        // Check if users array exists and is valid JSON
-        const usersJson = localStorage.getItem('users');
-        if (usersJson) {
-            try {
-                const users = JSON.parse(usersJson);
-                
-                // Check if it's actually an array
-                if (!Array.isArray(users)) {
-                    console.warn('Users data is not an array, resetting to empty array');
-                    localStorage.setItem('users', JSON.stringify([]));
-                }
-            } catch (e) {
-                console.error('Failed to parse users JSON, resetting to empty array', e);
-                localStorage.setItem('users', JSON.stringify([]));
-            }
-        } else {
-            // Initialize users array if it doesn't exist
-            localStorage.setItem('users', JSON.stringify([]));
-        }
-        
-        // Check if current user ID exists and is valid
-        const currentUserId = localStorage.getItem('currentUserId');
-        if (currentUserId) {
-            const usersJson = localStorage.getItem('users');
-            const users = JSON.parse(usersJson);
-            
-            // Check if the user with this ID exists
-            const userExists = users.some(user => user.id === currentUserId);
-            if (!userExists) {
-                console.warn('Current user ID does not exist in users array, removing current user ID');
-                localStorage.removeItem('currentUserId');
-            }
-        }
-        
-        // Check if notifications array exists and is valid JSON
-        const notificationsJson = localStorage.getItem('partnerpayz_notifications');
-        if (notificationsJson) {
-            try {
-                const notifications = JSON.parse(notificationsJson);
-                
-                // Check if it's actually an array
-                if (!Array.isArray(notifications)) {
-                    console.warn('Notifications data is not an array, resetting to empty array');
-                    localStorage.setItem('partnerpayz_notifications', JSON.stringify([]));
-                }
-            } catch (e) {
-                console.error('Failed to parse notifications JSON, resetting to empty array', e);
-                localStorage.setItem('partnerpayz_notifications', JSON.stringify([]));
-            }
-        } else {
-            // Initialize notifications array if it doesn't exist
-            localStorage.setItem('partnerpayz_notifications', JSON.stringify([]));
-        }
-        
-        return true;
-    } catch (error) {
-        console.error('Error fixing user data:', error);
-        return false;
-    }
-}
-
-// Get localStorage usage information
-export function getStorageInfo() {
-    try {
-        let totalSize = 0;
-        let items = 0;
-        
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            const value = localStorage.getItem(key);
-            const size = (key.length + value.length) * 2; // Rough estimate in bytes (UTF-16)
-            totalSize += size;
-            items++;
-        }
-        
-        return {
-            items,
-            totalSize: (totalSize / 1024).toFixed(2) + ' KB',
-            limit: '5 MB (typical browser limit)',
-            percentUsed: ((totalSize / (5 * 1024 * 1024)) * 100).toFixed(2) + '%'
-        };
-    } catch (error) {
-        console.error('Error getting storage info:', error);
-        return null;
-    }
-}
-
-// Automatically fix data on load
-fixUserData(); 
-
-// Display all users in the console (for debugging)
-export function displayAllUsers() {
-    try {
-        const usersJson = localStorage.getItem('users');
+        const usersJson = localStorage.getItem(USERS_STORAGE_KEY);
         if (!usersJson) {
             console.log('No users found in localStorage');
             return [];
         }
         
         const users = JSON.parse(usersJson);
+        console.table(users);
         
-        if (!Array.isArray(users)) {
-            console.log('Users data is not an array');
-            return [];
+        // Also display current user
+        const currentUserId = localStorage.getItem(CURRENT_USER_KEY);
+        console.log('Current user ID:', currentUserId);
+        
+        if (currentUserId) {
+            const currentUser = users.find(user => user.id === currentUserId);
+            console.log('Current user:', currentUser);
         }
         
-        if (users.length === 0) {
-            console.log('No users found (empty array)');
-            return [];
-        }
-        
-        console.log(`Found ${users.length} users:`);
-        users.forEach((user, index) => {
-            // Don't log the password
-            const { password, ...userWithoutPassword } = user;
-            console.log(`User ${index + 1}:`, userWithoutPassword);
-        });
-        
-        return users.map(({ password, ...user }) => user);
+        return users;
     } catch (error) {
         console.error('Error displaying users:', error);
         return [];
     }
 }
 
-// Verify localStorage is working correctly
-export function verifyLocalStorage() {
+/**
+ * Fixes potential issues with user data in localStorage
+ */
+export function fixUserData() {
     try {
-        // Try to write to localStorage
-        localStorage.setItem('partnerpayz_test', 'test');
+        // Get users data
+        let usersJson = localStorage.getItem(USERS_STORAGE_KEY);
+        if (!usersJson) {
+            // Initialize users array if not exists
+            localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify([]));
+            console.log('Users array initialized');
+            return;
+        }
         
-        // Try to read from localStorage
-        const testValue = localStorage.getItem('partnerpayz_test');
+        // Parse users data
+        let users;
+        try {
+            users = JSON.parse(usersJson);
+            if (!Array.isArray(users)) {
+                // If users is not an array, reset it
+                localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify([]));
+                console.log('Reset users to empty array');
+                return;
+            }
+        } catch (error) {
+            // If JSON parse fails, reset users
+            localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify([]));
+            console.log('Reset users due to parse error:', error);
+            return;
+        }
         
-        // Clean up
-        localStorage.removeItem('partnerpayz_test');
+        // Validate current user ID
+        const currentUserId = localStorage.getItem(CURRENT_USER_KEY);
+        if (currentUserId) {
+            // Check if current user exists in users array
+            const currentUserExists = users.some(user => user.id === currentUserId);
+            if (!currentUserExists) {
+                // Remove invalid current user ID
+                console.log('Removing invalid currentUserId:', currentUserId);
+                localStorage.removeItem(CURRENT_USER_KEY);
+            }
+        }
         
-        // Check if the value was written and read correctly
-        return testValue === 'test';
+        // Validate each user object
+        let modified = false;
+        for (let i = 0; i < users.length; i++) {
+            const user = users[i];
+            // Ensure user has essential properties
+            if (!user.id || !user.email || !user.password) {
+                // Remove invalid user
+                users.splice(i, 1);
+                i--; // Adjust index after removal
+                modified = true;
+                console.log('Removed invalid user object:', user);
+            }
+        }
+        
+        // Save changes if necessary
+        if (modified) {
+            localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+            console.log('User data fixed');
+        }
     } catch (error) {
-        console.error('LocalStorage test failed:', error);
+        console.error('Error fixing user data:', error);
+    }
+}
+
+/**
+ * Creates a test user for debugging
+ * @returns {Object} Created test user
+ */
+export function createTestUser() {
+    try {
+        // Get users data
+        let usersJson = localStorage.getItem(USERS_STORAGE_KEY);
+        let users = [];
+        if (usersJson) {
+            try {
+                users = JSON.parse(usersJson);
+            } catch (error) {
+                users = [];
+            }
+        }
+        
+        // If users is not an array, reset it
+        if (!Array.isArray(users)) {
+            users = [];
+        }
+        
+        // Create test user
+        const testUser = {
+            id: 'test-' + Date.now(),
+            email: 'test@example.com',
+            password: 'password123',
+            name: 'Test User',
+            createdAt: new Date().toISOString()
+        };
+        
+        // Check if test user already exists
+        const existingTestUser = users.find(user => user.email === testUser.email);
+        if (existingTestUser) {
+            // Set current user to existing test user
+            localStorage.setItem(CURRENT_USER_KEY, existingTestUser.id);
+            console.log('Using existing test user:', existingTestUser);
+            return existingTestUser;
+        }
+        
+        // Add test user
+        users.push(testUser);
+        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+        
+        // Set current user
+        localStorage.setItem(CURRENT_USER_KEY, testUser.id);
+        
+        console.log('Created and logged in test user:', testUser);
+        return testUser;
+    } catch (error) {
+        console.error('Error creating test user:', error);
+        return null;
+    }
+}
+
+/**
+ * Clears all app data from localStorage
+ */
+export function clearAllData() {
+    try {
+        // Clear all app-related keys
+        localStorage.removeItem(USERS_STORAGE_KEY);
+        localStorage.removeItem(CURRENT_USER_KEY);
+        localStorage.removeItem(NOTIFICATIONS_KEY);
+        
+        console.log('All app data cleared from localStorage');
+        return true;
+    } catch (error) {
+        console.error('Error clearing data:', error);
         return false;
     }
 }
 
-// Get total localStorage usage
-export function getLocalStorageUsage() {
+/**
+ * Displays localStorage usage information
+ * @returns {Object} Storage usage information
+ */
+export function getStorageInfo() {
     try {
-        let totalSize = 0;
+        const info = {
+            total: 0,
+            used: 0,
+            available: 5 * 1024 * 1024, // 5MB typical limit
+            items: []
+        };
         
-        // Iterate over all localStorage items
+        // Calculate total usage
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             const value = localStorage.getItem(key);
-            
-            // Calculate size in bytes
             const size = (key.length + value.length) * 2; // UTF-16 uses 2 bytes per character
             
-            totalSize += size;
+            info.total += size;
+            info.items.push({
+                key,
+                size: size,
+                sizeFormatted: `${(size / 1024).toFixed(2)} KB`
+            });
         }
         
-        // Convert to KB
-        const sizeInKB = totalSize / 1024;
+        info.used = info.total;
+        info.usedFormatted = `${(info.used / 1024).toFixed(2)} KB`;
+        info.availableFormatted = `${(info.available / 1024).toFixed(2)} KB`;
+        info.percentUsed = ((info.used / info.available) * 100).toFixed(2) + '%';
         
-        return {
-            bytes: totalSize,
-            kilobytes: sizeInKB,
-            items: localStorage.length
-        };
-    } catch (error) {
-        console.error('Error calculating localStorage usage:', error);
-        return {
-            bytes: 0,
-            kilobytes: 0,
-            items: 0
-        };
-    }
-}
-
-// Clear all app data (dangerous!)
-export function clearAllAppData() {
-    try {
-        localStorage.removeItem('users');
-        localStorage.removeItem('currentUserId');
-        localStorage.removeItem('partnerpayz_notifications');
+        console.table(info.items);
+        console.log(`Total localStorage usage: ${info.usedFormatted} / ${info.availableFormatted} (${info.percentUsed})`);
         
-        return true;
+        return info;
     } catch (error) {
-        console.error('Error clearing app data:', error);
-        return false;
+        console.error('Error getting storage info:', error);
+        return null;
     }
 } 
