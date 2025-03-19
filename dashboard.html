@@ -69,9 +69,14 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="register.html"><i class="fas fa-user-plus"></i> Register</a></li>
-                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
-                    <li><a href="#" id="navLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <li><a href="partners.html"><i class="fas fa-users"></i> Find Partners</a></li>
+                    <li><a href="invest.html"><i class="fas fa-chart-line"></i> Invest Together</a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
+                    <li><a href="community.html"><i class="fas fa-comments"></i> Community</a></li>
+                    <li><a href="features.html"><i class="fas fa-star"></i> Features</a></li>
+                    <li><a href="pricing.html"><i class="fas fa-tags"></i> Pricing</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+                    <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
                 </ul>
             </nav>
                 <div class="user-menu">
@@ -97,7 +102,7 @@
     </header>
 
         <main class="app-content">
-            <h1 class="page-title">Dashboard</h1>
+            <h1 class="page-title">Welcome to PartnerPayz</h1>
             
             <div class="dashboard-overview">
                 <div class="overview-card">
@@ -249,5 +254,22 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <script src="js/main.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Make settings link functional
+        const settingsLink = document.getElementById('settingsLink');
+        if (settingsLink) {
+            settingsLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showToast('Settings functionality activated', 'success');
+                
+                // You can direct to a settings page or open a settings modal here
+                setTimeout(() => {
+                    window.location.href = 'profile.html';
+                }, 1000);
+            });
+        }
+    });
+    </script>
 </body>
 </html> 
