@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Login - PartnerPayz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #6a11cb;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #6a11cb;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .test-btn {
+            margin-top: 10px;
+            background: #28a745;
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #2575fc;
+            text-decoration: none;
+        }
+        
+        .link:hover {
+            text-decoration: underline;
+        }
+        
+        .debug {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        
+        .debug h3 {
+            margin-bottom: 10px;
+            color: #6a11cb;
+        }
+        
+        .debug-info {
+            font-family: monospace;
+            color: #333;
+            white-space: pre-wrap;
+            font-size: 12px;
+            background: #eee;
+            padding: 10px;
+            border-radius: 3px;
+            max-height: 200px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login to PartnerPayz</h1>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            
+            <button type="submit">Login</button>
+        </form>
+        
+        <button id="testUserBtn" class="test-btn">Login as Test User</button>
+        
+        <div id="message" class="message" style="display: none;"></div>
+        
+        <a href="register.html" class="link">Don't have an account? Sign up</a>
+        
+        <div class="debug">
+            <h3>Debug Info</h3>
+            <div id="debugInfo" class="debug-info">No information yet</div>
+            <button id="showUsers" style="margin-top: 10px;">Show Users</button>
+            <button id="createTest" style="margin-top: 10px; background: #17a2b8;">Create Test User</button>
+            <button id="clearData" style="margin-top: 10px; background: #dc3545;">Clear All Data</button>
+        </div>
+    </div>
+
+    <script>
+        // Constants
+        const USERS_KEY = 'users';
+        const CURRENT_USER_KEY = 'currentUserId';
+        
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const messageDiv = document.getElementById('message');
+        const debugInfo = document.getElementById('debugInfo');
+        const testUserBtn = document.getElementById('testUserBtn');
+        const showUsersBtn = document.getElementById('showUsers');
+        const createTestBtn = document.getElementById('createTest');
+        const clearDataBtn = document.getElementById('clearData');
+        
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeStorage();
+            checkIfLoggedIn();
+            
+            // Add event listeners
+            loginForm.addEventListener('submit', handleLogin);
+            testUserBtn.addEventListener('click', loginAsTestUser);
+            showUsersBtn.addEventListener('click', displayAllUsers);
+            createTestBtn.addEventListener('click', createTestUser);
+            clearDataBtn.addEventListener('click', clearAllData);
+        });
+        
+        // Initialize storage
+        function initializeStorage() {
+            try {
+                const users = localStorage.getItem(USERS_KEY);
+                if (!users) {
+                    localStorage.setItem(USERS_KEY, JSON.stringify([]));
+                    log('Initialized empty users array');
+                } else {
+                    log('Found existing users data');
+                }
+            } catch (error) {
+                log('Error initializing storage: ' + error.message);
+            }
+        }
+        
+        // Check if user is already logged in
+        function checkIfLoggedIn() {
+            try {
+                const currentUserId = localStorage.getItem(CURRENT_USER_KEY);
+                if (currentUserId) {
+                    const users = JSON.parse(localStorage.getItem(USERS_KEY));
+                    const user = users.find(u => u.id === currentUserId);
+                    if (user) {
+                        log('User already logged in: ' + user.email);
+                        showMessage('You are already logged in as ' + user.email, 'success');
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1000);
+                    } else {
+                        log('Invalid user ID found, removing');
+                        localStorage.removeItem(CURRENT_USER_KEY);
+                    }
+                } else {
+                    log('No active login found');
+                }
+            } catch (error) {
+                log('Error checking login: ' + error.message);
+            }
+        }
+        
+        // Handle login form submission
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            
+            try {
+                log('Attempting login: ' + email);
+                
+                const users = JSON.parse(localStorage.getItem(USERS_KEY));
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    // Update last login
+                    user.lastLogin = new Date().toISOString();
+                    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+                    
+                    // Set current user
+                    localStorage.setItem(CURRENT_USER_KEY, user.id);
+                    
+                    log('Login successful: ' + user.email);
+                    showMessage('Login successful! Redirecting...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    log('Login failed: Invalid credentials');
+                    showMessage('Invalid email or password', 'error');
+                }
+            } catch (error) {
+                log('Login error: ' + error.message);
+                showMessage('An error occurred. Please try again.', 'error');
+            }
+        }
+        
+        // Login as test user
+        function loginAsTestUser() {
+            try {
+                log('Creating/using test user');
+                
+                // Create test user if needed
+                const testUser = createTestUser(true);
+                if (testUser) {
+                    // Set test user as current user
+                    localStorage.setItem(CURRENT_USER_KEY, testUser.id);
+                    
+                    log('Test login successful');
+                    showMessage('Login successful! Redirecting as test user...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                }
+            } catch (error) {
+                log('Test login error: ' + error.message);
+                showMessage('An error occurred. Please try again.', 'error');
+            }
+        }
+        
+        // Create test user
+        function createTestUser(silent = false) {
+            try {
+                let users = JSON.parse(localStorage.getItem(USERS_KEY));
+                
+                // Check if test user already exists
+                let testUser = users.find(u => u.email === 'test@example.com');
+                
+                if (!testUser) {
+                    // Create new test user
+                    testUser = {
+                        id: 'test_' + Date.now(),
+                        email: 'test@example.com',
+                        password: 'password123',
+                        name: 'Test User',
+                        createdAt: new Date().toISOString(),
+                        lastLogin: new Date().toISOString()
+                    };
+                    
+                    // Add to users array
+                    users.push(testUser);
+                    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+                    
+                    log('Test user created: ' + testUser.email);
+                    if (!silent) {
+                        showMessage('Test user created! Email: test@example.com, Password: password123', 'success');
+                        
+                        // Fill in the form
+                        emailInput.value = 'test@example.com';
+                        passwordInput.value = 'password123';
+                    }
+                } else {
+                    log('Test user already exists: ' + testUser.email);
+                    if (!silent) {
+                        showMessage('Test user already exists! Email: test@example.com, Password: password123', 'success');
+                        
+                        // Fill in the form
+                        emailInput.value = 'test@example.com';
+                        passwordInput.value = 'password123';
+                    }
+                }
+                
+                return testUser;
+            } catch (error) {
+                log('Error creating test user: ' + error.message);
+                if (!silent) {
+                    showMessage('Failed to create test user', 'error');
+                }
+                return null;
+            }
+        }
+        
+        // Display all users
+        function displayAllUsers() {
+            try {
+                const users = JSON.parse(localStorage.getItem(USERS_KEY));
+                const currentUserId = localStorage.getItem(CURRENT_USER_KEY);
+                
+                log('Total users: ' + users.length);
+                log('Current user ID: ' + (currentUserId || 'None'));
+                
+                if (users.length === 0) {
+                    showMessage('No users found', 'error');
+                } else {
+                    let userInfo = '';
+                    users.forEach((user, index) => {
+                        // Don't show password
+                        const { password, ...safeUser } = user;
+                        userInfo += `User ${index + 1}: ${JSON.stringify(safeUser)}\n\n`;
+                    });
+                    
+                    debugInfo.textContent = userInfo;
+                }
+            } catch (error) {
+                log('Error displaying users: ' + error.message);
+            }
+        }
+        
+        // Clear all data
+        function clearAllData() {
+            if (confirm('This will delete ALL application data. Are you sure?')) {
+                try {
+                    localStorage.removeItem(USERS_KEY);
+                    localStorage.removeItem(CURRENT_USER_KEY);
+                    
+                    log('All data cleared');
+                    showMessage('All data has been cleared', 'success');
+                    
+                    // Reinitialize storage
+                    initializeStorage();
+                } catch (error) {
+                    log('Error clearing data: ' + error.message);
+                    showMessage('Failed to clear data', 'error');
+                }
+            }
+        }
+        
+        // Show message
+        function showMessage(text, type = 'success') {
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Log debugging info
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            debugInfo.textContent = `[${timestamp}] ${message}\n` + debugInfo.textContent;
+        }
+    </script>
+</body>
+</html> 
