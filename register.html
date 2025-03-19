@@ -19,37 +19,37 @@
             </div>
             
             <form id="registerForm" class="auth-form">
-                <div class="form-group">
+                    <div class="form-group">
                     <label for="name">Full Name</label>
                     <div class="input-group">
-                        <i class="fas fa-user"></i>
+                            <i class="fas fa-user"></i>
                         <input type="text" id="name" required placeholder="Enter your name">
+                        </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Email Address</label>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
                     <div class="input-group">
-                        <i class="fas fa-envelope"></i>
+                            <i class="fas fa-envelope"></i>
                         <input type="email" id="email" required placeholder="Enter your email">
+                        </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
+                    
+                    <div class="form-group">
                     <label for="password">Password</label>
                     <div class="input-group">
-                        <i class="fas fa-lock"></i>
+                            <i class="fas fa-lock"></i>
                         <input type="password" id="password" required placeholder="Create a password" minlength="6">
                         <button type="button" class="toggle-password">
                             <i class="fas fa-eye"></i>
                         </button>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
                     <div class="input-group">
-                        <i class="fas fa-lock"></i>
+                            <i class="fas fa-lock"></i>
                         <input type="password" id="confirmPassword" required placeholder="Confirm your password" minlength="6">
                     </div>
                 </div>
@@ -59,8 +59,8 @@
                         <input type="checkbox" id="terms" required>
                         <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
                     </label>
-                </div>
-                
+                    </div>
+                    
                 <button type="submit" class="btn-primary btn-block">
                     <i class="fas fa-user-plus"></i> Create Account
                 </button>
@@ -70,15 +70,45 @@
                     <button type="button" class="btn-google" id="googleSignUp">
                         <i class="fab fa-google"></i> Google
                     </button>
-                </div>
+                        </div>
             </form>
+            
+            <!-- Registration Success Modal -->
+            <div id="registrationSuccessModal" class="auth-modal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2><i class="fas fa-check-circle"></i> Account Created!</h2>
+                    </div>
+                    <div class="modal-body">
+                        <p>Your account has been created successfully.</p>
+                        <div class="user-details">
+                            <div class="detail-item">
+                                <span class="label">Name:</span>
+                                <span class="value" id="modalUserName">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Email:</span>
+                                <span class="value" id="modalUserEmail">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">User ID:</span>
+                                <span class="value highlight" id="modalUserId">-</span>
+                            </div>
+                        </div>
+                        <p class="note">Please save your User ID for reference.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="continueToAccountBtn" class="btn-primary"><i class="fas fa-arrow-right"></i> Continue to Account</button>
+                    </div>
+                </div>
+            </div>
             
             <div class="auth-footer">
                 <p>Already have an account? <a href="login.html">Sign in</a></p>
-            </div>
-        </div>
-    </div>
-
+                        </div>
+                        </div>
+                    </div>
+                    
     <script type="module">
         import { registerUser, loginWithGoogle, isLoggedIn } from './js/local-auth.js';
         import { requestNotificationPermission } from './js/local-notifications.js';
@@ -166,10 +196,32 @@
                         console.error('Could not save registration backup:', err);
                     }
                     
-                    // Redirect to dashboard after a short delay
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1500);
+                    // Show the registration success modal with user details
+                    const modal = document.getElementById('registrationSuccessModal');
+                    const modalUserName = document.getElementById('modalUserName');
+                    const modalUserEmail = document.getElementById('modalUserEmail');
+                    const modalUserId = document.getElementById('modalUserId');
+                    
+                    if (modal && modalUserName && modalUserEmail && modalUserId) {
+                        modalUserName.textContent = result.user.name || name;
+                        modalUserEmail.textContent = result.user.email || email;
+                        modalUserId.textContent = result.user.id || 'Unknown';
+                        
+                        modal.style.display = 'flex';
+                        
+                        // Handle continue button
+                        const continueBtn = document.getElementById('continueToAccountBtn');
+                        if (continueBtn) {
+                            continueBtn.addEventListener('click', () => {
+                                window.location.href = 'dashboard.html';
+                            });
+                        }
+                    } else {
+                        // Fallback if modal elements don't exist
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1500);
+                    }
                 } else {
                     showToast(result.error, 'error');
                     
