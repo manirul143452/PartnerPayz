@@ -6,6 +6,7 @@
     <title>Login - PartnerPayz</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/toast.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -64,8 +65,25 @@
     </div>
 
     <script type="module">
-        import { loginUser, loginWithGoogle } from './js/local-auth.js';
+        import { loginUser, loginWithGoogle, isLoggedIn } from './js/local-auth.js';
         import { requestNotificationPermission } from './js/local-notifications.js';
+        import { fixUserData, displayAllUsers } from './js/local-storage-debug.js';
+
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fix any corrupted localStorage data
+            fixUserData();
+            
+            // If already logged in, redirect to dashboard
+            if (isLoggedIn()) {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+            
+            // For debugging
+            console.log('Available users:');
+            displayAllUsers();
+        });
 
         // Toggle password visibility
         const togglePassword = document.querySelector('.toggle-password');
@@ -82,6 +100,11 @@
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            // Disable form during authentication
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+            
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const remember = document.getElementById('remember').checked;
@@ -90,16 +113,28 @@
                 const result = await loginUser(email, password);
                 
                 if (result.success) {
+                    showToast('Login successful!', 'success');
+                    
                     // Request notification permission after successful login
                     await requestNotificationPermission();
                     
                     // Redirect to dashboard
-                    window.location.href = 'dashboard.html';
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
                 } else {
                     showToast(result.error, 'error');
+                    
+                    // Re-enable form
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
                 }
             } catch (error) {
-                showToast(error.message, 'error');
+                showToast(error.message || 'An error occurred', 'error');
+                
+                // Re-enable form
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
             }
         });
 
@@ -109,16 +144,20 @@
                 const result = await loginWithGoogle();
                 
                 if (result.success) {
+                    showToast('Login with Google successful!', 'success');
+                    
                     // Request notification permission after successful login
                     await requestNotificationPermission();
                     
                     // Redirect to dashboard
-                    window.location.href = 'dashboard.html';
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
                 } else {
                     showToast(result.error, 'error');
                 }
             } catch (error) {
-                showToast(error.message, 'error');
+                showToast(error.message || 'An error occurred', 'error');
             }
         });
 
@@ -126,8 +165,17 @@
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
-            toast.textContent = message;
             
+            const icon = document.createElement('i');
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 
+                           type === 'error' ? 'fas fa-exclamation-circle' : 
+                           'fas fa-info-circle';
+            
+            const content = document.createElement('span');
+            content.textContent = message;
+            
+            toast.appendChild(icon);
+            toast.appendChild(content);
             document.body.appendChild(toast);
             
             setTimeout(() => {

@@ -904,28 +904,47 @@
     <!-- User authentication and profile management -->
     <script type="module">
         import { getCurrentUser, isLoggedIn, logoutUser } from './js/local-auth.js';
+        import { fixUserData, displayCurrentUser } from './js/local-storage-debug.js';
         
         // Check if user is logged in
         document.addEventListener('DOMContentLoaded', function() {
+            // Fix any corrupted localStorage data
+            fixUserData();
+            
             if (!isLoggedIn()) {
                 // Redirect to login page if not logged in
+                console.error('No user is logged in. Redirecting to login page...');
                 window.location.href = 'login.html';
                 return;
             }
             
             // Display user information
             const user = getCurrentUser();
-            updateUserProfile(user);
+            if (user) {
+                updateUserProfile(user);
+                console.log('User profile updated successfully');
+                
+                // For debugging
+                displayCurrentUser();
+            } else {
+                console.error('Failed to get current user data');
+                showToast('There was a problem loading your profile', 'error');
+            }
         });
         
         // Update user profile information
         function updateUserProfile(user) {
-            if (!user) return;
+            if (!user) {
+                console.error('No user data provided to updateUserProfile');
+                return;
+            }
             
             // Update header username
             const usernameDisplay = document.getElementById('usernameDisplay');
             if (usernameDisplay) {
                 usernameDisplay.textContent = user.name || user.email.split('@')[0];
+            } else {
+                console.warn('Username display element not found');
             }
             
             // Update profile section
@@ -939,6 +958,42 @@
                 const joinDate = user.createdAt ? new Date(user.createdAt) : new Date();
                 profileJoined.textContent = `Member since: ${joinDate.toLocaleDateString()}`;
             }
+            
+            // Also update sidebar profile if it exists
+            const sidebarUserName = document.querySelector('.dashboard-sidebar .user-profile h3');
+            if (sidebarUserName) {
+                sidebarUserName.textContent = user.name || user.email.split('@')[0];
+            }
+
+            // Update user avatar if it exists with a default or gravatar
+            updateUserAvatar(user.email);
+        }
+
+        // Update user avatar based on email (using Gravatar or default)
+        function updateUserAvatar(email) {
+            if (!email) return;
+            
+            // Generate Gravatar URL based on email
+            const hash = generateMD5Hash(email.trim().toLowerCase());
+            const gravatarUrl = `https://www.gravatar.com/avatar/${hash}?s=200&d=identicon`;
+            
+            // Update all avatar images
+            const avatars = document.querySelectorAll('.avatar, .profile-avatar, .user-avatar img');
+            avatars.forEach(avatar => {
+                avatar.src = gravatarUrl;
+            });
+        }
+
+        // Simple MD5 hash simulation for Gravatar (not actual MD5)
+        function generateMD5Hash(str) {
+            // This is a simple hash function, not actual MD5
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32bit integer
+            }
+            return Math.abs(hash).toString(16);
         }
         
         // Handle logout
@@ -949,11 +1004,18 @@
                 
                 try {
                     await logoutUser();
-                    window.location.href = 'login.html';
+                    showToast('Logout successful!', 'success');
+                    
+                    // Redirect to login page after a short delay
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1000);
                 } catch (error) {
-                    showToast(error.message, 'error');
+                    showToast(error.message || 'Failed to log out', 'error');
                 }
             });
+        } else {
+            console.warn('Logout button not found');
         }
         
         // Profile toggle functionality
@@ -973,10 +1035,14 @@
             hideProfileBtn.addEventListener('click', () => {
                 profileSection.style.display = 'none';
             });
+        } else {
+            console.warn('Profile toggle elements not found');
         }
         
         // Helper function to scroll to element
         function scrollToElement(element) {
+            if (!element) return;
+            
             window.scrollTo({
                 top: element.offsetTop - 100,
                 behavior: 'smooth'

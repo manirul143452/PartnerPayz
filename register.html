@@ -6,6 +6,7 @@
     <title>Register - PartnerPayz</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/toast.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -79,8 +80,25 @@
     </div>
 
     <script type="module">
-        import { registerUser, loginWithGoogle } from './js/local-auth.js';
+        import { registerUser, loginWithGoogle, isLoggedIn } from './js/local-auth.js';
         import { requestNotificationPermission } from './js/local-notifications.js';
+        import { fixUserData, displayAllUsers } from './js/local-storage-debug.js';
+
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fix any corrupted localStorage data
+            fixUserData();
+            
+            // If already logged in, redirect to dashboard
+            if (isLoggedIn()) {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+            
+            // For debugging
+            console.log('Available users:');
+            displayAllUsers();
+        });
 
         // Toggle password visibility
         const togglePassword = document.querySelector('.toggle-password');
@@ -97,6 +115,11 @@
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            // Disable form during registration
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+            
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -106,11 +129,19 @@
             // Basic validation
             if (password !== confirmPassword) {
                 showToast('Passwords do not match', 'error');
+                
+                // Re-enable form
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
                 return;
             }
             
             if (!agreeToTerms) {
                 showToast('You must agree to the Terms of Service and Privacy Policy', 'error');
+                
+                // Re-enable form
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
                 return;
             }
             
@@ -123,15 +154,35 @@
                     
                     showToast('Account created successfully!', 'success');
                     
+                    // Save registration data to be extra safe
+                    try {
+                        // Double check local storage
+                        const serializedData = JSON.stringify({
+                            timestamp: new Date().toISOString(),
+                            user: { email, name }
+                        });
+                        localStorage.setItem('last_registration', serializedData);
+                    } catch (err) {
+                        console.error('Could not save registration backup:', err);
+                    }
+                    
                     // Redirect to dashboard after a short delay
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
                     }, 1500);
                 } else {
                     showToast(result.error, 'error');
+                    
+                    // Re-enable form
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
                 }
             } catch (error) {
-                showToast(error.message, 'error');
+                showToast(error.message || 'An error occurred', 'error');
+                
+                // Re-enable form
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
             }
         });
 
@@ -141,16 +192,20 @@
                 const result = await loginWithGoogle();
                 
                 if (result.success) {
+                    showToast('Sign up with Google successful!', 'success');
+                    
                     // Request notification permission after successful registration
                     await requestNotificationPermission();
                     
                     // Redirect to dashboard
-                    window.location.href = 'dashboard.html';
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
                 } else {
                     showToast(result.error, 'error');
                 }
             } catch (error) {
-                showToast(error.message, 'error');
+                showToast(error.message || 'An error occurred', 'error');
             }
         });
 
@@ -158,8 +213,17 @@
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
-            toast.textContent = message;
             
+            const icon = document.createElement('i');
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 
+                           type === 'error' ? 'fas fa-exclamation-circle' : 
+                           'fas fa-info-circle';
+            
+            const content = document.createElement('span');
+            content.textContent = message;
+            
+            toast.appendChild(icon);
+            toast.appendChild(content);
             document.body.appendChild(toast);
             
             setTimeout(() => {
