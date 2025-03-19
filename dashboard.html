@@ -11,48 +11,50 @@
     <style>
         .debug-panel {
             position: fixed;
-            bottom: 10px;
-            left: 10px;
-            background: rgba(0,0,0,0.7);
+            bottom: 70px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
             color: #00ff00;
-            padding: 10px;
-            border-radius: 5px;
-            font-family: monospace;
-            font-size: 12px;
-            max-width: 400px;
-            max-height: 200px;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            max-height: 400px;
             overflow: auto;
             z-index: 9999;
+            font-family: monospace;
+            font-size: 12px;
             display: none;
         }
-        .debug-panel.show {
-            display: block;
-        }
-        .debug-toggle {
+        
+        .debug-button {
             position: fixed;
-            bottom: 10px;
-            left: 10px;
+            bottom: 20px;
+            right: 20px;
             background: #6a11cb;
             color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
+            padding: 10px 15px;
+            border-radius: 50px;
             cursor: pointer;
-            z-index: 10000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 9999;
         }
+        
         .debug-actions {
             margin-top: 10px;
             display: flex;
-            gap: 5px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
+        
         .debug-actions button {
             background: #333;
             color: white;
             border: none;
-            padding: 3px 6px;
+            padding: 5px 10px;
             border-radius: 3px;
             cursor: pointer;
         }
+        
         .debug-actions button:hover {
             background: #555;
         }
@@ -228,202 +230,156 @@
         </div>
     </footer>
 
-    <!-- Debug Panel -->
-    <button class="debug-toggle" id="debugToggle">Debug</button>
-    <div class="debug-panel" id="debugPanel">
-        <h4>Debug Info</h4>
-        <div id="debugInfo">No information yet</div>
-        <div class="debug-actions">
-            <button id="checkStorage">Check Storage</button>
-            <button id="skipLoginCheck">Skip Login Check</button>
-            <button id="goToLogin">Go to Login</button>
-        </div>
-    </div>
-
     <div id="toastContainer" class="toast-container"></div>
 
-    <!-- Add debug button and panel at end of body but before scripts -->
-    <div class="debug-button" id="debugButton" style="position: fixed; bottom: 20px; right: 20px; background: #6a11cb; color: white; padding: 10px 15px; border-radius: 50px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 9999;">
+    <!-- Debug Panel -->
+    <div class="debug-button" id="debugButton">
         Debug Panel
     </div>
 
-    <div class="debug-panel" id="debugPanel" style="display: none; position: fixed; bottom: 70px; right: 20px; background: rgba(0,0,0,0.9); color: #00ff00; padding: 20px; border-radius: 10px; width: 400px; max-height: 400px; overflow: auto; z-index: 9999; font-family: monospace; font-size: 12px;">
+    <div class="debug-panel" id="debugPanel">
         <h3 style="margin-top: 0; color: white;">Dashboard Debug Panel</h3>
         <div id="debugOutput" style="margin-bottom: 10px;"></div>
-        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <button id="checkUserBtn" style="background: #333; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Check Current User</button>
-            <button id="fixLoginBtn" style="background: #1877f2; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Fix Login</button>
-            <button id="logoutBtn" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Force Logout</button>
+        <div class="debug-actions">
+            <button id="checkUserBtn">Check Current User</button>
+            <button id="fixLoginBtn" style="background: #1877f2;">Fix Login</button>
+            <button id="logoutBtn" style="background: #dc3545;">Force Logout</button>
         </div>
     </div>
 
-    <script type="module">
-        import { isLoggedIn, getCurrentUser, logoutUser } from './js/local-auth.js';
-        import { getUnreadNotificationCount, updateNotificationBadge, getNotificationHistory } from './js/local-notifications.js';
-        import { fixUserData, verifyLocalStorage, displayAllUsers } from './js/local-storage-debug.js';
-        
-        // Debug functionality
-        const debugToggle = document.getElementById('debugToggle');
-        const debugPanel = document.getElementById('debugPanel');
-        const debugInfo = document.getElementById('debugInfo');
-        let skipLoginCheck = false;
-        
-        if (debugToggle) {
-            debugToggle.addEventListener('click', () => {
-                debugPanel.classList.toggle('show');
-            });
-        }
-        
-        // Add debug listeners
-        document.getElementById('checkStorage').addEventListener('click', () => {
-            const storageWorks = verifyLocalStorage();
-            updateDebugInfo('Storage check: ' + (storageWorks ? 'WORKING' : 'FAILED'));
-            displayAllUsers();
-            
-            const user = getCurrentUser();
-            updateDebugInfo('Current user: ' + (user ? user.email : 'None'));
-        });
-        
-        document.getElementById('skipLoginCheck').addEventListener('click', () => {
-            skipLoginCheck = true;
-            updateDebugInfo('Login check skipped. Will not redirect to login page.');
-            showToast('Login check disabled', 'warning');
-        });
-        
-        document.getElementById('goToLogin').addEventListener('click', () => {
-            updateDebugInfo('Redirecting to login page');
-            window.location.href = 'login.html';
-        });
-        
-        function updateDebugInfo(info) {
-            const timestamp = new Date().toLocaleTimeString();
-            debugInfo.innerHTML = `<div>[${timestamp}] ${info}</div>` + debugInfo.innerHTML;
-        }
-        
+    <script>
+        // Dashboard functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Fix any corrupted localStorage data
-            fixUserData();
-            updateDebugInfo('localStorage fixed');
-            
             // Check if user is logged in
-            if (!isLoggedIn() && !skipLoginCheck) {
-                updateDebugInfo('Not logged in. Redirecting to login page...');
-                showToast('You must be logged in to view this page.', 'error');
-                
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 1500);
-                return;
-            }
+            checkUserLogin();
             
-            // If we got here, either the user is logged in or we're skipping the check
-            updateDebugInfo(skipLoginCheck ? 'Skipped login check' : 'User is logged in');
-            
-            // Get user data
+            // Update user info if logged in
             const user = getCurrentUser();
             if (user) {
                 updateUserInfo(user);
-                updateDebugInfo('User info updated: ' + user.email);
-            } else if (!skipLoginCheck) {
-                updateDebugInfo('No user data found but skipping login check');
+                console.log('User info updated:', user.email);
             }
             
-            // Initialize notifications
-            initializeNotifications();
+            // Set up event listeners
+            setupEventListeners();
             
-            // Add event listeners
-            addEventListeners();
+            // Debug functionality
+            setupDebugPanel();
         });
         
-        function updateUserInfo(user) {
-            // Update header user info
-            const usernameDisplay = document.getElementById('usernameDisplay');
-            const headerAvatar = document.getElementById('headerAvatar');
+        // Check if user is logged in
+        function checkUserLogin() {
+            const currentUserId = localStorage.getItem('currentUserId');
             
+            if (!currentUserId) {
+                console.log('Not logged in. Redirecting to login page...');
+                showToast('You must be logged in to view this page.', 'error');
+                
+                setTimeout(() => {
+                    window.location.href = 'minimal-login.html';
+                }, 1500);
+                return false;
+            }
+            
+            // Verify user exists
+            const users = getUsers();
+            const user = users.find(u => u.id === currentUserId);
+            
+            if (!user) {
+                console.log('Invalid user ID. Redirecting to login page...');
+                localStorage.removeItem('currentUserId');
+                showToast('Invalid login session. Please log in again.', 'error');
+                
+                setTimeout(() => {
+                    window.location.href = 'minimal-login.html';
+                }, 1500);
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Get current user
+        function getCurrentUser() {
+            const currentUserId = localStorage.getItem('currentUserId');
+            if (!currentUserId) return null;
+            
+            const users = getUsers();
+            return users.find(u => u.id === currentUserId);
+        }
+        
+        // Get users from localStorage
+        function getUsers() {
+            try {
+                const usersJson = localStorage.getItem('users');
+                return usersJson ? JSON.parse(usersJson) : [];
+            } catch (error) {
+                console.error('Error getting users:', error);
+                return [];
+            }
+        }
+        
+        // Update user info in the UI
+        function updateUserInfo(user) {
+            // Update username display
+            const usernameDisplay = document.getElementById('usernameDisplay');
             if (usernameDisplay) {
                 usernameDisplay.textContent = user.name || user.email.split('@')[0];
             }
             
-            if (headerAvatar && user.email) {
-                // Generate avatar from email using MD5 hash (simple version)
-                const hash = generateSimpleHash(user.email.trim().toLowerCase());
-                headerAvatar.src = `https://www.gravatar.com/avatar/${hash}?s=200&d=identicon`;
+            // Update avatar
+            const headerAvatar = document.getElementById('headerAvatar');
+            if (headerAvatar) {
+                // Use default avatar or generate one
+                headerAvatar.src = 'images/user-avatar.svg';
             }
         }
         
-        function generateSimpleHash(str) {
-            let hash = 0;
-            for (let i = 0; i < str.length; i++) {
-                const char = str.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash;
-            }
-            return Math.abs(hash).toString(16);
-        }
-        
-        function initializeNotifications() {
-            // Get notification count
-            updateNotificationBadge();
-            
-            // Add click event to notification icon
-            const notificationIcon = document.getElementById('notificationIcon');
-            if (notificationIcon) {
-                notificationIcon.addEventListener('click', () => {
-                    window.location.href = 'notifications.html';
-                });
-            }
-            
-            // Generate a test notification if there are no notifications
-            const notifications = getNotificationHistory();
-            updateDebugInfo('Notifications count: ' + notifications.length);
-        }
-        
-        function addEventListeners() {
+        // Set up event listeners
+        function setupEventListeners() {
             // Logout button in dropdown
             const logoutBtn = document.getElementById('logoutBtn');
             if (logoutBtn) {
-                logoutBtn.addEventListener('click', async (e) => {
+                logoutBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    try {
-                        await logoutUser();
-                        updateDebugInfo('User logged out');
-                        window.location.href = 'login.html';
-                    } catch (error) {
-                        updateDebugInfo('Logout error: ' + error.message);
-                        showToast('Failed to log out', 'error');
-                    }
+                    logout();
                 });
             }
             
             // Navigation logout button
             const navLogoutBtn = document.getElementById('navLogoutBtn');
             if (navLogoutBtn) {
-                navLogoutBtn.addEventListener('click', async (e) => {
+                navLogoutBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    try {
-                        await logoutUser();
-                        updateDebugInfo('User logged out');
-                        showToast('Logged out successfully!', 'success');
-                        setTimeout(() => {
-                            window.location.href = 'index.html';
-                        }, 1000);
-                    } catch (error) {
-                        updateDebugInfo('Logout error: ' + error.message);
-                        showToast('Failed to log out', 'error');
-                    }
+                    logout();
                 });
             }
             
             // Mobile menu toggle
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
             if (mobileMenuToggle) {
-                mobileMenuToggle.addEventListener('click', () => {
+                mobileMenuToggle.addEventListener('click', function() {
                     document.body.classList.toggle('mobile-menu-open');
                 });
             }
         }
         
-        // Toast notification function
+        // Logout function
+        function logout() {
+            try {
+                localStorage.removeItem('currentUserId');
+                showToast('Logged out successfully!', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'minimal-login.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Failed to log out', 'error');
+            }
+        }
+        
+        // Show toast notification
         function showToast(message, type = 'info') {
             const toastContainer = document.getElementById('toastContainer');
             
@@ -454,17 +410,15 @@
                 }, 300);
             }, 3000);
         }
-    </script>
-
-    <script>
-        // Debug functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        
+        // Debug panel setup
+        function setupDebugPanel() {
             const debugButton = document.getElementById('debugButton');
             const debugPanel = document.getElementById('debugPanel');
             const debugOutput = document.getElementById('debugOutput');
             const checkUserBtn = document.getElementById('checkUserBtn');
             const fixLoginBtn = document.getElementById('fixLoginBtn');
-            const logoutBtn = document.getElementById('logoutBtn');
+            const logoutBtn = document.querySelector('#debugPanel #logoutBtn');
             
             // Toggle debug panel
             debugButton.addEventListener('click', function() {
@@ -585,6 +539,11 @@
                     
                     debugLog('<span style="color:#00ff00;">Login fixed! Test user created and set as current user</span>');
                     debugLog('Refresh the page to see if it worked');
+                    
+                    // Reload the page
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1500);
                 } catch (error) {
                     debugLog(`<span style="color:red;">Error fixing login: ${error.message}</span>`);
                 }
@@ -608,7 +567,7 @@
                     debugLog(`<span style="color:red;">Error logging out: ${error.message}</span>`);
                 }
             }
-        });
+        }
     </script>
 </body>
 </html> 
