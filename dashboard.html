@@ -9,6 +9,484 @@
     <link rel="stylesheet" href="css/toast.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* New Dashboard Styles */
+        :root {
+            --primary-color: #6a11cb;
+            --primary-light: #8f6ed5;
+            --primary-dark: #5a0db0;
+            --secondary-color: #e83e8c;
+            --sidebar-width: 250px;
+            --header-height: 70px;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Header Styles */
+        .app-header {
+            height: var(--header-height);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 100;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-right: 30px;
+        }
+        
+        .logo-container img {
+            height: 45px;
+            width: 45px;
+            object-fit: contain;
+            margin-right: 10px;
+        }
+        
+        .logo-container span {
+            font-size: 24px;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .main-nav {
+            display: flex;
+            flex-grow: 1;
+        }
+        
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 30px;
+        }
+        
+        .main-nav a {
+            text-decoration: none;
+            color: #444;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            position: relative;
+        }
+        
+        .main-nav a:hover {
+            color: var(--primary-color);
+        }
+        
+        .main-nav a.active {
+            color: var(--primary-color);
+        }
+        
+        .main-nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .main-nav i {
+            margin-right: 6px;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .notification-icon i {
+            font-size: 20px;
+            color: #666;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--secondary-color);
+            color: white;
+            font-size: 10px;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            gap: 10px;
+            padding: 5px 10px;
+            border-radius: 50px;
+            transition: background-color 0.3s;
+        }
+        
+        .user-profile:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #eee;
+        }
+        
+        .username {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 55px;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            width: 200px;
+            padding: 10px 0;
+            display: none;
+            z-index: 101;
+        }
+        
+        .dropdown-menu.active {
+            display: block;
+        }
+        
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .dropdown-menu i {
+            width: 20px;
+            margin-right: 10px;
+            color: #666;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            border-right: 1px solid #eee;
+            padding-top: calc(var(--header-height) + 20px);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 99;
+        }
+        
+        .sidebar-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #f0f0f0;
+            margin-bottom: 15px;
+        }
+        
+        .profile-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .profile-level {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 15px;
+        }
+        
+        .profile-stats {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+        
+        .stat-item {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .stat-item:hover {
+            background: #efefef;
+            transform: translateY(-2px);
+        }
+        
+        .stat-item i {
+            color: var(--primary-color);
+        }
+        
+        .stat-item.purple i {
+            color: #8e44ad;
+        }
+        
+        .stat-item.pink i {
+            color: #e84393;
+        }
+        
+        .stat-item.teal i {
+            color: #00cec9;
+        }
+        
+        .sidebar-menu {
+            padding: 0 0 20px 0;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: #555;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            border-left: 3px solid transparent;
+        }
+        
+        .menu-item.active {
+            background-color: #f5f5f5;
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+        
+        .menu-item:hover {
+            background-color: #f9f9f9;
+            color: var(--primary-color);
+        }
+        
+        .menu-item i {
+            width: 24px;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            flex-grow: 1;
+            margin-left: var(--sidebar-width);
+            padding: calc(var(--header-height) + 20px) 30px 30px 30px;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+        
+        .current-date {
+            background-color: #f8f2ff;
+            color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .current-date i {
+            margin-right: 8px;
+        }
+        
+        /* Banner Styles */
+        .love-journey-banner {
+            background: linear-gradient(135deg, #7795f8 0%, #e83e8c 100%);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            color: white;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .banner-content {
+            flex: 1;
+        }
+        
+        .banner-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .banner-description {
+            font-size: 16px;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+        
+        .banner-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .banner-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .banner-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .banner-btn i {
+            margin-right: 8px;
+        }
+        
+        .banner-image {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 250px;
+            opacity: 0.7;
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #555;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .banner-image {
+                width: 150px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                position: fixed;
+                z-index: 999;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .main-nav {
+                display: none;
+            }
+            
+            .love-journey-banner {
+                padding: 20px;
+            }
+            
+            .banner-title {
+                font-size: 22px;
+            }
+            
+            .banner-image {
+                display: none;
+            }
+            
+            .banner-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .banner-btn {
+                width: 100%;
+            }
+        }
+        
+        /* Debug panel styles (if needed) */
         .debug-panel {
             position: fixed;
             bottom: 70px;
@@ -38,712 +516,168 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             z-index: 9999;
         }
-        
-        .debug-actions {
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .debug-actions button {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        
-        .debug-actions button:hover {
-            background: #555;
-        }
-        
-        /* Styles for Special Dates Widget */
-        .activity-icon.anniversary {
-            background-color: rgba(255, 105, 180, 0.2);
-            color: hotpink;
-        }
-        
-        .activity-icon.birthday {
-            background-color: rgba(255, 165, 0, 0.2);
-            color: orange;
-        }
-        
-        .activity-icon.date-night {
-            background-color: rgba(138, 43, 226, 0.2);
-            color: blueviolet;
-        }
-        
-        .item-actions {
-            display: flex;
-            gap: 5px;
-            margin-left: auto;
-        }
-        
-        .item-button {
-            background: none;
-            border: none;
-            color: #777;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 50%;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        
-        .item-button:hover {
-            background-color: #f0f0f0;
-            color: #333;
-        }
-        
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background-color: white;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            animation: modalFadeIn 0.3s;
-        }
-        
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .modal-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-header h2 {
-            margin: 0;
-            font-size: 1.4rem;
-            color: #333;
-        }
-        
-        .close-modal {
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #777;
-        }
-        
-        .close-modal:hover {
-            color: #333;
-        }
-        
-        .modal-body {
-            padding: 20px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #555;
-        }
-        
-        .form-group input, 
-        .form-group select, 
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        .form-group input:focus, 
-        .form-group select:focus, 
-        .form-group textarea:focus {
-            border-color: #6a11cb;
-            outline: none;
-        }
-        
-        .reminder-options {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .reminder-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .reminder-select {
-            flex: 1;
-            min-width: 120px;
-        }
-        
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .btn {
-            padding: 10px 16px;
-            border-radius: 4px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-        }
-        
-        .btn-secondary {
-            background-color: #f5f5f5;
-            color: #333;
-        }
-        
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-        
-        /* Styles for SMS Notification System */
-        .sms-controls {
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .phone-input {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .phone-input i {
-            color: #6a11cb;
-            margin-right: 8px;
-            font-size: 18px;
-        }
-        
-        .phone-input input {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-right: 8px;
-        }
-        
-        .btn-small {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        
-        .sms-toggle {
-            display: flex;
-            align-items: center;
-        }
-        
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-            margin-right: 10px;
-        }
-        
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-        }
-        
-        input:checked + .slider {
-            background-color: #6a11cb;
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-        
-        .slider.round {
-            border-radius: 34px;
-        }
-        
-        .slider.round:before {
-            border-radius: 50%;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 30px 0;
-            color: #888;
-        }
-        
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 15px;
-            color: #ddd;
-        }
-        
-        .amount-input {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-        
-        .currency-symbol {
-            position: absolute;
-            left: 12px;
-            color: #555;
-        }
-        
-        #billAmount {
-            padding-left: 24px;
-        }
-        
-        /* Bill item styles */
-        .activity-icon.home {
-            background-color: rgba(233, 30, 99, 0.1);
-            color: #e91e63;
-        }
-        
-        .activity-icon.utilities {
-            background-color: rgba(33, 150, 243, 0.1);
-            color: #2196f3;
-        }
-        
-        .activity-icon.insurance {
-            background-color: rgba(76, 175, 80, 0.1);
-            color: #4caf50;
-        }
-        
-        .activity-icon.subscription {
-            background-color: rgba(156, 39, 176, 0.1);
-            color: #9c27b0;
-        }
-        
-        .activity-icon.other {
-            background-color: rgba(158, 158, 158, 0.1);
-            color: #9e9e9e;
-        }
-        
-        /* SMS Sent Badge */
-        .sms-badge {
-            font-size: 11px;
-            padding: 2px 6px;
-            border-radius: 10px;
-            background-color: #4caf50;
-            color: white;
-            margin-left: 5px;
-        }
-        
-        .sms-badge.pending {
-            background-color: #ff9800;
-        }
     </style>
 </head>
 <body>
     <div class="app-container">
+        <!-- Header -->
         <header class="app-header">
             <div class="logo-container">
-                <img src="images/logo.png" alt="PartnerPayz" class="logo">
+                <img src="images/logo.png" alt="PartnerPayz">
+                <span>PartnerPayz</span>
             </div>
+            
             <nav class="main-nav">
                 <ul>
                     <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="dashboard.html" class="active"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
                     <li><a href="partners.html"><i class="fas fa-users"></i> Find Partners</a></li>
                     <li><a href="invest.html"><i class="fas fa-chart-line"></i> Invest Together</a></li>
                     <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
                     <li><a href="community.html"><i class="fas fa-comments"></i> Community</a></li>
-                    <li><a href="features.html"><i class="fas fa-star"></i> Features</a></li>
-                    <li><a href="pricing.html"><i class="fas fa-tags"></i> Pricing</a></li>
-                    <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
-                    <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
                 </ul>
             </nav>
-                <div class="user-menu">
+            
+            <div class="user-menu">
                 <div class="notification-icon" id="notificationIcon">
                     <i class="fas fa-bell"></i>
-                    <span class="badge" id="notificationBadge">0</span>
-                    </div>
+                    <span class="notification-badge" id="notificationBadge">3</span>
+                </div>
+                
                 <div class="user-profile" id="userProfileMenu">
-                    <img src="images/user-avatar.svg" alt="User Avatar" class="avatar" id="headerAvatar">
-                    <span class="username" id="usernameDisplay">User</span>
+                    <img src="images/avatar.jpg" alt="User Avatar" class="avatar" id="headerAvatar">
+                    <span class="username" id="usernameDisplay">Rajiv Sharma</span>
                     <i class="fas fa-chevron-down"></i>
                     <div class="dropdown-menu">
-                        <a href="profile.html" id="profileLink"><i class="fas fa-user"></i> Profile</a>
-                        <a href="notifications.html" id="notificationsLink"><i class="fas fa-bell"></i> Notifications</a>
+                        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                        <a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a>
                         <a href="#" id="settingsLink"><i class="fas fa-cog"></i> Settings</a>
                         <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </div>
                 </div>
+                
                 <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                <i class="fas fa-bars"></i>
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
-    </header>
-
-        <main class="app-content">
-            <h1 class="page-title">Welcome to PartnerPayz</h1>
+        </header>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-profile">
+                <div class="User Avatar">
+                    <img src="images/avatar.jpg" alt="User avatar" class="profile-avatar">
+                </div>
+                <h3 class="profile-name">Rajiv Sharma</h3>
+                <p class="profile-level">Diamond Member</p>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-item purple">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-item pink">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <div class="stat-item teal">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                </div>
+            </div>
             
-            <div class="dashboard-overview">
-                <div class="overview-card">
-                    <div class="card-icon">
-                            <i class="fas fa-wallet"></i>
-                    </div>
-                    <h3 class="card-title">Account Balance</h3>
-                    <p class="card-value">$1,250.00</p>
+            <div class="sidebar-menu">
+                <a href="#" class="menu-item active">
+                    <i class="fas fa-th-large"></i> Overview
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-user-friends"></i> My Partner
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-chart-line"></i> Investments
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-calendar-alt"></i> Date Planner
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-piggy-bank"></i> Savings Goals
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Dashboard Overview</h1>
+                <div class="current-date">
+                    <i class="far fa-calendar-alt"></i> Thursday, July 18, 2024
                 </div>
-
-                <div class="overview-card">
-                    <div class="card-icon">
-                        <i class="fas fa-exchange-alt"></i>
-                    </div>
-                    <h3 class="card-title">Transactions</h3>
-                    <p class="card-value">24</p>
-                </div>
-                
-                <div class="overview-card">
-                    <div class="card-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3 class="card-title">Partners</h3>
-                    <p class="card-value">1</p>
-                </div>
-                
-                <div class="overview-card">
-                    <div class="card-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h3 class="card-title">Points</h3>
-                    <p class="card-value">150</p>
-                        </div>
-                    </div>
+            </div>
+            
+            <!-- Love Journey Banner -->
+            <div class="love-journey-banner">
+                <div class="banner-content">
+                    <h2 class="banner-title">Celebrate Your Love Journey</h2>
+                    <p class="banner-description">
+                        Track special moments, plan perfect dates, and strengthen your bond with our new relationship features
+                    </p>
                     
-            <div class="dashboard-widgets">
-                <div class="widget">
-                    <div class="widget-header">
-                        <h2 class="widget-title">Recent Activity</h2>
-                        <a href="#" class="widget-action">View All</a>
-                    </div>
-                    <div class="widget-content">
-                        <ul class="activity-list">
-                            <li class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="fas fa-credit-card"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <h3 class="activity-title">Payment Received</h3>
-                                    <p class="activity-time">Today, 2:30 PM</p>
-                                </div>
-                            </li>
-                            <li class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="fas fa-user-plus"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <h3 class="activity-title">Partner Request Accepted</h3>
-                                    <p class="activity-time">Yesterday, 5:15 PM</p>
-                                </div>
-                            </li>
-                            <li class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="fas fa-cog"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <h3 class="activity-title">Account Settings Updated</h3>
-                                    <p class="activity-time">Jun 10, 2024</p>
-                                </div>
-                            </li>
-                        </ul>
+                    <div class="banner-actions">
+                        <button class="banner-btn">
+                            <i class="fas fa-bell"></i> Set Anniversary Reminders
+                        </button>
+                        <button class="banner-btn">
+                            <i class="fas fa-utensils"></i> Plan Your Next Date
+                        </button>
+                        <button class="banner-btn">
+                            <i class="fas fa-camera"></i> Create Memories
+                        </button>
+                        <button class="banner-btn">
+                            <i class="fas fa-map-marked-alt"></i> Track Your Journey
+                        </button>
                     </div>
                 </div>
                 
-                <div class="widget">
-                    <div class="widget-header">
-                        <h2 class="widget-title">Bill Reminders SMS</h2>
-                        <a href="#" class="widget-action" id="addBillBtn">Add New</a>
-                    </div>
-                    <div class="widget-content">
-                        <div class="sms-controls">
-                            <div class="phone-input">
-                                <i class="fas fa-mobile-alt"></i>
-                                <input type="tel" id="phoneNumber" placeholder="Enter phone number" pattern="[0-9]{10}" maxlength="10">
-                                <button id="verifyPhoneBtn" class="btn-small">Verify</button>
-                            </div>
-                            <div class="sms-toggle">
-                                <label class="switch">
-                                    <input type="checkbox" id="smsEnabledToggle" checked>
-                                    <span class="slider round"></span>
-                                </label>
-                                <span>Enable SMS Notifications</span>
-                            </div>
-                        </div>
-                        
-                        <ul class="activity-list" id="billsList">
-                            <!-- Empty list that will be filled with bills -->
-                            <li class="empty-state" id="emptyBillsState">
-                                <i class="fas fa-receipt"></i>
-                                <p>No bill reminders added yet</p>
-                                <button class="btn-small" id="addFirstBillBtn">Add Your First Bill</button>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="banner-image">
+                    <img src="images/love-icons.png" alt="Love icons">
                 </div>
-                
-                <!-- Bill Add/Edit Modal -->
-                <div class="modal" id="billModal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 id="billModalTitle">Add New Bill</h2>
-                            <span class="close-modal" id="closeBillModal">&times;</span>
-                        </div>
-                        <div class="modal-body">
-                            <form id="billForm">
-                                <div class="form-group">
-                                    <label for="billTitle">Bill Title</label>
-                                    <input type="text" id="billTitle" placeholder="e.g. Rent, Internet, Electricity" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="billAmount">Amount</label>
-                                    <div class="amount-input">
-                                        <span class="currency-symbol">$</span>
-                                        <input type="number" id="billAmount" min="0.01" step="0.01" placeholder="0.00" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="billDueDate">Due Date</label>
-                                    <input type="date" id="billDueDate" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="billCategory">Category</label>
-                                    <select id="billCategory" required>
-                                        <option value="home">Home</option>
-                                        <option value="utilities">Utilities</option>
-                                        <option value="insurance">Insurance</option>
-                                        <option value="subscription">Subscription</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-                                <div class="form-group reminder-options">
-                                    <label>SMS Reminder</label>
-                                    <div class="reminder-checkbox">
-                                        <input type="checkbox" id="sendSmsReminder" checked>
-                                        <label for="sendSmsReminder">Send SMS</label>
-                                    </div>
-                                    <select id="smsReminderTime" class="reminder-select">
-                                        <option value="0">On the due date</option>
-                                        <option value="1" selected>1 day before</option>
-                                        <option value="3">3 days before</option>
-                                        <option value="7">1 week before</option>
-                                    </select>
-                                </div>
-                                <div class="form-actions">
-                                    <button type="button" class="btn btn-secondary" id="cancelBillBtn">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">Save Bill</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Special Dates Widget -->
-                <div class="widget">
-                    <div class="widget-header">
-                        <h2 class="widget-title">Special Dates & Reminders</h2>
-                        <a href="#" class="widget-action" id="addDateBtn">Add New</a>
-                    </div>
-                    <div class="widget-content">
-                        <ul class="activity-list" id="specialDatesList">
-                            <li class="activity-item">
-                                <div class="activity-icon anniversary">
-                                    <i class="fas fa-heart"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <h3 class="activity-title">Anniversary</h3>
-                                    <p class="activity-time">July 15, 2024 (In 25 days)</p>
-                                </div>
-                                <div class="item-actions">
-                                    <button class="item-button edit" title="Edit"><i class="fas fa-edit"></i></button>
-                                    <button class="item-button remind" title="Set Reminder"><i class="fas fa-bell"></i></button>
-                                </div>
-                            </li>
-                            <li class="activity-item">
-                                <div class="activity-icon birthday">
-                                    <i class="fas fa-birthday-cake"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <h3 class="activity-title">Partner's Birthday</h3>
-                                    <p class="activity-time">August 3, 2024 (In 44 days)</p>
-                                </div>
-                                <div class="item-actions">
-                                    <button class="item-button edit" title="Edit"><i class="fas fa-edit"></i></button>
-                                    <button class="item-button remind" title="Set Reminder"><i class="fas fa-bell"></i></button>
-                                </div>
-                            </li>
-                            <li class="activity-item">
-                                <div class="activity-icon date-night">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <h3 class="activity-title">Dinner Date</h3>
-                                    <p class="activity-time">June 24, 2024 (In 4 days)</p>
-                                </div>
-                                <div class="item-actions">
-                                    <button class="item-button edit" title="Edit"><i class="fas fa-edit"></i></button>
-                                    <button class="item-button remind" title="Set Reminder"><i class="fas fa-bell"></i></button>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                </div>
+            </div>
+            
+            <!-- Dashboard content goes here -->
         </main>
-                            </div>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="images/logo.svg" alt="PartnerPayz Logo">
-                <h3>PartnerPayz</h3>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 PartnerPayz. All rights reserved.</p>
-            <div class="social-icons">
-                    <a href="https://github.com/manirul143452"><i class="fab fa-github"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
+    </div>
+    
     <div id="toastContainer" class="toast-container"></div>
-
-    <!-- Debug Panel -->
-    <div class="debug-button" id="debugButton">
-        Debug Panel
-    </div>
-
-    <div class="debug-panel" id="debugPanel">
-        <h3 style="margin-top: 0; color: white;">Dashboard Debug Panel</h3>
-        <div id="debugOutput" style="margin-bottom: 10px;"></div>
-        <div class="debug-actions">
-            <button id="checkUserBtn">Check Current User</button>
-            <button id="fixLoginBtn" style="background: #1877f2;">Fix Login</button>
-            <button id="logoutBtn" style="background: #dc3545;">Force Logout</button>
-        </div>
-    </div>
-
-    <!-- Date Add/Edit Modal -->
-    <div class="modal" id="dateModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">Add Special Date</h2>
-                <span class="close-modal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="specialDateForm">
-                    <div class="form-group">
-                        <label for="dateTitle">Title</label>
-                        <input type="text" id="dateTitle" placeholder="e.g. Anniversary, Birthday" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="dateType">Type</label>
-                        <select id="dateType" required>
-                            <option value="anniversary">Anniversary</option>
-                            <option value="birthday">Birthday</option>
-                            <option value="date-night">Date Night</option>
-                            <option value="holiday">Holiday</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="dateValue">Date</label>
-                        <input type="date" id="dateValue" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="dateNotes">Notes (optional)</label>
-                        <textarea id="dateNotes" rows="3" placeholder="Add any additional details..."></textarea>
-                    </div>
-                    <div class="form-group reminder-options">
-                        <label>Reminder</label>
-                        <div class="reminder-checkbox">
-                            <input type="checkbox" id="setReminder" checked>
-                            <label for="setReminder">Remind me</label>
-                        </div>
-                        <select id="reminderTime" class="reminder-select">
-                            <option value="0">On the day</option>
-                            <option value="1" selected>1 day before</option>
-                            <option value="3">3 days before</option>
-                            <option value="7">1 week before</option>
-                            <option value="14">2 weeks before</option>
-                        </select>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" id="cancelDateBtn">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <script src="js/main.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Mobile menu toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+        }
+        
+        // User profile dropdown
+        const userProfileMenu = document.getElementById('userProfileMenu');
+        const dropdownMenu = userProfileMenu.querySelector('.dropdown-menu');
+        
+        userProfileMenu.addEventListener('click', function(e) {
+            dropdownMenu.classList.toggle('active');
+            e.stopPropagation();
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            dropdownMenu.classList.remove('active');
+        });
+        
         // Make settings link functional
         const settingsLink = document.getElementById('settingsLink');
         if (settingsLink) {
@@ -758,482 +692,14 @@
             });
         }
         
-        // Date Modal Functionality
-        const dateModal = document.getElementById('dateModal');
-        const addDateBtn = document.getElementById('addDateBtn');
-        const closeModal = document.querySelector('.close-modal');
-        const cancelDateBtn = document.getElementById('cancelDateBtn');
-        const specialDateForm = document.getElementById('specialDateForm');
-        const specialDatesList = document.getElementById('specialDatesList');
-        const modalTitle = document.getElementById('modalTitle');
-        
-        // Show modal when Add New is clicked
-        addDateBtn.addEventListener('click', function() {
-            modalTitle.textContent = 'Add Special Date';
-            specialDateForm.reset();
-            dateModal.style.display = 'flex';
-        });
-        
-        // Close modal functions
-        function closeModalFunction() {
-            dateModal.style.display = 'none';
-        }
-        
-        closeModal.addEventListener('click', closeModalFunction);
-        cancelDateBtn.addEventListener('click', closeModalFunction);
-        
-        // Close when clicking outside the modal
-        window.addEventListener('click', function(event) {
-            if (event.target === dateModal) {
-                closeModalFunction();
-            }
-        });
-        
-        // Edit buttons functionality
-        document.querySelectorAll('.item-button.edit').forEach(button => {
+        // Banner buttons
+        const bannerButtons = document.querySelectorAll('.banner-btn');
+        bannerButtons.forEach(button => {
             button.addEventListener('click', function() {
-                const item = this.closest('.activity-item');
-                const title = item.querySelector('.activity-title').textContent;
-                
-                // Set values in form (in a real app, you'd load actual data)
-                document.getElementById('dateTitle').value = title;
-                
-                // Determine type from icon class
-                let type = 'other';
-                if (item.querySelector('.activity-icon.anniversary')) {
-                    type = 'anniversary';
-                } else if (item.querySelector('.activity-icon.birthday')) {
-                    type = 'birthday';
-                } else if (item.querySelector('.activity-icon.date-night')) {
-                    type = 'date-night';
-                }
-                
-                document.getElementById('dateType').value = type;
-                
-                // Set modal title to Edit
-                modalTitle.textContent = 'Edit Special Date';
-                dateModal.style.display = 'flex';
+                const buttonText = this.textContent.trim();
+                showToast(`${buttonText} feature activated`, 'success');
             });
         });
-        
-        // Reminder buttons functionality
-        document.querySelectorAll('.item-button.remind').forEach(button => {
-            button.addEventListener('click', function() {
-                const item = this.closest('.activity-item');
-                const title = item.querySelector('.activity-title').textContent;
-                
-                // Show toast notification
-                showToast(`Reminder set for: ${title}`, 'success');
-            });
-        });
-        
-        // Form submission
-        specialDateForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const title = document.getElementById('dateTitle').value;
-            const type = document.getElementById('dateType').value;
-            const dateValue = new Date(document.getElementById('dateValue').value);
-            
-            // Format date
-            const formattedDate = dateValue.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-            
-            // Calculate days until
-            const today = new Date();
-            const diffTime = Math.abs(dateValue - today);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            
-            // Create new date item
-            const newItem = document.createElement('li');
-            newItem.className = 'activity-item';
-            newItem.innerHTML = `
-                <div class="activity-icon ${type}">
-                    <i class="fas ${getIconForType(type)}"></i>
-                </div>
-                <div class="activity-details">
-                    <h3 class="activity-title">${title}</h3>
-                    <p class="activity-time">${formattedDate} (In ${diffDays} days)</p>
-                </div>
-                <div class="item-actions">
-                    <button class="item-button edit" title="Edit"><i class="fas fa-edit"></i></button>
-                    <button class="item-button remind" title="Set Reminder"><i class="fas fa-bell"></i></button>
-                </div>
-            `;
-            
-            // Add event listeners to new buttons
-            newItem.querySelector('.item-button.edit').addEventListener('click', function() {
-                document.getElementById('dateTitle').value = title;
-                document.getElementById('dateType').value = type;
-                modalTitle.textContent = 'Edit Special Date';
-                dateModal.style.display = 'flex';
-            });
-            
-            newItem.querySelector('.item-button.remind').addEventListener('click', function() {
-                showToast(`Reminder set for: ${title}`, 'success');
-            });
-            
-            // Add to list
-            specialDatesList.appendChild(newItem);
-            
-            // Show toast notification
-            showToast(`${modalTitle.textContent === 'Add Special Date' ? 'Added' : 'Updated'}: ${title}`, 'success');
-            
-            // Close modal
-            closeModalFunction();
-        });
-        
-        // Helper function to get icon based on type
-        function getIconForType(type) {
-            switch(type) {
-                case 'anniversary': return 'fa-heart';
-                case 'birthday': return 'fa-birthday-cake';
-                case 'date-night': return 'fa-calendar-alt';
-                case 'holiday': return 'fa-gift';
-                default: return 'fa-calendar-check';
-            }
-        }
-    });
-    </script>
-
-    <script>
-    // Bills Management Functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        // Bill Modal Elements
-        const billModal = document.getElementById('billModal');
-        const addBillBtn = document.getElementById('addBillBtn');
-        const addFirstBillBtn = document.getElementById('addFirstBillBtn');
-        const closeBillModal = document.getElementById('closeBillModal');
-        const cancelBillBtn = document.getElementById('cancelBillBtn');
-        const billForm = document.getElementById('billForm');
-        const billsList = document.getElementById('billsList');
-        const emptyBillsState = document.getElementById('emptyBillsState');
-        const billModalTitle = document.getElementById('billModalTitle');
-        const verifyPhoneBtn = document.getElementById('verifyPhoneBtn');
-        const phoneNumber = document.getElementById('phoneNumber');
-        const smsEnabledToggle = document.getElementById('smsEnabledToggle');
-        
-        // Sample bill data (for demonstration)
-        const sampleBills = [
-            {
-                title: 'Rent Payment',
-                amount: 1200,
-                dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
-                category: 'home',
-                sendSms: true,
-                smsReminderDays: 1,
-                smsSent: false
-            },
-            {
-                title: 'Internet Bill',
-                amount: 65.99,
-                dueDate: new Date(Date.now() + 8 * 24 * 60 * 60 * 1000), // 8 days from now
-                category: 'utilities',
-                sendSms: true,
-                smsReminderDays: 1,
-                smsSent: false
-            }
-        ];
-        
-        // Load sample bills when page loads
-        loadSampleBills();
-        
-        // Phone verification
-        verifyPhoneBtn.addEventListener('click', function() {
-            const phone = phoneNumber.value.trim();
-            
-            if (phone.length === 10 && /^\d+$/.test(phone)) {
-                // Simulate verification process
-                showToast('Verification code sent to your phone', 'info');
-                
-                // After a delay, simulate successful verification
-                setTimeout(() => {
-                    showToast('Phone number verified successfully!', 'success');
-                    phoneNumber.disabled = true;
-                    verifyPhoneBtn.textContent = 'Verified';
-                    verifyPhoneBtn.classList.add('verified');
-                }, 2000);
-            } else {
-                showToast('Please enter a valid 10-digit phone number', 'error');
-            }
-        });
-        
-        // SMS toggle
-        smsEnabledToggle.addEventListener('change', function() {
-            if (this.checked) {
-                showToast('SMS notifications enabled', 'success');
-            } else {
-                showToast('SMS notifications disabled', 'info');
-            }
-        });
-        
-        // Show modal when Add New is clicked
-        addBillBtn.addEventListener('click', showBillModal);
-        addFirstBillBtn.addEventListener('click', showBillModal);
-        
-        function showBillModal() {
-            billModalTitle.textContent = 'Add New Bill';
-            billForm.reset();
-            
-            // Set default due date to tomorrow
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            document.getElementById('billDueDate').valueAsDate = tomorrow;
-            
-            billModal.style.display = 'flex';
-        }
-        
-        // Close modal functions
-        function closeBillModalFunction() {
-            billModal.style.display = 'none';
-        }
-        
-        closeBillModal.addEventListener('click', closeBillModalFunction);
-        cancelBillBtn.addEventListener('click', closeBillModalFunction);
-        
-        // Close when clicking outside the modal
-        window.addEventListener('click', function(event) {
-            if (event.target === billModal) {
-                closeBillModalFunction();
-            }
-        });
-        
-        // Edit bill function
-        function setupEditButtons() {
-            document.querySelectorAll('.bill-item .item-button.edit').forEach(button => {
-                button.addEventListener('click', function() {
-                    const item = this.closest('.activity-item');
-                    const title = item.querySelector('.activity-title').textContent;
-                    const amountText = item.querySelector('.bill-amount').textContent;
-                    const amount = parseFloat(amountText.replace(/[^0-9.-]+/g, ''));
-                    
-                    // Set values in form
-                    document.getElementById('billTitle').value = title;
-                    document.getElementById('billAmount').value = amount;
-                    
-                    // Get the category from the item
-                    let category = 'other';
-                    if (item.querySelector('.activity-icon.home')) category = 'home';
-                    else if (item.querySelector('.activity-icon.utilities')) category = 'utilities';
-                    else if (item.querySelector('.activity-icon.insurance')) category = 'insurance';
-                    else if (item.querySelector('.activity-icon.subscription')) category = 'subscription';
-                    
-                    document.getElementById('billCategory').value = category;
-                    
-                    // Set modal title to Edit
-                    billModalTitle.textContent = 'Edit Bill';
-                    billModal.style.display = 'flex';
-                });
-            });
-        }
-        
-        // Send SMS function
-        function setupSmsButtons() {
-            document.querySelectorAll('.bill-item .item-button.send-sms').forEach(button => {
-                button.addEventListener('click', function() {
-                    if (!smsEnabledToggle.checked) {
-                        showToast('SMS notifications are disabled. Please enable them first.', 'error');
-                        return;
-                    }
-                    
-                    if (!verifyPhoneBtn.classList.contains('verified')) {
-                        showToast('Please verify your phone number first', 'error');
-                        return;
-                    }
-                    
-                    const item = this.closest('.activity-item');
-                    const title = item.querySelector('.activity-title').textContent;
-                    const amount = item.querySelector('.bill-amount').textContent;
-                    const dueDate = item.querySelector('.activity-time').textContent.replace('Due: ', '');
-                    
-                    // Show sending animation
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                    
-                    // After a delay, simulate SMS sent
-                    setTimeout(() => {
-                        // Add SMS sent badge to the bill item if it doesn't exist
-                        if (!item.querySelector('.sms-badge')) {
-                            const badge = document.createElement('span');
-                            badge.className = 'sms-badge';
-                            badge.textContent = 'SMS Sent';
-                            item.querySelector('.activity-title').appendChild(badge);
-                        }
-                        
-                        // Update button
-                        this.innerHTML = '<i class="fas fa-paper-plane"></i>';
-                        
-                        showToast(`SMS reminder sent for ${title}`, 'success');
-                    }, 1500);
-                });
-            });
-        }
-        
-        // Delete bill function
-        function setupDeleteButtons() {
-            document.querySelectorAll('.bill-item .item-button.delete').forEach(button => {
-                button.addEventListener('click', function() {
-                    const item = this.closest('.activity-item');
-                    const title = item.querySelector('.activity-title').textContent.replace('SMS Sent', '').trim();
-                    
-                    // Remove with animation
-                    item.style.opacity = '0';
-                    setTimeout(() => {
-                        item.remove();
-                        showToast(`${title} removed from bills`, 'info');
-                        
-                        // Show empty state if no bills left
-                        if (billsList.querySelectorAll('.activity-item:not(.empty-state)').length === 0) {
-                            emptyBillsState.style.display = 'block';
-                        }
-                    }, 300);
-                });
-            });
-        }
-        
-        // Form submission
-        billForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const title = document.getElementById('billTitle').value;
-            const amount = parseFloat(document.getElementById('billAmount').value);
-            const dueDate = new Date(document.getElementById('billDueDate').value);
-            const category = document.getElementById('billCategory').value;
-            const sendSms = document.getElementById('sendSmsReminder').checked;
-            const smsReminderDays = parseInt(document.getElementById('smsReminderTime').value);
-            
-            // Hide empty state if visible
-            emptyBillsState.style.display = 'none';
-            
-            // Get icon based on category
-            const iconClass = getBillIconByCategory(category);
-            
-            // Format the date and calculate days until due
-            const formattedDate = dueDate.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-            
-            const today = new Date();
-            const diffTime = Math.abs(dueDate - today);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            
-            // Format amount as currency
-            const formattedAmount = new Intl.NumberFormat('en-US', { 
-                style: 'currency', 
-                currency: 'USD' 
-            }).format(amount);
-            
-            // Create new bill item
-            const newItem = document.createElement('li');
-            newItem.className = 'activity-item bill-item';
-            newItem.innerHTML = `
-                <div class="activity-icon ${category}">
-                    <i class="fas ${iconClass}"></i>
-                </div>
-                <div class="activity-details">
-                    <h3 class="activity-title">${title}</h3>
-                    <p class="activity-time">Due: ${formattedDate} (In ${diffDays} days)</p>
-                    <p class="bill-amount">${formattedAmount}</p>
-                </div>
-                <div class="item-actions">
-                    <button class="item-button send-sms" title="Send SMS Reminder"><i class="fas fa-paper-plane"></i></button>
-                    <button class="item-button edit" title="Edit Bill"><i class="fas fa-edit"></i></button>
-                    <button class="item-button delete" title="Delete Bill"><i class="fas fa-trash"></i></button>
-                </div>
-            `;
-            
-            // Add to list
-            billsList.appendChild(newItem);
-            
-            // Set up button handlers for the new item
-            setupEditButtons();
-            setupSmsButtons();
-            setupDeleteButtons();
-            
-            // Show toast notification
-            showToast(`${billModalTitle.textContent === 'Add New Bill' ? 'Added' : 'Updated'}: ${title}`, 'success');
-            
-            // If SMS reminder is enabled and phone is verified
-            if (sendSms && verifyPhoneBtn.classList.contains('verified') && smsEnabledToggle.checked) {
-                showToast(`SMS reminder will be sent ${smsReminderDays === 0 ? 'on the due date' : smsReminderDays + ' day(s) before due date'}`, 'info');
-            }
-            
-            // Close modal
-            closeBillModalFunction();
-        });
-        
-        // Load sample bills on page load
-        function loadSampleBills() {
-            if (sampleBills.length > 0) {
-                // Hide empty state
-                emptyBillsState.style.display = 'none';
-                
-                // Add sample bills
-                sampleBills.forEach(bill => {
-                    const category = bill.category;
-                    const iconClass = getBillIconByCategory(category);
-                    
-                    // Format the date and calculate days until due
-                    const formattedDate = bill.dueDate.toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    });
-                    
-                    const today = new Date();
-                    const diffTime = Math.abs(bill.dueDate - today);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    
-                    // Format amount as currency
-                    const formattedAmount = new Intl.NumberFormat('en-US', { 
-                        style: 'currency', 
-                        currency: 'USD' 
-                    }).format(bill.amount);
-                    
-                    // Create bill item
-                    const newItem = document.createElement('li');
-                    newItem.className = 'activity-item bill-item';
-                    newItem.innerHTML = `
-                        <div class="activity-icon ${category}">
-                            <i class="fas ${iconClass}"></i>
-                        </div>
-                        <div class="activity-details">
-                            <h3 class="activity-title">${bill.title}</h3>
-                            <p class="activity-time">Due: ${formattedDate} (In ${diffDays} days)</p>
-                            <p class="bill-amount">${formattedAmount}</p>
-                        </div>
-                        <div class="item-actions">
-                            <button class="item-button send-sms" title="Send SMS Reminder"><i class="fas fa-paper-plane"></i></button>
-                            <button class="item-button edit" title="Edit Bill"><i class="fas fa-edit"></i></button>
-                            <button class="item-button delete" title="Delete Bill"><i class="fas fa-trash"></i></button>
-                        </div>
-                    `;
-                    
-                    // Add to list
-                    billsList.appendChild(newItem);
-                });
-                
-                // Set up button handlers
-                setupEditButtons();
-                setupSmsButtons();
-                setupDeleteButtons();
-            }
-        }
-        
-        // Helper function to get icon based on bill category
-        function getBillIconByCategory(category) {
-            switch(category) {
-                case 'home': return 'fa-home';
-                case 'utilities': return 'fa-bolt';
-                case 'insurance': return 'fa-shield-alt';
-                case 'subscription': return 'fa-credit-card';
-                default: return 'fa-receipt';
-            }
-        }
     });
     </script>
 </body>
