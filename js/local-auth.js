@@ -1,226 +1,196 @@
-// Simple user authentication system using localStorage
-// This is a robust implementation that ensures data persistence
+/**
+ * PartnerPayz Local Authentication Module
+ * Handles user registration, login, logout, and session management using localStorage
+ */
 
-// User storage keys
-const USERS_STORAGE_KEY = 'partnerpayz_users';
-const CURRENT_USER_KEY = 'partnerpayz_current_user';
-
-// Initialize users if not exists
-function initUsers() {
-    try {
-        if (!localStorage.getItem(USERS_STORAGE_KEY)) {
-            localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify([]));
-        }
-        return true;
-    } catch (error) {
-        console.error('Error initializing users in localStorage:', error);
-        return false;
-    }
-}
-
-// Get all users with error handling
-function getUsers() {
-    try {
-        initUsers();
-        const usersJSON = localStorage.getItem(USERS_STORAGE_KEY);
-        if (!usersJSON) return [];
-        
-        const users = JSON.parse(usersJSON);
-        return Array.isArray(users) ? users : [];
-    } catch (error) {
-        console.error('Error getting users from localStorage:', error);
-        return [];
-    }
-}
-
-// Save users with error handling
-function saveUsers(users) {
-    try {
-        if (!Array.isArray(users)) {
-            throw new Error('Users must be an array');
-        }
-        
-        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
-        return true;
-    } catch (error) {
-        console.error('Error saving users to localStorage:', error);
-        return false;
-    }
-}
-
-// Check if localStorage is available
-function isLocalStorageAvailable() {
-    try {
-        const test = 'test';
-        localStorage.setItem(test, test);
-        localStorage.removeItem(test);
-        return true;
-    } catch (e) {
-        return false;
-    }
+// Generate a unique ID for users
+function generateUniqueId() {
+    return 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now().toString(36);
 }
 
 // Register a new user
-export async function registerUser(email, password, name) {
-    // Check if localStorage is available
-    if (!isLocalStorageAvailable()) {
-        return { success: false, error: 'Local storage is not available in your browser' };
-    }
-    
-    // Basic validation
-    if (!email || !password) {
-        return { success: false, error: 'Email and password are required' };
-    }
-
-    const users = getUsers();
-    
-    // Check if user already exists
-    if (users.find(user => user.email === email)) {
-        return { success: false, error: 'User already exists' };
-    }
-    
-    // Create new user
-    const newUser = {
-        id: Date.now().toString(),
-        email,
-        password, // In a real app, you would hash this password
-        name: name || email.split('@')[0],
-        createdAt: new Date().toISOString()
-    };
-    
-    // Save user
-    users.push(newUser);
-    const saveResult = saveUsers(users);
-    
-    if (!saveResult) {
-        return { success: false, error: 'Failed to save user data' };
-    }
-    
-    // Auto login - without password
-    const { password: _, ...userWithoutPassword } = newUser;
-    
-    // Save current user
+export async function registerUser(email, password, name = '') {
     try {
-        localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
-    } catch (error) {
-        console.error('Error saving current user to localStorage:', error);
-        return { success: false, error: 'Failed to save session data' };
-    }
-    
-    return { success: true, user: userWithoutPassword };
-}
-
-// Login user
-export async function loginUser(email, password) {
-    // Check if localStorage is available
-    if (!isLocalStorageAvailable()) {
-        return { success: false, error: 'Local storage is not available in your browser' };
-    }
-    
-    const users = getUsers();
-    const user = users.find(user => user.email === email && user.password === password);
-    
-    if (!user) {
-        return { success: false, error: 'Invalid email or password' };
-    }
-    
-    // Don't send password to client
-    const { password: _, ...userWithoutPassword } = user;
-    
-    // Save current user
-    try {
-        localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
-    } catch (error) {
-        console.error('Error saving current user to localStorage:', error);
-        return { success: false, error: 'Failed to save session data' };
-    }
-    
-    return { success: true, user: userWithoutPassword };
-}
-
-// Login with Google (simplified simulation)
-export async function loginWithGoogle() {
-    // Check if localStorage is available
-    if (!isLocalStorageAvailable()) {
-        return { success: false, error: 'Local storage is not available in your browser' };
-    }
-    
-    // This is just a simulation
-    const simulatedGoogleUser = {
-        id: 'google_' + Date.now().toString(),
-        email: 'google_user@example.com',
-        name: 'Google User',
-        provider: 'google',
-        createdAt: new Date().toISOString()
-    };
-    
-    // Auto register if not exists
-    const users = getUsers();
-    if (!users.find(user => user.email === simulatedGoogleUser.email)) {
-        users.push({
-            ...simulatedGoogleUser,
-            password: 'google_auth' // Placeholder password
-        });
+        // Check if user already exists
+        const users = getAllUsers();
+        const existingUser = users.find(user => user.email.toLowerCase() === email.toLowerCase());
         
-        const saveResult = saveUsers(users);
-        if (!saveResult) {
-            return { success: false, error: 'Failed to save user data' };
+        if (existingUser) {
+            return { 
+                success: false, 
+                error: 'A user with this email already exists' 
+            };
         }
-    }
-    
-    // Save current user
-    try {
-        localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(simulatedGoogleUser));
+        
+        // Create new user object
+        const userId = generateUniqueId();
+        const user = {
+            id: userId,
+            email: email,
+            name: name || email.split('@')[0],
+            password: password, // In a real app, this should be hashed
+            createdAt: new Date().toISOString(),
+            lastLogin: new Date().toISOString()
+        };
+        
+        // Add to users array
+        users.push(user);
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        // Set as current user
+        localStorage.setItem('currentUserId', userId);
+        
+        return { 
+            success: true, 
+            user: { ...user, password: undefined } // Remove password from returned user
+        };
     } catch (error) {
-        console.error('Error saving current user to localStorage:', error);
-        return { success: false, error: 'Failed to save session data' };
+        console.error('Registration error:', error);
+        return { 
+            success: false, 
+            error: 'Failed to register user. Please try again.' 
+        };
     }
-    
-    return { success: true, user: simulatedGoogleUser };
 }
 
-// Logout user
+// Log in with email and password
+export async function loginUser(email, password) {
+    try {
+        const users = getAllUsers();
+        const user = users.find(u => 
+            u.email.toLowerCase() === email.toLowerCase() && 
+            u.password === password
+        );
+        
+        if (!user) {
+            return { 
+                success: false, 
+                error: 'Invalid email or password' 
+            };
+        }
+        
+        // Update last login time
+        user.lastLogin = new Date().toISOString();
+        updateUser(user);
+        
+        // Set as current user
+        localStorage.setItem('currentUserId', user.id);
+        
+        return { 
+            success: true, 
+            user: { ...user, password: undefined } // Remove password from returned user
+        };
+    } catch (error) {
+        console.error('Login error:', error);
+        return { 
+            success: false, 
+            error: 'Failed to log in. Please try again.' 
+        };
+    }
+}
+
+// Login with Google (simulated)
+export async function loginWithGoogle() {
+    try {
+        // Generate fake Google account info
+        const randomNum = Math.floor(Math.random() * 1000);
+        const email = `user${randomNum}@gmail.com`;
+        const name = `Google User ${randomNum}`;
+        
+        // Check if this Google user already exists
+        const users = getAllUsers();
+        let user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+        
+        if (!user) {
+            // Create new user if doesn't exist
+            const userId = generateUniqueId();
+            user = {
+                id: userId,
+                email: email,
+                name: name,
+                password: null, // Google users don't have passwords
+                isGoogleUser: true,
+                createdAt: new Date().toISOString(),
+                lastLogin: new Date().toISOString()
+            };
+            
+            users.push(user);
+            localStorage.setItem('users', JSON.stringify(users));
+        } else {
+            // Update last login time
+            user.lastLogin = new Date().toISOString();
+            updateUser(user);
+        }
+        
+        // Set as current user
+        localStorage.setItem('currentUserId', user.id);
+        
+        return { 
+            success: true, 
+            user: { ...user, password: undefined } // Remove password from returned user
+        };
+    } catch (error) {
+        console.error('Google login error:', error);
+        return { 
+            success: false, 
+            error: 'Failed to log in with Google. Please try again.' 
+        };
+    }
+}
+
+// Log out current user
 export async function logoutUser() {
     try {
-        localStorage.removeItem(CURRENT_USER_KEY);
+        localStorage.removeItem('currentUserId');
         return { success: true };
     } catch (error) {
-        console.error('Error logging out user:', error);
-        return { success: false, error: 'Failed to log out' };
-    }
-}
-
-// Get current user
-export function getCurrentUser() {
-    try {
-        const userJson = localStorage.getItem(CURRENT_USER_KEY);
-        return userJson ? JSON.parse(userJson) : null;
-    } catch (error) {
-        console.error('Error getting current user from localStorage:', error);
-        return null;
+        console.error('Logout error:', error);
+        return { 
+            success: false, 
+            error: 'Failed to log out. Please try again.' 
+        };
     }
 }
 
 // Check if user is logged in
 export function isLoggedIn() {
-    return !!getCurrentUser();
+    const currentUserId = localStorage.getItem('currentUserId');
+    return !!currentUserId && !!getCurrentUser();
 }
 
-// Add event listener for auth state changes
-export function onAuthStateChange(callback) {
-    // Initial call
-    callback(getCurrentUser());
+// Get current user data
+export function getCurrentUser() {
+    const currentUserId = localStorage.getItem('currentUserId');
+    if (!currentUserId) return null;
     
-    // Listen for storage events (for multi-tab support)
-    window.addEventListener('storage', (event) => {
-        if (event.key === CURRENT_USER_KEY) {
-            const user = event.newValue ? JSON.parse(event.newValue) : null;
-            callback(user);
-        }
-    });
+    const users = getAllUsers();
+    const user = users.find(u => u.id === currentUserId);
     
-    // Return unsubscribe function
-    return () => {
-        window.removeEventListener('storage', callback);
-    };
+    if (!user) {
+        // Clean up if user ID is invalid
+        localStorage.removeItem('currentUserId');
+        return null;
+    }
+    
+    return { ...user, password: undefined }; // Remove password from returned user
+}
+
+// Update user data
+export function updateUser(userData) {
+    const users = getAllUsers();
+    const index = users.findIndex(u => u.id === userData.id);
+    
+    if (index !== -1) {
+        users[index] = { ...users[index], ...userData };
+        localStorage.setItem('users', JSON.stringify(users));
+        return true;
+    }
+    
+    return false;
+}
+
+// Get all users (helper function)
+export function getAllUsers() {
+    const usersJson = localStorage.getItem('users');
+    return usersJson ? JSON.parse(usersJson) : [];
 } 

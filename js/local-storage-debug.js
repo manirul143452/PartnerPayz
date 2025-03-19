@@ -69,31 +69,58 @@ export function resetUserData() {
 // Fix corrupted user data (creates empty users array if missing or corrupted)
 export function fixUserData() {
     try {
-        // Check users data
-        try {
-            const usersJSON = localStorage.getItem(USERS_STORAGE_KEY);
-            if (usersJSON) {
-                JSON.parse(usersJSON); // Will throw error if invalid JSON
-            } else {
-                localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify([]));
-                console.log('Created empty users array');
+        // Check if users array exists and is valid JSON
+        const usersJson = localStorage.getItem('users');
+        if (usersJson) {
+            try {
+                const users = JSON.parse(usersJson);
+                
+                // Check if it's actually an array
+                if (!Array.isArray(users)) {
+                    console.warn('Users data is not an array, resetting to empty array');
+                    localStorage.setItem('users', JSON.stringify([]));
+                }
+            } catch (e) {
+                console.error('Failed to parse users JSON, resetting to empty array', e);
+                localStorage.setItem('users', JSON.stringify([]));
             }
-        } catch (e) {
-            // Invalid JSON, reset it
-            localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify([]));
-            console.log('Fixed corrupted users data');
+        } else {
+            // Initialize users array if it doesn't exist
+            localStorage.setItem('users', JSON.stringify([]));
         }
         
-        // Check current user data
-        try {
-            const currentUserJSON = localStorage.getItem(CURRENT_USER_KEY);
-            if (currentUserJSON) {
-                JSON.parse(currentUserJSON); // Will throw error if invalid JSON
+        // Check if current user ID exists and is valid
+        const currentUserId = localStorage.getItem('currentUserId');
+        if (currentUserId) {
+            const usersJson = localStorage.getItem('users');
+            const users = JSON.parse(usersJson);
+            
+            // Check if the user with this ID exists
+            const userExists = users.some(user => user.id === currentUserId);
+            if (!userExists) {
+                console.warn('Current user ID does not exist in users array, removing current user ID');
+                localStorage.removeItem('currentUserId');
             }
-        } catch (e) {
-            // Invalid JSON, reset it
-            localStorage.removeItem(CURRENT_USER_KEY);
-            console.log('Removed corrupted current user data');
+        }
+        
+        // Check if notifications array exists and is valid JSON
+        const notificationsJson = localStorage.getItem('partnerpayz_notifications');
+        if (notificationsJson) {
+            try {
+                const notifications = JSON.parse(notificationsJson);
+                
+                // Check if it's actually an array
+                if (!Array.isArray(notifications)) {
+                    console.warn('Notifications data is not an array, resetting to empty array');
+                    localStorage.setItem('partnerpayz_notifications', JSON.stringify([]));
+                }
+            } catch (e) {
+                console.error('Failed to parse notifications JSON, resetting to empty array', e);
+                localStorage.setItem('partnerpayz_notifications', JSON.stringify([]));
+            }
+        } else {
+            // Initialize notifications array if it doesn't exist
+            localStorage.setItem('partnerpayz_notifications', JSON.stringify([]));
         }
         
         return true;
@@ -131,3 +158,106 @@ export function getStorageInfo() {
 
 // Automatically fix data on load
 fixUserData(); 
+
+// Display all users in the console (for debugging)
+export function displayAllUsers() {
+    try {
+        const usersJson = localStorage.getItem('users');
+        if (!usersJson) {
+            console.log('No users found in localStorage');
+            return [];
+        }
+        
+        const users = JSON.parse(usersJson);
+        
+        if (!Array.isArray(users)) {
+            console.log('Users data is not an array');
+            return [];
+        }
+        
+        if (users.length === 0) {
+            console.log('No users found (empty array)');
+            return [];
+        }
+        
+        console.log(`Found ${users.length} users:`);
+        users.forEach((user, index) => {
+            // Don't log the password
+            const { password, ...userWithoutPassword } = user;
+            console.log(`User ${index + 1}:`, userWithoutPassword);
+        });
+        
+        return users.map(({ password, ...user }) => user);
+    } catch (error) {
+        console.error('Error displaying users:', error);
+        return [];
+    }
+}
+
+// Verify localStorage is working correctly
+export function verifyLocalStorage() {
+    try {
+        // Try to write to localStorage
+        localStorage.setItem('partnerpayz_test', 'test');
+        
+        // Try to read from localStorage
+        const testValue = localStorage.getItem('partnerpayz_test');
+        
+        // Clean up
+        localStorage.removeItem('partnerpayz_test');
+        
+        // Check if the value was written and read correctly
+        return testValue === 'test';
+    } catch (error) {
+        console.error('LocalStorage test failed:', error);
+        return false;
+    }
+}
+
+// Get total localStorage usage
+export function getLocalStorageUsage() {
+    try {
+        let totalSize = 0;
+        
+        // Iterate over all localStorage items
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            const value = localStorage.getItem(key);
+            
+            // Calculate size in bytes
+            const size = (key.length + value.length) * 2; // UTF-16 uses 2 bytes per character
+            
+            totalSize += size;
+        }
+        
+        // Convert to KB
+        const sizeInKB = totalSize / 1024;
+        
+        return {
+            bytes: totalSize,
+            kilobytes: sizeInKB,
+            items: localStorage.length
+        };
+    } catch (error) {
+        console.error('Error calculating localStorage usage:', error);
+        return {
+            bytes: 0,
+            kilobytes: 0,
+            items: 0
+        };
+    }
+}
+
+// Clear all app data (dangerous!)
+export function clearAllAppData() {
+    try {
+        localStorage.removeItem('users');
+        localStorage.removeItem('currentUserId');
+        localStorage.removeItem('partnerpayz_notifications');
+        
+        return true;
+    } catch (error) {
+        console.error('Error clearing app data:', error);
+        return false;
+    }
+} 

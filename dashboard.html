@@ -3,653 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PartnerPayz - Financial Platform for Couples</title>
+    <title>Dashboard - PartnerPayz</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/relationship-features.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        .reminder-actions .btn-icon:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        /* Date Themes Styles */
-        .date-themes {
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .date-themes h3 {
-            margin-bottom: 1.5rem;
-            color: #333;
-            font-size: 1.2rem;
-        }
-
-        .theme-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .theme-option {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .theme-option:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .theme-option.active {
-            border: 2px solid #4CAF50;
-        }
-
-        .theme-color {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            margin-right: 1rem;
-        }
-
-        .theme-content {
-            flex: 1;
-        }
-
-        .theme-content h4 {
-            margin: 0;
-            color: #333;
-            font-size: 1rem;
-        }
-
-        .theme-content p {
-            margin: 0.25rem 0 0;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            .theme-options {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Main Menu Frame Styles */
-        .main-menu-frame {
-            margin: 2rem 0;
-            padding: 2rem;
-            background: linear-gradient(to right, #f8f9fa, #e9ecef);
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .menu-frame-title {
-            font-size: 1.5rem;
-            color: #333;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .menu-frame-title::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
-            margin: 0.5rem auto 0;
-            border-radius: 2px;
-        }
-
-        .menu-frame-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .menu-card {
-            background: #fff;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .menu-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
-        }
-
-        .menu-card.new-feature {
-            background: linear-gradient(to bottom right, #ffffff, #f0f8ff);
-            border: 1px solid rgba(37, 117, 252, 0.1);
-        }
-
-        .menu-card-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 1rem;
-            border-radius: 50%;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
-            color: white;
-            font-size: 1.8rem;
-        }
-
-        .menu-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-
-        .menu-card p {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 1rem;
-        }
-
-        .new-tag {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #ff6b6b;
-            color: white;
-            font-size: 0.7rem;
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 12px;
-            letter-spacing: 0.5px;
-        }
-
-        .menu-card-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(106, 17, 203, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .menu-card:hover .menu-card-overlay {
-            opacity: 1;
-        }
-
-        .menu-card-overlay .btn {
-            background: white;
-            color: #6a11cb;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .menu-card-overlay .btn:hover {
-            background: #f0f0f0;
-            transform: scale(1.05);
-        }
-
-        @media (max-width: 768px) {
-            .menu-frame-cards {
-                grid-template-columns: 1fr;
-            }
-            
-            .main-menu-frame {
-                padding: 1.5rem;
-            }
-        }
-
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .toast {
-            display: flex;
-            align-items: center;
-            min-width: 280px;
-            max-width: 320px;
-            background: white;
-            border-radius: 8px;
-            padding: 12px 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: translateX(100%);
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .toast-icon {
-            margin-right: 12px;
-            font-size: 18px;
-        }
-
-        .toast-content {
-            flex: 1;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .toast-close {
-            background: none;
-            border: none;
-            font-size: 12px;
-            cursor: pointer;
-            color: #777;
-            padding: 4px;
-        }
-
-        .toast-success {
-            border-left: 4px solid #4CAF50;
-        }
-
-        .toast-success .toast-icon {
-            color: #4CAF50;
-        }
-
-        .toast-error {
-            border-left: 4px solid #F44336;
-        }
-
-        .toast-error .toast-icon {
-            color: #F44336;
-        }
-
-        .toast-warning {
-            border-left: 4px solid #FFC107;
-        }
-
-        .toast-warning .toast-icon {
-            color: #FFC107;
-        }
-
-        .toast-info {
-            border-left: 4px solid #2196F3;
-        }
-
-        .toast-info .toast-icon {
-            color: #2196F3;
-        }
-
-        /* Date Assistant Styles */
-        .date-assistant-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .date-preferences-form {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .interest-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .interest-tag {
-            background: #f8f9fa;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .interest-tag:hover {
-            background: #e9ecef;
-        }
-
-        .interest-tag input[type="checkbox"] {
-            display: none;
-        }
-
-        .interest-tag input[type="checkbox"]:checked + span {
-            color: #ff6b6b;
-            font-weight: 600;
-        }
-
-        .special-requirements {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-        }
-
-        .suggestion-features {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-
-        .suggestion-features span {
-            background: #f8f9fa;
-            padding: 0.25rem 0.75rem;
-            border-radius: 15px;
-            font-size: 0.875rem;
-            color: #495057;
-        }
-
-        /* Special Dates Styles */
-        .special-dates-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .special-dates-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .special-date-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .date-card-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-            color: white;
-        }
-
-        .date-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-        }
-
-        .date-info h4 {
-            margin: 0;
-            font-size: 1.25rem;
-        }
-
-        .date-location {
-            margin: 0;
-            font-size: 0.875rem;
-            opacity: 0.9;
-        }
-
-        .date-card-body {
-            padding: 1.5rem;
-        }
-
-        .date-details {
-            margin-bottom: 1.5rem;
-        }
-
-        .date-details p {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 0.5rem 0;
-            color: #495057;
-        }
-
-        .memory-gallery {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-
-        .memory-gallery img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .memory-count {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0 0 8px 0;
-            font-size: 0.75rem;
-        }
-
-        .memory-text {
-            font-style: italic;
-            color: #6c757d;
-            margin: 1rem 0;
-        }
-
-        .date-card-footer {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid #e9ecef;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        /* Love Tracker Styles */
-        .love-tracker-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .tracker-period-selector {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .love-metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .metric-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            gap: 1rem;
-        }
-
-        .metric-icon {
-            width: 48px;
-            height: 48px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: #ff6b6b;
-        }
-
-        .metric-content {
-            flex: 1;
-        }
-
-        .metric-content h4 {
-            margin: 0;
-            font-size: 1rem;
-            color: #495057;
-        }
-
-        .metric-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #212529;
-            margin: 0.5rem 0;
-        }
-
-        .metric-progress {
-            height: 6px;
-            background: #e9ecef;
-            border-radius: 3px;
-            margin: 0.5rem 0;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #ff6b6b, #ff8e8e);
-            border-radius: 3px;
-            transition: width 0.3s ease;
-        }
-
-        .metric-description {
-            font-size: 0.875rem;
-            color: #6c757d;
-            margin: 0.5rem 0;
-        }
-
-        .metric-trend {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.875rem;
-        }
-
-        .metric-trend.positive {
-            color: #28a745;
-        }
-
-        .metric-trend.negative {
-            color: #dc3545;
-        }
-
-        .metric-trend.neutral {
-            color: #6c757d;
-        }
-
-        .love-insights {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .insights-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .insight-card {
-            display: flex;
-            gap: 1rem;
-            padding: 1.5rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        .insight-icon {
-            width: 40px;
-            height: 40px;
-            background: white;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            color: #ff6b6b;
-        }
-
-        .insight-content h4 {
-            margin: 0;
-            font-size: 1rem;
-            color: #212529;
-        }
-
-        .insight-content p {
-            margin: 0.5rem 0;
-            font-size: 0.875rem;
-            color: #6c757d;
-        }
-
-        .insight-chart {
-            height: 100px;
-            margin-top: 1rem;
-            background: white;
-            border-radius: 4px;
-        }
-
-        @media (max-width: 768px) {
-            .date-assistant-container {
-                grid-template-columns: 1fr;
-            }
-
-            .special-dates-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .love-metrics-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .insights-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="app-container">
@@ -659,423 +17,295 @@
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li class="active"><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                    <li><a href="features.html"><i class="fas fa-star"></i> Features</a></li>
-                    <li><a href="partners.html"><i class="fas fa-users"></i> Partners</a></li>
-                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
-                    <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="register.html"><i class="fas fa-user-plus"></i> Register</a></li>
+                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="#" id="navLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
             </nav>
-                <div class="user-menu">
-                <div class="notification-icon">
+            <div class="user-menu">
+                <div class="notification-icon" id="notificationIcon">
                     <i class="fas fa-bell"></i>
                     <span class="badge" id="notificationBadge">0</span>
-                    </div>
+                </div>
                 <div class="user-profile" id="userProfileMenu">
-                    <img src="images/user-avatar.svg" alt="User Avatar" class="avatar">
+                    <img src="images/user-avatar.svg" alt="User Avatar" class="avatar" id="headerAvatar">
                     <span class="username" id="usernameDisplay">User</span>
                     <i class="fas fa-chevron-down"></i>
                     <div class="dropdown-menu">
                         <a href="profile.html" id="profileLink"><i class="fas fa-user"></i> Profile</a>
+                        <a href="notifications.html" id="notificationsLink"><i class="fas fa-bell"></i> Notifications</a>
                         <a href="#" id="settingsLink"><i class="fas fa-cog"></i> Settings</a>
                         <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </div>
                 </div>
-                <button class="mobile-menu-toggle">
-                <i class="fas fa-bars"></i>
+                <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
-    </header>
+        </header>
 
         <main class="app-content">
-            <!-- User Profile Section -->
-            <section class="profile-section" id="profileSection" style="display: block;">
-                <div class="profile-card">
-                    <div class="profile-header">
-                        <img src="images/user-avatar.svg" alt="User Avatar" class="profile-avatar">
-                        <div class="profile-info">
-                            <h2 id="profileName">User Name</h2>
-                            <p id="profileEmail">user@example.com</p>
-                            <p id="profileJoined">Member since: </p>
-                        </div>
-                    </div>
-                    <div class="profile-actions">
-                        <button class="btn-primary" id="editProfileBtn">
-                            <i class="fas fa-edit"></i> Edit Profile
-                        </button>
-                        <button class="btn-outline" id="hideProfileBtn">
-                            Hide Profile
-                        </button>
-                    </div>
-                </div>
-            </section>
+            <h1 class="page-title">Dashboard</h1>
             
-            <div class="dashboard-main">
-        <div class="dashboard-sidebar">
-            <div class="user-profile">
-                <div class="user-avatar">
-                    <img src="images/user-avatar.jpg" alt="User Avatar" id="sidebarAvatar">
+            <div class="dashboard-overview">
+                <div class="overview-card">
+                    <div class="card-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3 class="card-title">Account Balance</h3>
+                    <p class="card-value">$1,250.00</p>
                 </div>
-                <h3 id="sidebarName">Loading...</h3>
-                <p id="membershipLevel">Member</p>
-                <p id="userIdDisplay" class="user-id">ID: <span></span></p>
-                <div class="user-badges">
-                    <span class="user-badge" data-badge-info="New User: Welcome to PartnerPayz!">
+                
+                <div class="overview-card">
+                    <div class="card-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3 class="card-title">Transactions</h3>
+                    <p class="card-value">24</p>
+                </div>
+                
+                <div class="overview-card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="card-title">Partners</h3>
+                    <p class="card-value">1</p>
+                </div>
+                
+                <div class="overview-card">
+                    <div class="card-icon">
                         <i class="fas fa-star"></i>
-                    </span>
-                    <!-- Dynamic badges will be added here by JavaScript -->
+                    </div>
+                    <h3 class="card-title">Points</h3>
+                    <p class="card-value">150</p>
                 </div>
             </div>
-            <ul class="sidebar-menu">
-                <li class="active">
-                    <a href="#"><i class="fas fa-th-large"></i> Overview</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fas fa-bell"></i> Anniversary Reminder</a>
-                    <span class="feature-badge">New</span>
-                </li>
-                <li>
-                    <a href="#"><i class="fas fa-utensils"></i> Date Assistant</a>
-                    <span class="feature-badge">New</span>
-                </li>
-                <li>
-                    <a href="#"><i class="fas fa-history"></i> Special Dates</a>
-                    <span class="feature-badge">New</span>
-                </li>
-                <li>
-                    <a href="#"><i class="fas fa-heart"></i> Love Tracker</a>
-                    <span class="feature-badge">New</span>
-                </li>
-                <li>
-                    <a href="#"><i class="fas fa-cog"></i> Settings</a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="dashboard-content">
-            <div class="dashboard-header">
-                <h2>Dashboard Overview</h2>
-                <div class="date">
-                    <i class="far fa-calendar"></i>
-                    <span>Thursday, July 18, 2024</span>
-                </div>
-            </div>
-
-            <!-- Featured Banner -->
-            <div class="featured-banner">
-                <div class="banner-content">
-                    <h2>Celebrate Your Love Journey</h2>
-                    <p>Track special moments, plan perfect dates, and strengthen your bond with our new relationship features</p>
-                    <div class="banner-buttons">
-                        <a href="#" class="banner-btn anniversary-btn" data-section="anniversary-reminder-section">
-                            <i class="fas fa-bell"></i> Set Anniversary Reminders
-                        </a>
-                        <a href="#" class="banner-btn date-plan-btn" data-section="date-assistant-section">
-                            <i class="fas fa-utensils"></i> Plan Your Next Date
-                        </a>
-                        <a href="#" class="banner-btn timeline-btn" data-section="special-dates-section">
-                            <i class="fas fa-history"></i> Create Memories
-                        </a>
-                        <a href="#" class="banner-btn love-meter-btn" data-section="love-tracker-section">
-                            <i class="fas fa-heart"></i> Track Your Journey
-                        </a>
+            
+            <div class="dashboard-widgets">
+                <div class="widget">
+                    <div class="widget-header">
+                        <h2 class="widget-title">Recent Activity</h2>
+                        <a href="#" class="widget-action">View All</a>
                     </div>
-                </div>
-                <div class="banner-decoration">
-                    <div class="decoration-item heart-item" style="--delay: 0s;">❤️</div>
-                    <div class="decoration-item ring-item" style="--delay: 1s;">💍</div>
-                    <div class="decoration-item gift-item" style="--delay: 2s;">🎁</div>
-                    <div class="decoration-item sparkle-item" style="--delay: 3s;">✨</div>
-                    <div class="decoration-item star-item" style="--delay: 4s;">🌟</div>
-                </div>
-            </div>
-
-                    <!-- Main Menu Frame -->
-                    <div class="main-menu-frame">
-                        <h2 class="menu-frame-title">Quick Access Menu</h2>
-                        <div class="menu-frame-cards">
-                            <div class="menu-card" data-section="overview-section">
-                                <div class="menu-card-icon">
-                                    <i class="fas fa-th-large"></i>
-                        </div>
-                                <h3>Dashboard Overview</h3>
-                                <p>View your financial summary and partner updates</p>
-                                <div class="menu-card-overlay">
-                                    <button class="btn">Go to Dashboard</button>
-                        </div>
-                    </div>
-                            <div class="menu-card new-feature" data-section="anniversary-reminder-section">
-                                <div class="menu-card-icon">
-                                    <i class="fas fa-bell"></i>
-                        </div>
-                                <h3>Anniversary Reminder</h3>
-                                <p>Never forget special moments and dates</p>
-                                <span class="new-tag">NEW</span>
-                                <div class="menu-card-overlay">
-                                    <button class="btn">Set Reminders</button>
-                        </div>
-                    </div>
-                            <div class="menu-card new-feature" data-section="date-assistant-section">
-                                <div class="menu-card-icon">
-                                    <i class="fas fa-utensils"></i>
-                        </div>
-                                <h3>Date Assistant</h3>
-                                <p>Plan the perfect dates with personalized suggestions</p>
-                                <span class="new-tag">NEW</span>
-                                <div class="menu-card-overlay">
-                                    <button class="btn">Plan Date</button>
-                        </div>
-                    </div>
-                            <div class="menu-card new-feature" data-section="special-dates-section">
-                                <div class="menu-card-icon">
-                                    <i class="fas fa-history"></i>
-                        </div>
-                                <h3>Special Dates</h3>
-                                <p>Track and celebrate your relationship milestones</p>
-                                <span class="new-tag">NEW</span>
-                                <div class="menu-card-overlay">
-                                    <button class="btn">View Timeline</button>
-                        </div>
-                    </div>
-                            <div class="menu-card new-feature" data-section="love-tracker-section">
-                                <div class="menu-card-icon">
-                                    <i class="fas fa-heart"></i>
-                </div>
-                                <h3>Love Tracker</h3>
-                                <p>Measure and strengthen your relationship</p>
-                                <span class="new-tag">NEW</span>
-                                <div class="menu-card-overlay">
-                                    <button class="btn">Check Status</button>
-                        </div>
-                            </div>
-                            <div class="menu-card" data-section="settings-section">
-                                <div class="menu-card-icon">
-                                    <i class="fas fa-cog"></i>
-                            </div>
-                                <h3>Settings</h3>
-                                <p>Customize your account preferences</p>
-                                <div class="menu-card-overlay">
-                                    <button class="btn">Manage Settings</button>
-                        </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Main Content Sections -->
-                    <!-- For each section (Overview, Anniversary Reminder, etc.), 
-                         include only essential content that demonstrates functionality -->
-
-                    <!-- Toast Notifications Container -->
-                    <div id="toastContainer" class="toast-container"></div>
-                        </div>
+                    <div class="widget-content">
+                        <ul class="activity-list">
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-credit-card"></i>
                                 </div>
-        </main>
+                                <div class="activity-details">
+                                    <h3 class="activity-title">Payment Received</h3>
+                                    <p class="activity-time">Today, 2:30 PM</p>
+                                </div>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h3 class="activity-title">Partner Request Accepted</h3>
+                                    <p class="activity-time">Yesterday, 5:15 PM</p>
+                                </div>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-cog"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h3 class="activity-title">Account Settings Updated</h3>
+                                    <p class="activity-time">Jun 10, 2024</p>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
+                </div>
+                
+                <div class="widget">
+                    <div class="widget-header">
+                        <h2 class="widget-title">Upcoming Bills</h2>
+                        <a href="#" class="widget-action">View All</a>
+                    </div>
+                    <div class="widget-content">
+                        <ul class="activity-list">
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h3 class="activity-title">Rent Payment</h3>
+                                    <p class="activity-time">Due in 5 days</p>
+                                </div>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-wifi"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h3 class="activity-title">Internet Bill</h3>
+                                    <p class="activity-time">Due in 8 days</p>
+                                </div>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h3 class="activity-title">Electricity Bill</h3>
+                                    <p class="activity-time">Due in 12 days</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <footer>
         <div class="footer-content">
             <div class="footer-logo">
                 <img src="images/logo.svg" alt="PartnerPayz Logo">
                 <h3>PartnerPayz</h3>
-                        </div>
+            </div>
             <div class="footer-bottom">
                 <p>&copy; 2024 PartnerPayz. All rights reserved.</p>
                 <div class="social-icons">
                     <a href="https://github.com/manirul143452"><i class="fab fa-github"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
                     <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                                </div>
-                            </div>
+                </div>
+            </div>
+        </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="js/main.js"></script>
-    <script src="js/dashboard.js"></script>
+    <div id="toastContainer" class="toast-container"></div>
 
-    <!-- User authentication and profile management -->
     <script type="module">
-        import { getCurrentUser, isLoggedIn, logoutUser } from './js/local-auth.js';
-        import { fixUserData, displayCurrentUser } from './js/local-storage-debug.js';
+        import { isLoggedIn, getCurrentUser, logoutUser } from './js/local-auth.js';
+        import { getUnreadNotificationCount, updateNotificationBadge, getNotificationHistory } from './js/local-notifications.js';
+        import { fixUserData } from './js/local-storage-debug.js';
         
-        // Check if user is logged in
         document.addEventListener('DOMContentLoaded', function() {
             // Fix any corrupted localStorage data
             fixUserData();
             
+            // Check if user is logged in
             if (!isLoggedIn()) {
-                // Redirect to login page if not logged in
-                console.error('No user is logged in. Redirecting to login page...');
                 window.location.href = 'login.html';
                 return;
             }
             
-            // Display user information
+            // Get user data
             const user = getCurrentUser();
             if (user) {
-                updateUserProfile(user);
-                console.log('User profile updated successfully');
-                
-                // For debugging
-                displayCurrentUser();
-            } else {
-                console.error('Failed to get current user data');
-                showToast('There was a problem loading your profile', 'error');
+                updateUserInfo(user);
             }
+            
+            // Initialize notifications
+            initializeNotifications();
+            
+            // Add event listeners
+            addEventListeners();
         });
         
-        // Update user profile information
-        function updateUserProfile(user) {
-            if (!user) {
-                console.error('No user data provided to updateUserProfile');
-                return;
-            }
-            
-            // Update header username
+        function updateUserInfo(user) {
+            // Update header user info
             const usernameDisplay = document.getElementById('usernameDisplay');
+            const headerAvatar = document.getElementById('headerAvatar');
+            
             if (usernameDisplay) {
                 usernameDisplay.textContent = user.name || user.email.split('@')[0];
-            } else {
-                console.warn('Username display element not found');
             }
             
-            // Update profile section
-            const profileName = document.getElementById('profileName');
-            const profileEmail = document.getElementById('profileEmail');
-            const profileJoined = document.getElementById('profileJoined');
-            
-            if (profileName) profileName.textContent = user.name || user.email.split('@')[0];
-            if (profileEmail) profileEmail.textContent = user.email;
-            if (profileJoined) {
-                const joinDate = user.createdAt ? new Date(user.createdAt) : new Date();
-                profileJoined.textContent = `Member since: ${joinDate.toLocaleDateString()}`;
+            if (headerAvatar && user.email) {
+                // Generate avatar from email using MD5 hash (simple version)
+                const hash = generateSimpleHash(user.email.trim().toLowerCase());
+                headerAvatar.src = `https://www.gravatar.com/avatar/${hash}?s=200&d=identicon`;
             }
-            
-            // Update sidebar profile
-            const sidebarUserName = document.getElementById('sidebarName');
-            const userIdElement = document.querySelector('#userIdDisplay span');
-            const membershipLevel = document.getElementById('membershipLevel');
-            const sidebarAvatar = document.getElementById('sidebarAvatar');
-            
-            if (sidebarUserName) {
-                sidebarUserName.textContent = user.name || user.email.split('@')[0];
-            }
-            
-            // Display user ID
-            if (userIdElement) {
-                userIdElement.textContent = user.id || 'N/A';
-            }
-            
-            // Set membership level based on account age
-            if (membershipLevel && user.createdAt) {
-                const accountAge = new Date() - new Date(user.createdAt);
-                const daysSinceCreation = Math.floor(accountAge / (1000 * 60 * 60 * 24));
-                
-                if (daysSinceCreation > 90) {
-                    membershipLevel.textContent = 'Gold Member';
-                } else if (daysSinceCreation > 30) {
-                    membershipLevel.textContent = 'Silver Member';
-                } else {
-                    membershipLevel.textContent = 'New Member';
-                }
-            }
-
-            // Update all user avatars
-            updateUserAvatar(user.email);
         }
-
-        // Update user avatar based on email (using Gravatar or default)
-        function updateUserAvatar(email) {
-            if (!email) return;
-            
-            // Generate Gravatar URL based on email
-            const hash = generateMD5Hash(email.trim().toLowerCase());
-            const gravatarUrl = `https://www.gravatar.com/avatar/${hash}?s=200&d=identicon`;
-            
-            // Update all avatar images
-            const avatars = document.querySelectorAll('.avatar, .profile-avatar, .user-avatar img');
-            avatars.forEach(avatar => {
-                avatar.src = gravatarUrl;
-            });
-        }
-
-        // Simple MD5 hash simulation for Gravatar (not actual MD5)
-        function generateMD5Hash(str) {
-            // This is a simple hash function, not actual MD5
+        
+        function generateSimpleHash(str) {
             let hash = 0;
             for (let i = 0; i < str.length; i++) {
                 const char = str.charCodeAt(i);
                 hash = ((hash << 5) - hash) + char;
-                hash = hash & hash; // Convert to 32bit integer
+                hash = hash & hash;
             }
             return Math.abs(hash).toString(16);
         }
         
-        // Handle logout
-        const logoutBtn = document.getElementById('logoutBtn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', async (e) => {
-                e.preventDefault();
-                
-                try {
-                    await logoutUser();
-                    showToast('Logout successful!', 'success');
-                    
-                    // Redirect to login page after a short delay
-                    setTimeout(() => {
+        function initializeNotifications() {
+            // Get notification count
+            updateNotificationBadge();
+            
+            // Add click event to notification icon
+            const notificationIcon = document.getElementById('notificationIcon');
+            if (notificationIcon) {
+                notificationIcon.addEventListener('click', () => {
+                    window.location.href = 'notifications.html';
+                });
+            }
+            
+            // Generate a test notification if there are no notifications
+            const notifications = getNotificationHistory();
+            if (notifications.length === 0) {
+                // We'll create a demo notification in the next session
+            }
+        }
+        
+        function addEventListeners() {
+            // Logout button in dropdown
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    try {
+                        await logoutUser();
                         window.location.href = 'login.html';
-                    }, 1000);
-                } catch (error) {
-                    showToast(error.message || 'Failed to log out', 'error');
-                }
-            });
-        } else {
-            console.warn('Logout button not found');
-        }
-        
-        // Profile toggle functionality
-        const profileLink = document.getElementById('profileLink');
-        const profileSection = document.getElementById('profileSection');
-        const hideProfileBtn = document.getElementById('hideProfileBtn');
-        
-        if (profileLink && profileSection && hideProfileBtn) {
-            // Show profile when clicking on profile link
-            profileLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                profileSection.style.display = 'block';
-                scrollToElement(profileSection);
-            });
+                    } catch (error) {
+                        showToast('Failed to log out', 'error');
+                    }
+                });
+            }
             
-            // Hide profile section
-            hideProfileBtn.addEventListener('click', () => {
-                profileSection.style.display = 'none';
-            });
-        } else {
-            console.warn('Profile toggle elements not found');
-        }
-        
-        // Helper function to scroll to element
-        function scrollToElement(element) {
-            if (!element) return;
+            // Navigation logout button
+            const navLogoutBtn = document.getElementById('navLogoutBtn');
+            if (navLogoutBtn) {
+                navLogoutBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    try {
+                        await logoutUser();
+                        showToast('Logged out successfully!', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    } catch (error) {
+                        showToast('Failed to log out', 'error');
+                    }
+                });
+            }
             
-            window.scrollTo({
-                top: element.offsetTop - 100,
-                behavior: 'smooth'
-            });
+            // Mobile menu toggle
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('mobile-menu-open');
+                });
+            }
         }
         
         // Toast notification function
         function showToast(message, type = 'info') {
-            const toastContainer = document.getElementById('toastContainer') || document.body;
+            const toastContainer = document.getElementById('toastContainer');
             
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
             
             const icon = document.createElement('i');
             icon.className = type === 'success' ? 'fas fa-check-circle' : 
-                             type === 'error' ? 'fas fa-exclamation-circle' : 
-                             'fas fa-info-circle';
+                           type === 'error' ? 'fas fa-exclamation-circle' : 
+                           'fas fa-info-circle';
             
             const content = document.createElement('span');
             content.textContent = message;
@@ -1084,12 +314,10 @@
             toast.appendChild(content);
             toastContainer.appendChild(toast);
             
-            // Show toast
             setTimeout(() => {
                 toast.classList.add('show');
             }, 100);
             
-            // Hide toast
             setTimeout(() => {
                 toast.classList.remove('show');
                 setTimeout(() => {

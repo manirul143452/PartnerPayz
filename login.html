@@ -10,12 +10,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"><img src="images/logo.png" alt="PartnerPayz Logo"></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="register.html"><i class="fas fa-user-plus"></i> Register</a></li>
+                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="#" id="navLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
     <div class="auth-container">
         <div class="auth-box">
             <div class="auth-header">
                 <img src="images/logo.png" alt="PartnerPayz Logo" class="auth-logo">
                 <h1>Welcome Back</h1>
-                <p>Sign in to continue to PartnerPayz</p>
+                <p>Sign in to your PartnerPayz account</p>
             </div>
             
             <form id="loginForm" class="auth-form">
@@ -43,6 +60,7 @@
                         <input type="checkbox" id="remember">
                         <span>Remember me</span>
                     </label>
+                    
                     <a href="#" class="forgot-password">Forgot Password?</a>
                 </div>
                 
@@ -51,25 +69,26 @@
                 </button>
                 
                 <div class="social-login">
-                    <p>Or continue with</p>
-                    <button type="button" class="btn-google" id="googleSignIn">
+                    <p>Or sign in with</p>
+                    <button type="button" class="btn-google" id="googleLogin">
                         <i class="fab fa-google"></i> Google
                     </button>
                 </div>
             </form>
             
             <div class="auth-footer">
-                <p>Don't have an account? <a href="register.html">Sign up</a></p>
+                <p>Don't have an account? <a href="register.html">Create Account</a></p>
             </div>
         </div>
     </div>
 
+    <div id="toastContainer" class="toast-container"></div>
+    
     <script type="module">
-        import { loginUser, loginWithGoogle, isLoggedIn } from './js/local-auth.js';
+        import { loginUser, loginWithGoogle, isLoggedIn, logoutUser } from './js/local-auth.js';
         import { requestNotificationPermission } from './js/local-notifications.js';
-        import { fixUserData, displayAllUsers } from './js/local-storage-debug.js';
-
-        // Check if already logged in
+        import { fixUserData } from './js/local-storage-debug.js';
+        
         document.addEventListener('DOMContentLoaded', () => {
             // Fix any corrupted localStorage data
             fixUserData();
@@ -80,87 +99,96 @@
                 return;
             }
             
-            // For debugging
-            console.log('Available users:');
-            displayAllUsers();
+            // Toggle password visibility
+            const togglePassword = document.querySelector('.toggle-password');
+            const passwordInput = document.getElementById('password');
+            
+            if (togglePassword && passwordInput) {
+                togglePassword.addEventListener('click', () => {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    togglePassword.querySelector('i').classList.toggle('fa-eye');
+                    togglePassword.querySelector('i').classList.toggle('fa-eye-slash');
+                });
+            }
+            
+            // Handle form submission
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    // Disable form during login
+                    const submitButton = e.target.querySelector('button[type="submit"]');
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+                    
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
+                    const remember = document.getElementById('remember').checked;
+                    
+                    try {
+                        const result = await loginUser(email, password);
+                        
+                        if (result.success) {
+                            // Request notification permission after successful login
+                            await requestNotificationPermission();
+                            
+                            showToast('Login successful!', 'success');
+                            
+                            setTimeout(() => {
+                                window.location.href = 'dashboard.html';
+                            }, 1000);
+                        } else {
+                            showToast(result.error, 'error');
+                            
+                            // Re-enable form
+                            submitButton.disabled = false;
+                            submitButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+                        }
+                    } catch (error) {
+                        showToast(error.message || 'An error occurred', 'error');
+                        
+                        // Re-enable form
+                        submitButton.disabled = false;
+                        submitButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+                    }
+                });
+            }
+            
+            // Handle Google login
+            const googleLoginBtn = document.getElementById('googleLogin');
+            if (googleLoginBtn) {
+                googleLoginBtn.addEventListener('click', async () => {
+                    try {
+                        const result = await loginWithGoogle();
+                        
+                        if (result.success) {
+                            // Request notification permission after successful login
+                            await requestNotificationPermission();
+                            
+                            showToast('Google login successful!', 'success');
+                            
+                            setTimeout(() => {
+                                window.location.href = 'dashboard.html';
+                            }, 1000);
+                        } else {
+                            showToast(result.error, 'error');
+                        }
+                    } catch (error) {
+                        showToast(error.message || 'An error occurred', 'error');
+                    }
+                });
+            }
+            
+            // Handle logout in navigation (should be hidden when not logged in)
+            const navLogoutBtn = document.getElementById('navLogoutBtn');
+            if (navLogoutBtn) {
+                // Hide logout button when not logged in
+                navLogoutBtn.parentElement.style.display = 'none';
+            }
         });
-
-        // Toggle password visibility
-        const togglePassword = document.querySelector('.toggle-password');
-        const passwordInput = document.getElementById('password');
         
-        togglePassword.addEventListener('click', () => {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            togglePassword.querySelector('i').classList.toggle('fa-eye');
-            togglePassword.querySelector('i').classList.toggle('fa-eye-slash');
-        });
-
-        // Handle form submission
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Disable form during authentication
-            const submitButton = e.target.querySelector('button[type="submit"]');
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const remember = document.getElementById('remember').checked;
-            
-            try {
-                const result = await loginUser(email, password);
-                
-                if (result.success) {
-                    showToast('Login successful!', 'success');
-                    
-                    // Request notification permission after successful login
-                    await requestNotificationPermission();
-                    
-                    // Redirect to dashboard
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1000);
-                } else {
-                    showToast(result.error, 'error');
-                    
-                    // Re-enable form
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
-                }
-            } catch (error) {
-                showToast(error.message || 'An error occurred', 'error');
-                
-                // Re-enable form
-                submitButton.disabled = false;
-                submitButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
-            }
-        });
-
-        // Handle Google sign in
-        document.getElementById('googleSignIn').addEventListener('click', async () => {
-            try {
-                const result = await loginWithGoogle();
-                
-                if (result.success) {
-                    showToast('Login with Google successful!', 'success');
-                    
-                    // Request notification permission after successful login
-                    await requestNotificationPermission();
-                    
-                    // Redirect to dashboard
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1000);
-                } else {
-                    showToast(result.error, 'error');
-                }
-            } catch (error) {
-                showToast(error.message || 'An error occurred', 'error');
-            }
-        });
-
         // Toast notification function
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');

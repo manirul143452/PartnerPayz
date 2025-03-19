@@ -10,6 +10,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"><img src="images/logo.png" alt="PartnerPayz Logo"></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="active"><a href="register.html"><i class="fas fa-user-plus"></i> Register</a></li>
+                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="#" id="navLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+            </div>
+    </header>
+
     <div class="auth-container">
         <div class="auth-box">
             <div class="auth-header">
@@ -80,29 +97,29 @@
                         <h2><i class="fas fa-check-circle"></i> Account Created!</h2>
                     </div>
                     <div class="modal-body">
-                        <p>Your account has been created successfully.</p>
+                        <p>Registration successful! Your account has been created.</p>
                         <div class="user-details">
                             <div class="detail-item">
                                 <span class="label">Name:</span>
                                 <span class="value" id="modalUserName">-</span>
-                            </div>
+                        </div>
                             <div class="detail-item">
                                 <span class="label">Email:</span>
                                 <span class="value" id="modalUserEmail">-</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="label">User ID:</span>
-                                <span class="value highlight" id="modalUserId">-</span>
-                            </div>
                         </div>
-                        <p class="note">Please save your User ID for reference.</p>
+                            <div class="detail-item">
+                                <span class="label">Your User ID:</span>
+                                <span class="value highlight" id="modalUserId">-</span>
+                    </div>
+                        </div>
+                        <p class="note">Please save your User ID for future reference. You'll need it for account recovery and support.</p>
                     </div>
                     <div class="modal-footer">
                         <button id="continueToAccountBtn" class="btn-primary"><i class="fas fa-arrow-right"></i> Continue to Account</button>
                     </div>
                 </div>
-            </div>
-            
+                    </div>
+                    
             <div class="auth-footer">
                 <p>Already have an account? <a href="login.html">Sign in</a></p>
                         </div>
@@ -110,7 +127,7 @@
                     </div>
                     
     <script type="module">
-        import { registerUser, loginWithGoogle, isLoggedIn } from './js/local-auth.js';
+        import { registerUser, loginWithGoogle, isLoggedIn, logoutUser } from './js/local-auth.js';
         import { requestNotificationPermission } from './js/local-notifications.js';
         import { fixUserData, displayAllUsers } from './js/local-storage-debug.js';
 
@@ -260,6 +277,23 @@
                 showToast(error.message || 'An error occurred', 'error');
             }
         });
+
+        // Handle logout in navigation
+        const navLogoutBtn = document.getElementById('navLogoutBtn');
+        if (navLogoutBtn) {
+            navLogoutBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                try {
+                    await logoutUser();
+                    showToast('Logged out successfully!', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                } catch (error) {
+                    showToast('Failed to log out', 'error');
+                }
+            });
+        }
 
         // Toast notification function
         function showToast(message, type = 'info') {

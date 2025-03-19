@@ -144,11 +144,10 @@
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                    <li><a href="features.html"><i class="fas fa-star"></i> Features</a></li>
-                    <li><a href="partners.html"><i class="fas fa-users"></i> Partners</a></li>
-                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
-                    <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="register.html"><i class="fas fa-user-plus"></i> Register</a></li>
+                    <li class="active"><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="#" id="navLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
             </nav>
             <div class="user-menu">
@@ -257,6 +256,23 @@
                     try {
                         await logoutUser();
                         window.location.href = 'login.html';
+                    } catch (error) {
+                        showToast('Failed to log out', 'error');
+                    }
+                });
+            }
+            
+            // Navigation logout handler
+            const navLogoutBtn = document.getElementById('navLogoutBtn');
+            if (navLogoutBtn) {
+                navLogoutBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    try {
+                        await logoutUser();
+                        showToast('Logged out successfully!', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
                     } catch (error) {
                         showToast('Failed to log out', 'error');
                     }

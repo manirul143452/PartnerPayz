@@ -385,7 +385,7 @@ footer {
     
     .nav-links {
         display: none;
-        position: absolute;
+    position: absolute;
         top: 100%;
         left: 0;
         width: 100%;
@@ -426,7 +426,7 @@ footer {
     }
     
     .mobile-menu-btn {
-        display: flex;
+    display: flex;
         align-items: center;
         justify-content: center;
         width: 40px;
@@ -444,7 +444,7 @@ footer {
     
     .mobile-menu-btn:before {
         content: '☰';
-        font-size: 1.5rem;
+    font-size: 1.5rem;
     }
     
     .mobile-menu-open .mobile-menu-btn:before {
@@ -460,7 +460,7 @@ footer {
     }
     
     .footer-bottom {
-        flex-direction: column;
+    flex-direction: column;
         gap: var(--spacing-md);
         text-align: center;
     }
@@ -512,4 +512,87 @@ footer {
 .px-2 { padding-left: var(--spacing-sm); padding-right: var(--spacing-sm); }
 .px-3 { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
 .px-4 { padding-left: var(--spacing-lg); padding-right: var(--spacing-lg); }
-.px-5 { padding-left: var(--spacing-xl); padding-right: var(--spacing-xl); } 
+.px-5 { padding-left: var(--spacing-xl); padding-right: var(--spacing-xl); }
+
+/* Main Header and Navigation */
+.main-header {
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
+    position: relative;
+    z-index: 100;
+}
+
+.main-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.main-nav li {
+    margin: 0 0.5rem;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.main-nav a i {
+    font-size: 1rem;
+}
+
+.main-nav li.active a {
+    background: linear-gradient(to right, rgba(106, 17, 203, 0.1), rgba(37, 117, 252, 0.1));
+    color: #6a11cb;
+}
+
+.main-nav a:hover {
+    background-color: #f5f5f5;
+}
+
+@media (max-width: 768px) {
+    .main-header .container {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    .logo {
+        margin-bottom: 1rem;
+    }
+    
+    .main-nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .main-nav li {
+        margin: 0.25rem;
+    }
+} 
