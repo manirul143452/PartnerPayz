@@ -666,26 +666,26 @@
                     <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
                 </ul>
             </nav>
-            <div class="user-menu">
+                <div class="user-menu">
                 <div class="notification-icon">
                     <i class="fas fa-bell"></i>
                     <span class="badge" id="notificationBadge">0</span>
-                </div>
+                    </div>
                 <div class="user-profile" id="userProfileMenu">
                     <img src="images/user-avatar.svg" alt="User Avatar" class="avatar">
                     <span class="username" id="usernameDisplay">User</span>
                     <i class="fas fa-chevron-down"></i>
                     <div class="dropdown-menu">
-                        <a href="#" id="profileLink"><i class="fas fa-user"></i> Profile</a>
+                        <a href="profile.html" id="profileLink"><i class="fas fa-user"></i> Profile</a>
                         <a href="#" id="settingsLink"><i class="fas fa-cog"></i> Settings</a>
                         <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </div>
                 </div>
                 <button class="mobile-menu-toggle">
-                    <i class="fas fa-bars"></i>
+                <i class="fas fa-bars"></i>
                 </button>
             </div>
-        </header>
+    </header>
 
         <main class="app-content">
             <!-- User Profile Section -->
@@ -711,91 +711,84 @@
             </section>
             
             <div class="dashboard-main">
-                <div class="dashboard-sidebar">
-                    <div class="user-profile">
-                        <div class="user-avatar">
-                            <img src="images/user-avatar.jpg" alt="User Avatar">
-                        </div>
-                        <h3>Rajiv Sharma</h3>
-                        <p>Diamond Member</p>
-                        <div class="user-badges">
-                            <span class="user-badge" data-badge-info="Master Investor: Generated 25% returns in 12 months">
-                                <i class="fas fa-chart-line"></i>
-                            </span>
-                            <span class="user-badge" data-badge-info="Financial Genius: Saved ₹12 lakh in 10 months">
-                                <i class="fas fa-piggy-bank"></i>
-                            </span>
-                            <span class="user-badge" data-badge-info="Top Contributor: Provided valuable advice to 50+ members">
-                                <i class="fas fa-award"></i>
-                            </span>
-                            <span class="user-badge" data-badge-info="Power Couple: Successfully matched with perfect partner">
-                                <i class="fas fa-heart"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <ul class="sidebar-menu">
-                        <li class="active">
-                            <a href="#"><i class="fas fa-th-large"></i> Overview</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fas fa-bell"></i> Anniversary Reminder</a>
-                            <span class="feature-badge">New</span>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fas fa-utensils"></i> Date Assistant</a>
-                            <span class="feature-badge">New</span>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fas fa-history"></i> Special Dates</a>
-                            <span class="feature-badge">New</span>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fas fa-heart"></i> Love Tracker</a>
-                            <span class="feature-badge">New</span>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fas fa-cog"></i> Settings</a>
-                        </li>
-                    </ul>
+        <div class="dashboard-sidebar">
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="images/user-avatar.jpg" alt="User Avatar" id="sidebarAvatar">
                 </div>
+                <h3 id="sidebarName">Loading...</h3>
+                <p id="membershipLevel">Member</p>
+                <p id="userIdDisplay" class="user-id">ID: <span></span></p>
+                <div class="user-badges">
+                    <span class="user-badge" data-badge-info="New User: Welcome to PartnerPayz!">
+                        <i class="fas fa-star"></i>
+                    </span>
+                    <!-- Dynamic badges will be added here by JavaScript -->
+                </div>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active">
+                    <a href="#"><i class="fas fa-th-large"></i> Overview</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-bell"></i> Anniversary Reminder</a>
+                    <span class="feature-badge">New</span>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-utensils"></i> Date Assistant</a>
+                    <span class="feature-badge">New</span>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-history"></i> Special Dates</a>
+                    <span class="feature-badge">New</span>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-heart"></i> Love Tracker</a>
+                    <span class="feature-badge">New</span>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                </li>
+            </ul>
+        </div>
 
-                <div class="dashboard-content">
-                    <div class="dashboard-header">
-                        <h2>Dashboard Overview</h2>
-                        <div class="date">
-                            <i class="far fa-calendar"></i>
-                            <span>Thursday, July 18, 2024</span>
-                        </div>
-                    </div>
+        <div class="dashboard-content">
+            <div class="dashboard-header">
+                <h2>Dashboard Overview</h2>
+                <div class="date">
+                    <i class="far fa-calendar"></i>
+                    <span>Thursday, July 18, 2024</span>
+                </div>
+            </div>
 
-                    <!-- Featured Banner -->
-                    <div class="featured-banner">
-                        <div class="banner-content">
-                            <h2>Celebrate Your Love Journey</h2>
-                            <p>Track special moments, plan perfect dates, and strengthen your bond with our new relationship features</p>
-                            <div class="banner-buttons">
-                                <a href="#" class="banner-btn anniversary-btn" data-section="anniversary-reminder-section">
-                                    <i class="fas fa-bell"></i> Set Anniversary Reminders
-                                </a>
-                                <a href="#" class="banner-btn date-plan-btn" data-section="date-assistant-section">
-                                    <i class="fas fa-utensils"></i> Plan Your Next Date
-                                </a>
-                                <a href="#" class="banner-btn timeline-btn" data-section="special-dates-section">
-                                    <i class="fas fa-history"></i> Create Memories
-                                </a>
-                                <a href="#" class="banner-btn love-meter-btn" data-section="love-tracker-section">
-                                    <i class="fas fa-heart"></i> Track Your Journey
-                                </a>
-                            </div>
-                        </div>
-                        <div class="banner-decoration">
-                            <div class="decoration-item heart-item" style="--delay: 0s;">❤️</div>
-                            <div class="decoration-item ring-item" style="--delay: 1s;">💍</div>
-                            <div class="decoration-item gift-item" style="--delay: 2s;">🎁</div>
-                            <div class="decoration-item sparkle-item" style="--delay: 3s;">✨</div>
-                            <div class="decoration-item star-item" style="--delay: 4s;">🌟</div>
-                        </div>
+            <!-- Featured Banner -->
+            <div class="featured-banner">
+                <div class="banner-content">
+                    <h2>Celebrate Your Love Journey</h2>
+                    <p>Track special moments, plan perfect dates, and strengthen your bond with our new relationship features</p>
+                    <div class="banner-buttons">
+                        <a href="#" class="banner-btn anniversary-btn" data-section="anniversary-reminder-section">
+                            <i class="fas fa-bell"></i> Set Anniversary Reminders
+                        </a>
+                        <a href="#" class="banner-btn date-plan-btn" data-section="date-assistant-section">
+                            <i class="fas fa-utensils"></i> Plan Your Next Date
+                        </a>
+                        <a href="#" class="banner-btn timeline-btn" data-section="special-dates-section">
+                            <i class="fas fa-history"></i> Create Memories
+                        </a>
+                        <a href="#" class="banner-btn love-meter-btn" data-section="love-tracker-section">
+                            <i class="fas fa-heart"></i> Track Your Journey
+                        </a>
                     </div>
+                </div>
+                <div class="banner-decoration">
+                    <div class="decoration-item heart-item" style="--delay: 0s;">❤️</div>
+                    <div class="decoration-item ring-item" style="--delay: 1s;">💍</div>
+                    <div class="decoration-item gift-item" style="--delay: 2s;">🎁</div>
+                    <div class="decoration-item sparkle-item" style="--delay: 3s;">✨</div>
+                    <div class="decoration-item star-item" style="--delay: 4s;">🌟</div>
+                </div>
+            </div>
 
                     <!-- Main Menu Frame -->
                     <div class="main-menu-frame">
@@ -804,66 +797,66 @@
                             <div class="menu-card" data-section="overview-section">
                                 <div class="menu-card-icon">
                                     <i class="fas fa-th-large"></i>
-                                </div>
+                        </div>
                                 <h3>Dashboard Overview</h3>
                                 <p>View your financial summary and partner updates</p>
                                 <div class="menu-card-overlay">
                                     <button class="btn">Go to Dashboard</button>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
                             <div class="menu-card new-feature" data-section="anniversary-reminder-section">
                                 <div class="menu-card-icon">
                                     <i class="fas fa-bell"></i>
-                                </div>
+                        </div>
                                 <h3>Anniversary Reminder</h3>
                                 <p>Never forget special moments and dates</p>
                                 <span class="new-tag">NEW</span>
                                 <div class="menu-card-overlay">
                                     <button class="btn">Set Reminders</button>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
                             <div class="menu-card new-feature" data-section="date-assistant-section">
                                 <div class="menu-card-icon">
                                     <i class="fas fa-utensils"></i>
-                                </div>
+                        </div>
                                 <h3>Date Assistant</h3>
                                 <p>Plan the perfect dates with personalized suggestions</p>
                                 <span class="new-tag">NEW</span>
                                 <div class="menu-card-overlay">
                                     <button class="btn">Plan Date</button>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
                             <div class="menu-card new-feature" data-section="special-dates-section">
                                 <div class="menu-card-icon">
                                     <i class="fas fa-history"></i>
-                                </div>
+                        </div>
                                 <h3>Special Dates</h3>
                                 <p>Track and celebrate your relationship milestones</p>
                                 <span class="new-tag">NEW</span>
                                 <div class="menu-card-overlay">
                                     <button class="btn">View Timeline</button>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
                             <div class="menu-card new-feature" data-section="love-tracker-section">
                                 <div class="menu-card-icon">
                                     <i class="fas fa-heart"></i>
-                                </div>
+                </div>
                                 <h3>Love Tracker</h3>
                                 <p>Measure and strengthen your relationship</p>
                                 <span class="new-tag">NEW</span>
                                 <div class="menu-card-overlay">
                                     <button class="btn">Check Status</button>
-                                </div>
+                        </div>
                             </div>
                             <div class="menu-card" data-section="settings-section">
                                 <div class="menu-card-icon">
                                     <i class="fas fa-cog"></i>
-                                </div>
+                            </div>
                                 <h3>Settings</h3>
                                 <p>Customize your account preferences</p>
                                 <div class="menu-card-overlay">
                                     <button class="btn">Manage Settings</button>
-                                </div>
+                        </div>
                             </div>
                         </div>
                     </div>
@@ -874,26 +867,26 @@
 
                     <!-- Toast Notifications Container -->
                     <div id="toastContainer" class="toast-container"></div>
-                </div>
-            </div>
+                        </div>
+                                </div>
         </main>
-    </div>
+                    </div>
 
     <footer>
         <div class="footer-content">
             <div class="footer-logo">
                 <img src="images/logo.svg" alt="PartnerPayz Logo">
                 <h3>PartnerPayz</h3>
-            </div>
+                        </div>
             <div class="footer-bottom">
                 <p>&copy; 2024 PartnerPayz. All rights reserved.</p>
                 <div class="social-icons">
                     <a href="https://github.com/manirul143452"><i class="fab fa-github"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
                     <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-        </div>
+                            </div>
+                                </div>
+                            </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -959,13 +952,36 @@
                 profileJoined.textContent = `Member since: ${joinDate.toLocaleDateString()}`;
             }
             
-            // Also update sidebar profile if it exists
-            const sidebarUserName = document.querySelector('.dashboard-sidebar .user-profile h3');
+            // Update sidebar profile
+            const sidebarUserName = document.getElementById('sidebarName');
+            const userIdElement = document.querySelector('#userIdDisplay span');
+            const membershipLevel = document.getElementById('membershipLevel');
+            const sidebarAvatar = document.getElementById('sidebarAvatar');
+            
             if (sidebarUserName) {
                 sidebarUserName.textContent = user.name || user.email.split('@')[0];
             }
+            
+            // Display user ID
+            if (userIdElement) {
+                userIdElement.textContent = user.id || 'N/A';
+            }
+            
+            // Set membership level based on account age
+            if (membershipLevel && user.createdAt) {
+                const accountAge = new Date() - new Date(user.createdAt);
+                const daysSinceCreation = Math.floor(accountAge / (1000 * 60 * 60 * 24));
+                
+                if (daysSinceCreation > 90) {
+                    membershipLevel.textContent = 'Gold Member';
+                } else if (daysSinceCreation > 30) {
+                    membershipLevel.textContent = 'Silver Member';
+                } else {
+                    membershipLevel.textContent = 'New Member';
+                }
+            }
 
-            // Update user avatar if it exists with a default or gravatar
+            // Update all user avatars
             updateUserAvatar(user.email);
         }
 
