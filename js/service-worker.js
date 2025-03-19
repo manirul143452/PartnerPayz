@@ -21,49 +21,102 @@ messaging.onBackgroundMessage((payload) => {
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
         body: payload.notification.body,
-        icon: '/images/logo.png',
+        icon: payload.notification.image || '/images/logo.png',
         badge: '/images/logo.png',
-        data: payload.data,
-        actions: payload.data.actions || []
+        image: payload.notification.image,
+        data: payload.data || {},
+        tag: payload.data?.notification_name || 'default_notification',
+        actions: getNotificationActions(payload.data?.notification_name)
     };
 
     return self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
+// Get appropriate actions based on notification type
+function getNotificationActions(notificationType) {
+    switch (notificationType) {
+        case 'new_match':
+            return [
+                { action: 'view_match', title: 'View Match' },
+                { action: 'dismiss', title: 'Dismiss' }
+            ];
+        case 'new_message':
+            return [
+                { action: 'reply', title: 'Reply' },
+                { action: 'view_conversation', title: 'View' }
+            ];
+        case 'payment_received':
+            return [
+                { action: 'view_transaction', title: 'View Details' }
+            ];
+        case 'anniversary_reminder':
+            return [
+                { action: 'view_calendar', title: 'Open Calendar' },
+                { action: 'send_message', title: 'Send Message' }
+            ];
+        default:
+            return [];
+    }
+}
+
 // Handle notification click
 self.addEventListener('notificationclick', (event) => {
     event.notification.close();
+    
+    const data = event.notification.data || {};
+    const notificationType = data.notification_name || 'default';
 
     // Handle notification actions
     if (event.action) {
-        // Handle specific actions based on the notification
-        const action = event.action;
-        const data = event.notification.data;
-
-        // Example: Handle different notification types
-        switch (action) {
-            case 'view_transaction':
-                // Open transaction details
-                event.waitUntil(
-                    clients.openWindow(`/dashboard.html?transaction=${data.transactionId}`)
-                );
-                break;
-            case 'view_message':
-                // Open messages
-                event.waitUntil(
-                    clients.openWindow('/messages.html')
-                );
-                break;
-            default:
-                // Default action: open dashboard
-                event.waitUntil(
-                    clients.openWindow('/dashboard.html')
-                );
-        }
+        handleNotificationAction(event.action, data);
     } else {
-        // Default click action: open dashboard
-        event.waitUntil(
-            clients.openWindow('/dashboard.html')
-        );
+        // Default click based on notification type
+        handleNotificationType(notificationType, data);
     }
-}); 
+});
+
+// Handle specific actions
+function handleNotificationAction(action, data) {
+    switch (action) {
+        case 'view_match':
+            clients.openWindow(`/partners.html?match=${data.matchId}`);
+            break;
+        case 'reply':
+            clients.openWindow(`/messages.html?conversation=${data.conversationId}&reply=true`);
+            break;
+        case 'view_conversation':
+            clients.openWindow(`/messages.html?conversation=${data.conversationId}`);
+            break;
+        case 'view_transaction':
+            clients.openWindow(`/dashboard.html?transaction=${data.transactionId}`);
+            break;
+        case 'view_calendar':
+            clients.openWindow(`/dashboard.html?section=calendar&date=${data.date}`);
+            break;
+        case 'send_message':
+            clients.openWindow(`/messages.html?to=${data.partnerId}&template=anniversary`);
+            break;
+        default:
+            clients.openWindow('/dashboard.html');
+    }
+}
+
+// Handle notification type
+function handleNotificationType(type, data) {
+    switch (type) {
+        case 'new_match':
+            clients.openWindow(`/partners.html?section=matches`);
+            break;
+        case 'new_message':
+            clients.openWindow(`/messages.html`);
+            break;
+        case 'payment_received':
+            clients.openWindow(`/dashboard.html?section=transactions`);
+            break;
+        case 'anniversary_reminder':
+            clients.openWindow(`/dashboard.html?section=calendar`);
+            break;
+        default:
+            clients.openWindow('/dashboard.html');
+    }
+} 

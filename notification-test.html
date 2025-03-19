@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Test - PartnerPayz</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .notification-tester {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            background: linear-gradient(145deg, #ffffff, #f5f8ff);
+        }
+        
+        .notification-tester h1 {
+            color: var(--primary-color, #4a6cf7);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        
+        .form-group textarea {
+            min-height: 80px;
+        }
+        
+        .btn-test {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #4a6cf7, #6a3ef7);
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-test:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 108, 247, 0.4);
+        }
+        
+        .status-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            display: none;
+        }
+        
+        .status-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .status-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="notification-tester">
+        <h1>Notification Tester</h1>
+        <form id="notificationForm">
+            <div class="form-group">
+                <label for="notificationTitle">Notification Title</label>
+                <input type="text" id="notificationTitle" required placeholder="Enter title">
+            </div>
+            
+            <div class="form-group">
+                <label for="notificationText">Notification Text</label>
+                <textarea id="notificationText" required placeholder="Enter notification message"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="notificationImage">Notification Image URL (optional)</label>
+                <input type="text" id="notificationImage" placeholder="Enter image URL or leave blank for default">
+            </div>
+            
+            <div class="form-group">
+                <label for="notificationName">Notification Name (optional)</label>
+                <input type="text" id="notificationName" placeholder="Enter custom notification identifier">
+            </div>
+            
+            <button type="submit" class="btn-test">Send Test Notification</button>
+        </form>
+        
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+
+    <script type="module">
+        import { requestNotificationPermission, sendNotification } from './js/firebase-config.js';
+        
+        // Request permission on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = await requestNotificationPermission();
+            if (!token) {
+                showStatus('Notification permission not granted. Please enable notifications.', 'error');
+            }
+        });
+        
+        // Handle form submission
+        document.getElementById('notificationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('notificationTitle').value;
+            const text = document.getElementById('notificationText').value;
+            const image = document.getElementById('notificationImage').value || '/images/logo.png';
+            const name = document.getElementById('notificationName').value || 'test_notification';
+            
+            try {
+                const result = await sendNotification(title, text, image, name);
+                
+                if (result.success) {
+                    showStatus('Notification sent successfully!', 'success');
+                } else {
+                    showStatus(`Error: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                showStatus(`Error: ${error.message}`, 'error');
+            }
+        });
+        
+        // Show status message
+        function showStatus(message, type) {
+            const statusElement = document.getElementById('statusMessage');
+            statusElement.textContent = message;
+            statusElement.className = 'status-message';
+            
+            if (type) {
+                statusElement.classList.add(type);
+            }
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                statusElement.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html> 

@@ -38,6 +38,36 @@ async function requestNotificationPermission() {
     }
 }
 
+// Function to send a notification programmatically
+async function sendNotification(title, text, imageUrl = '/images/logo.png', notificationName = 'default_notification') {
+    try {
+        // This would typically be sent to your backend to trigger a Firebase Cloud Message
+        const notificationData = {
+            title: title,
+            body: text,
+            image: imageUrl,
+            data: {
+                notification_name: notificationName
+            }
+        };
+        
+        console.log('Sending notification:', notificationData);
+        
+        // For testing: display notification locally
+        // In production: you would send this data to your server
+        const notification = new Notification(title, {
+            body: text,
+            icon: imageUrl,
+            data: { notification_name: notificationName }
+        });
+        
+        return { success: true };
+    } catch (error) {
+        console.error('Error sending notification:', error);
+        return { success: false, error: error.message };
+    }
+}
+
 // Handle incoming messages
 onMessage(messaging, (payload) => {
     console.log('Message received:', payload);
@@ -45,8 +75,9 @@ onMessage(messaging, (payload) => {
     // Create and show notification
     const notification = new Notification(payload.notification.title, {
         body: payload.notification.body,
-        icon: '/images/logo.png'
+        icon: payload.notification.image || '/images/logo.png',
+        data: payload.data
     });
 });
 
-export { auth, messaging, requestNotificationPermission }; 
+export { auth, messaging, requestNotificationPermission, sendNotification }; 
