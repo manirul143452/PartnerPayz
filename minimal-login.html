@@ -4,310 +4,406 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - PartnerPayz</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        
-        .login-container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        .minimal-container {
+            max-width: 450px;
+            margin: 40px auto;
             padding: 30px;
-            width: 350px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
         }
         
-        h1 {
-            color: #1877f2;
+        .minimal-logo {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
-        .instructions {
-            background-color: #e7f3ff;
-            border-left: 4px solid #1877f2;
-            padding: 10px;
-            margin-bottom: 20px;
-            font-size: 14px;
+        .minimal-logo img {
+            height: 60px;
         }
         
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        
-        button {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-        
-        .login-btn {
-            background-color: #1877f2;
-            color: white;
-        }
-        
-        .test-btn {
-            background-color: #42b72a;
-            color: white;
-        }
-        
-        .message {
-            text-align: center;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
+        .debug-panel {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            max-height: 400px;
+            overflow: auto;
+            z-index: 9999;
+            font-family: monospace;
+            font-size: 12px;
             display: none;
         }
         
-        .success {
-            background-color: #d4edda;
-            color: #155724;
+        .debug-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #6a11cb;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 9999;
         }
         
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
+        .debug-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         
-        .status {
-            background-color: #f1f1f1;
-            padding: 10px;
-            margin-top: 20px;
-            font-size: 14px;
-            border-radius: 5px;
-            height: 100px;
-            overflow-y: auto;
+        .debug-actions button {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .debug-actions button:hover {
+            background: #555;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h1>PartnerPayz Login</h1>
+    <div class="app-container">
+        <header class="app-header minimal-header">
+            <div class="logo-container">
+                <a href="index.html">
+                    <img src="images/logo.svg" alt="PartnerPayz" class="logo">
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </header>
+
+        <main class="minimal-login-content">
+            <div class="minimal-container">
+                <div class="minimal-logo">
+                    <img src="images/logo.svg" alt="PartnerPayz Logo">
+                </div>
+                
+                <h1 class="text-center">Sign In</h1>
+                <p class="text-center">Please enter your credentials to continue</p>
+                
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                            <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">Remember me</label>
+                        </div>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    
+                    <div class="other-options">
+                        <p>Don't have an account? <a href="register.html">Register</a></p>
+                    </div>
+                </form>
+                
+                <div class="or-divider">
+                    <span>OR</span>
+                </div>
+                
+                <button id="googleLoginBtn" class="btn btn-outline btn-block">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+                
+                <div id="testUserBtn" class="test-user-btn">
+                    <span>Quick Login for Testing</span>
+                </div>
+            </div>
+        </main>
         
-        <div class="instructions">
-            <p><strong>Instructions:</strong></p>
-            <p>1. Click the "Login as Test User" button below for instant login</p>
-            <p>2. Or enter email: <strong>test@example.com</strong> and password: <strong>password123</strong></p>
-        </div>
-        
-        <input type="email" id="email" placeholder="Email" value="test@example.com">
-        <input type="password" id="password" placeholder="Password" value="password123">
-        
-        <button class="login-btn" id="loginBtn">Login</button>
-        <button class="test-btn" id="testLoginBtn">Login as Test User</button>
-        
-        <div id="message" class="message"></div>
-        
-        <div class="status" id="status">
-            <div>Status: Ready to login</div>
+        <footer class="minimal-footer">
+            <div class="footer-content">
+                <div class="footer-bottom">
+                    <p>&copy; 2024 PartnerPayz. All rights reserved.</p>
+                    <div class="social-icons">
+                        <a href="https://github.com/manirul143452"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- Debug Panel -->
+    <div class="debug-button" id="debugButton">
+        Debug Panel
+    </div>
+    
+    <div class="debug-panel" id="debugPanel">
+        <h3 style="margin-top: 0; color: white;">Login Debug Panel</h3>
+        <div id="debugOutput" style="margin-bottom: 10px;"></div>
+        <div class="debug-actions">
+            <button id="checkLocalStorageBtn">Check localStorage</button>
+            <button id="createTestUserBtn" style="background: #1877f2;">Create Test User</button>
+            <button id="clearDataBtn" style="background: #dc3545;">Clear Data</button>
         </div>
     </div>
 
-    <script>
-        // Get elements
+    <script type="module">
+        // Import storage debug utilities
+        import { verifyLocalStorage, createTestUser, displayAllUsers, clearAllData } from './js/local-storage-debug.js';
+        
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
-        const loginBtn = document.getElementById('loginBtn');
-        const testLoginBtn = document.getElementById('testLoginBtn');
-        const messageDiv = document.getElementById('message');
-        const statusDiv = document.getElementById('status');
+        const togglePasswordBtn = document.querySelector('.toggle-password');
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+        const testUserBtn = document.getElementById('testUserBtn');
+        const rememberCheckbox = document.getElementById('remember');
         
-        // Setup on page load
+        // Debug Elements
+        const debugButton = document.getElementById('debugButton');
+        const debugPanel = document.getElementById('debugPanel');
+        const debugOutput = document.getElementById('debugOutput');
+        const checkLocalStorageBtn = document.getElementById('checkLocalStorageBtn');
+        const createTestUserBtn = document.getElementById('createTestUserBtn');
+        const clearDataBtn = document.getElementById('clearDataBtn');
+        
+        // Initialize when DOM loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Setup localStorage
-            try {
-                // Initialize users if needed
-                if (!localStorage.getItem('users')) {
-                    localStorage.setItem('users', JSON.stringify([]));
-                    log('Initialized users storage');
-                }
-                
-                // Create test user
-                createTestUser();
-                
-                // Check for existing login
-                checkExistingLogin();
-            } catch (error) {
-                showError('Setup error: ' + error.message);
-                log('Setup error: ' + error.message);
-            }
-            
-            // Add event listeners
-            loginBtn.addEventListener('click', handleLogin);
-            testLoginBtn.addEventListener('click', handleTestLogin);
+            setupEventListeners();
+            checkAutoLogin();
+            verifyLocalStorage();
         });
         
-        // Handle login
-        function handleLogin() {
-            try {
-                // Get values
-                const email = emailInput.value.trim();
-                const password = passwordInput.value;
-                
-                // Validate
-                if (!email || !password) {
-                    throw new Error('Email and password are required');
-                }
-                
-                // Disable button
-                loginBtn.disabled = true;
-                loginBtn.textContent = 'Logging in...';
-                
-                log('Attempting login: ' + email);
-                
-                // Get users
-                const users = getUsers();
-                
-                // Find user
-                const user = users.find(u => 
-                    u.email.toLowerCase() === email.toLowerCase() && 
-                    u.password === password
-                );
-                
-                if (user) {
-                    // Login successful
-                    loginSuccess(user);
-                } else {
-                    // Login failed
-                    throw new Error('Invalid email or password');
-                }
-            } catch (error) {
-                // Show error
-                showError(error.message);
-                log('Login error: ' + error.message);
-                
-                // Re-enable button
-                loginBtn.disabled = false;
-                loginBtn.textContent = 'Login';
+        // Set up event listeners
+        function setupEventListeners() {
+            // Login form submission
+            if (loginForm) {
+                loginForm.addEventListener('submit', handleLogin);
             }
-        }
-        
-        // Handle test login
-        function handleTestLogin() {
-            try {
-                // Disable button
-                testLoginBtn.disabled = true;
-                testLoginBtn.textContent = 'Logging in...';
-                
-                log('Using test login');
-                
-                // Get test user
-                const users = getUsers();
-                const testUser = users.find(u => u.email === 'test@example.com');
-                
-                if (testUser) {
-                    // Login successful
-                    loginSuccess(testUser);
-                } else {
-                    // Create and login
-                    const newTestUser = createTestUser();
-                    loginSuccess(newTestUser);
-                }
-            } catch (error) {
-                // Show error
-                showError(error.message);
-                log('Test login error: ' + error.message);
-                
-                // Re-enable button
-                testLoginBtn.disabled = false;
-                testLoginBtn.textContent = 'Login as Test User';
-            }
-        }
-        
-        // Login success handler
-        function loginSuccess(user) {
-            // Update last login
-            updateUserLastLogin(user);
             
-            // Set as current user
-            setCurrentUser(user.id);
+            // Toggle password visibility
+            if (togglePasswordBtn) {
+                togglePasswordBtn.addEventListener('click', togglePasswordVisibility);
+            }
+            
+            // Google login
+            if (googleLoginBtn) {
+                googleLoginBtn.addEventListener('click', handleGoogleLogin);
+            }
+            
+            // Test user login
+            if (testUserBtn) {
+                testUserBtn.addEventListener('click', loginWithTestUser);
+            }
+            
+            // Mobile menu toggle
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    document.body.classList.toggle('mobile-menu-open');
+                });
+            }
+            
+            // Debug panel toggle
+            if (debugButton) {
+                debugButton.addEventListener('click', function() {
+                    debugPanel.style.display = debugPanel.style.display === 'none' ? 'block' : 'none';
+                });
+            }
+            
+            // Debug buttons
+            if (checkLocalStorageBtn) {
+                checkLocalStorageBtn.addEventListener('click', debugCheckLocalStorage);
+            }
+            
+            if (createTestUserBtn) {
+                createTestUserBtn.addEventListener('click', debugCreateTestUser);
+            }
+            
+            if (clearDataBtn) {
+                clearDataBtn.addEventListener('click', debugClearData);
+            }
+        }
+        
+        // Check if user is already logged in
+        function checkAutoLogin() {
+            const currentUserId = localStorage.getItem('currentUserId');
+            
+            if (currentUserId) {
+                const users = getUsers();
+                const currentUser = users.find(user => user.id === currentUserId);
+                
+                if (currentUser) {
+                    // User is already logged in, redirect to dashboard
+                    showToast('You are already logged in! Redirecting...', 'info');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                }
+            }
+        }
+        
+        // Handle login form submission
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            const remember = rememberCheckbox.checked;
+            
+            if (!email || !password) {
+                showToast('Please enter both email and password', 'error');
+                return;
+            }
+            
+            // Get users from localStorage
+            const users = getUsers();
+            
+            // Find user with matching email
+            const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+            
+            if (!user) {
+                showToast('User not found. Please check your email or register', 'error');
+                return;
+            }
+            
+            // Check password
+            if (user.password !== password) {
+                showToast('Incorrect password. Please try again', 'error');
+                return;
+            }
+            
+            // Update last login
+            user.lastLogin = new Date().toISOString();
+            
+            // Save user changes
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Set current user
+            localStorage.setItem('currentUserId', user.id);
             
             // Show success message
-            showSuccess('Login successful! Redirecting...');
-            log('Login successful: ' + user.email);
+            showToast('Login successful! Redirecting...', 'success');
             
-            // Redirect
-            setTimeout(function() {
+            // Redirect to dashboard
+            setTimeout(() => {
                 window.location.href = 'dashboard.html';
             }, 1500);
         }
         
-        // Create test user if doesn't exist
-        function createTestUser() {
-            try {
+        // Handle Google login (simulated)
+        function handleGoogleLogin() {
+            // Show loading
+            googleLoginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+            googleLoginBtn.disabled = true;
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // Generate unique ID for Google user
+                const googleUserId = 'google_' + Date.now();
+                
+                // Create Google user
+                const googleUser = {
+                    id: googleUserId,
+                    email: 'demo.google@example.com',
+                    password: 'google_auth', // This would normally not be needed with OAuth
+                    name: 'Google User',
+                    createdAt: new Date().toISOString(),
+                    lastLogin: new Date().toISOString(),
+                    authProvider: 'google'
+                };
+                
+                // Get existing users
                 const users = getUsers();
                 
-                // Check if test user exists
-                let testUser = users.find(u => u.email === 'test@example.com');
+                // Check if this Google account already exists
+                const existingUser = users.find(u => 
+                    u.email === googleUser.email && u.authProvider === 'google'
+                );
                 
-                if (!testUser) {
-                    // Create new test user
-                    testUser = {
-                        id: 'test_user_' + Date.now(),
-                        email: 'test@example.com',
-                        password: 'password123',
-                        name: 'Test User',
-                        createdAt: new Date().toISOString(),
-                        lastLogin: new Date().toISOString()
-                    };
-                    
-                    // Add to users
-                    users.push(testUser);
-                    saveUsers(users);
-                    
-                    log('Test user created');
+                if (existingUser) {
+                    // Update last login
+                    existingUser.lastLogin = new Date().toISOString();
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('currentUserId', existingUser.id);
                 } else {
-                    log('Test user already exists');
+                    // Add new Google user
+                    users.push(googleUser);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('currentUserId', googleUserId);
                 }
                 
-                return testUser;
-            } catch (error) {
-                log('Error creating test user: ' + error.message);
-                return null;
-            }
+                // Show success message
+                showToast('Google login successful! Redirecting...', 'success');
+                
+                // Redirect to dashboard
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            }, 1500);
         }
         
-        // Check for existing login
-        function checkExistingLogin() {
-            try {
-                const currentUserId = getCurrentUserId();
+        // Toggle password visibility
+        function togglePasswordVisibility() {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            
+            const icon = togglePasswordBtn.querySelector('i');
+            icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+        }
+        
+        // Login with test user
+        function loginWithTestUser() {
+            const testUser = createTestUser();
+            
+            if (testUser) {
+                showToast('Test user created and logged in! Redirecting...', 'success');
                 
-                if (currentUserId) {
-                    const users = getUsers();
-                    const user = users.find(u => u.id === currentUserId);
-                    
-                    if (user) {
-                        log('Existing login found: ' + user.email);
-                        showSuccess('You are already logged in. Redirecting...');
-                        
-                        setTimeout(function() {
-                            window.location.href = 'dashboard.html';
-                        }, 1500);
-                    } else {
-                        log('Invalid user ID, removing');
-                        removeCurrentUser();
-                    }
-                }
-            } catch (error) {
-                log('Error checking login: ' + error.message);
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            } else {
+                showToast('Error creating test user', 'error');
             }
         }
         
@@ -317,70 +413,89 @@
                 const usersJson = localStorage.getItem('users');
                 return usersJson ? JSON.parse(usersJson) : [];
             } catch (error) {
-                log('Error getting users: ' + error.message);
+                console.error('Error getting users:', error);
                 return [];
             }
         }
         
-        // Save users to localStorage
-        function saveUsers(users) {
-            try {
-                localStorage.setItem('users', JSON.stringify(users));
-            } catch (error) {
-                log('Error saving users: ' + error.message);
-            }
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icon = document.createElement('i');
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 
+                           type === 'error' ? 'fas fa-exclamation-circle' : 
+                           type === 'warning' ? 'fas fa-exclamation-triangle' :
+                           'fas fa-info-circle';
+            
+            const content = document.createElement('span');
+            content.textContent = message;
+            
+            toast.appendChild(icon);
+            toast.appendChild(content);
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toastContainer.removeChild(toast);
+                }, 300);
+            }, 3000);
         }
         
-        // Update user's last login
-        function updateUserLastLogin(user) {
-            try {
-                const users = getUsers();
-                const index = users.findIndex(u => u.id === user.id);
-                
-                if (index !== -1) {
-                    users[index].lastLogin = new Date().toISOString();
-                    saveUsers(users);
+        // Debug: Check localStorage
+        function debugCheckLocalStorage() {
+            const isWorking = verifyLocalStorage();
+            debugLog(`localStorage test: ${isWorking ? 'PASSED' : 'FAILED'}`);
+            
+            const users = getUsers();
+            debugLog(`Found ${users.length} users in localStorage`);
+            
+            const currentUserId = localStorage.getItem('currentUserId');
+            debugLog(`Current user ID: ${currentUserId || 'None'}`);
+            
+            if (currentUserId) {
+                const currentUser = users.find(user => user.id === currentUserId);
+                if (currentUser) {
+                    debugLog(`Current user: ${currentUser.email}`);
+                } else {
+                    debugLog('WARNING: Current user ID is invalid!');
                 }
-            } catch (error) {
-                log('Error updating last login: ' + error.message);
+            }
+            
+            displayAllUsers();
+        }
+        
+        // Debug: Create test user
+        function debugCreateTestUser() {
+            const testUser = createTestUser();
+            if (testUser) {
+                debugLog(`Created test user: ${testUser.email}`);
+                debugLog('Test user is now logged in');
+            } else {
+                debugLog('Failed to create test user');
             }
         }
         
-        // Get current user ID
-        function getCurrentUserId() {
-            return localStorage.getItem('currentUserId');
+        // Debug: Clear data
+        function debugClearData() {
+            clearAllData();
+            debugLog('All application data cleared');
         }
         
-        // Set current user
-        function setCurrentUser(userId) {
-            localStorage.setItem('currentUserId', userId);
-        }
-        
-        // Remove current user
-        function removeCurrentUser() {
-            localStorage.removeItem('currentUserId');
-        }
-        
-        // Show success message
-        function showSuccess(message) {
-            messageDiv.textContent = message;
-            messageDiv.className = 'message success';
-            messageDiv.style.display = 'block';
-        }
-        
-        // Show error message
-        function showError(message) {
-            messageDiv.textContent = message;
-            messageDiv.className = 'message error';
-            messageDiv.style.display = 'block';
-        }
-        
-        // Log status message
-        function log(message) {
+        // Debug: Log to debug panel
+        function debugLog(message) {
             const timestamp = new Date().toLocaleTimeString();
             const logItem = document.createElement('div');
-            logItem.textContent = `[${timestamp}] ${message}`;
-            statusDiv.prepend(logItem);
+            logItem.innerHTML = `<span style="color:#888;">[${timestamp}]</span> ${message}`;
+            debugOutput.appendChild(logItem);
             console.log(`[${timestamp}] ${message}`);
         }
     </script>

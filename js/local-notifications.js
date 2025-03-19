@@ -1,261 +1,407 @@
 /**
- * PartnerPayz Local Notifications Module
- * Handles browser notifications and notification history using localStorage
+ * PartnerPayz Notifications Module
+ * Handles browser notifications and the notification center
  */
 
-// Storage keys
-const NOTIFICATIONS_STORAGE_KEY = 'partnerpayz_notifications';
+// Constants for storage
+const NOTIFICATIONS_KEY = 'notifications';
 
-// Check if notifications are supported
-export function areNotificationsSupported() {
-    return 'Notification' in window;
-}
+// Initialize on module load
+document.addEventListener('DOMContentLoaded', () => {
+    // Request notification permission if not granted
+    requestNotificationPermission();
+    
+    // Update notification badge on load
+    updateNotificationBadge();
+    
+    // Setup notification icon click handler
+    const notificationIcon = document.getElementById('notificationIcon');
+    if (notificationIcon) {
+        notificationIcon.addEventListener('click', () => {
+            window.location.href = 'notifications.html';
+        });
+    }
+});
 
-// Request notification permission
-export async function requestNotificationPermission() {
-    if (!areNotificationsSupported()) {
-        console.warn('Notifications are not supported in this browser');
-        return false;
-    }
-    
-    if (Notification.permission === 'granted') {
-        return true;
-    }
-    
-    if (Notification.permission !== 'denied') {
-        const permission = await Notification.requestPermission();
-        return permission === 'granted';
-    }
-    
-    return false;
-}
-
-// Get notification permission status
-export function getNotificationPermissionStatus() {
-    if (!areNotificationsSupported()) {
-        return 'unsupported';
-    }
-    
-    return Notification.permission;
-}
-
-// Send a notification
-export async function sendNotification(title, options = {}) {
-    // Default options
-    const defaultOptions = {
-        body: '',
-        icon: 'images/logo.png',
-        badge: 'images/notification-badge.png',
-        timestamp: Date.now(),
-        requireInteraction: false,
-        data: {}
-    };
-    
-    const mergedOptions = { ...defaultOptions, ...options };
-    
-    // Check if notifications are supported and permission is granted
-    if (!areNotificationsSupported()) {
-        console.warn('Notifications are not supported in this browser');
-        
-        // Save to history even if not supported
-        saveNotificationToHistory(title, mergedOptions);
-        return null;
-    }
-    
-    // If permission not granted, try to request it
-    if (Notification.permission !== 'granted') {
-        const permissionGranted = await requestNotificationPermission();
-        if (!permissionGranted) {
-            console.warn('Notification permission not granted');
-            
-            // Save to history even if permission not granted
-            saveNotificationToHistory(title, mergedOptions);
-            return null;
+/**
+ * Request permission to show browser notifications
+ */
+export function requestNotificationPermission() {
+    if ('Notification' in window) {
+        if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    console.log('Notification permission granted');
+                    
+                    // Send welcome notification
+                    const currentUser = getCurrentUser();
+                    if (currentUser) {
+                        sendBrowserNotification(
+                            'Welcome to PartnerPayz',
+                            `Hi ${currentUser.name || 'there'}! You'll now receive notifications.`,
+                            'info'
+                        );
+                    }
+                }
+            });
         }
     }
+}
+
+/**
+ * Send browser notification and store in history
+ * @param {string} title - Notification title
+ * @param {string} message - Notification message
+ * @param {string} type - Notification type: 'info', 'success', 'warning', 'error'
+ * @param {Object} options - Additional options
+ */
+export function sendNotification(title, message, type = 'info', options = {}) {
+    // Add to notification history
+    addNotificationToHistory(title, message, type);
     
-    try {
-        // Create and show notification
-        const notification = new Notification(title, mergedOptions);
-        
-        // Add event listeners
-        notification.onclick = function(event) {
-            if (mergedOptions.data && mergedOptions.data.url) {
-                window.open(mergedOptions.data.url, '_blank');
-            }
-            
-            notification.close();
-            
-            // Call custom click handler if provided
-            if (mergedOptions.onClick && typeof mergedOptions.onClick === 'function') {
-                mergedOptions.onClick(event);
-            }
-        };
-        
-        // Save to history
-        saveNotificationToHistory(title, mergedOptions);
-        
-        return notification;
-    } catch (error) {
-        console.error('Error showing notification:', error);
-        
-        // Save to history even if showing notification failed
-        saveNotificationToHistory(title, mergedOptions);
-        return null;
+    // Send browser notification if permission granted
+    if (Notification.permission === 'granted') {
+        sendBrowserNotification(title, message, type);
+    }
+    
+    // Update badge count
+    updateNotificationBadge();
+    
+    // Show toast notification if specified
+    if (options.showToast) {
+        showToast(message, type);
     }
 }
 
-// Save notification to history
-function saveNotificationToHistory(title, options) {
-    try {
-        const notifications = getNotificationHistory();
+/**
+ * Send a browser notification
+ * @param {string} title - Notification title
+ * @param {string} body - Notification body
+ * @param {string} type - Notification type
+ */
+function sendBrowserNotification(title, body, type) {
+    if (!('Notification' in window)) return;
+    if (Notification.permission !== 'granted') return;
+    
+    // Set icon based on type
+    let icon = 'images/logo.svg';
+    
+    // Create notification
+    const notification = new Notification(title, {
+        body: body,
+        icon: icon,
+        tag: 'partnerpayz-notification'
+    });
+    
+    // Handle notification click
+    notification.onclick = () => {
+        window.focus();
+        notification.close();
+        window.location.href = 'notifications.html';
+    };
+    
+    // Auto close after 5 seconds
+    setTimeout(() => {
+        notification.close();
+    }, 5000);
+}
+
+/**
+ * Add notification to history in localStorage
+ * @param {string} title - Notification title
+ * @param {string} message - Notification message
+ * @param {string} type - Notification type
+ */
+function addNotificationToHistory(title, message, type) {
+    const currentUser = getCurrentUser();
+    if (!currentUser) return;
+    
+    // Get existing notifications
+    const notifications = getNotifications();
+    
+    // Create notification object
+    const notification = {
+        id: 'notif_' + Date.now(),
+        userId: currentUser.id,
+        title: title,
+        message: message,
+        timestamp: new Date().toISOString(),
+        read: false,
+        type: type
+    };
+    
+    // Add to notifications list
+    notifications.unshift(notification); // Add to beginning of array
+    
+    // Limit to 50 notifications per user
+    const userNotifications = notifications.filter(n => n.userId === currentUser.id);
+    if (userNotifications.length > 50) {
+        // Get IDs of notifications to keep
+        const idsToKeep = userNotifications
+            .slice(0, 50)
+            .map(n => n.id);
+            
+        // Filter all notifications to keep only those IDs for this user, and all other users' notifications
+        const trimmedNotifications = notifications.filter(n => 
+            n.userId !== currentUser.id || idsToKeep.includes(n.id)
+        );
         
-        // Create notification history item
-        const notificationItem = {
-            id: generateNotificationId(),
-            title,
-            body: options.body || '',
-            timestamp: options.timestamp || Date.now(),
-            read: false,
-            type: options.data?.type || 'general',
-            url: options.data?.url || '',
-            icon: options.icon || 'images/logo.png'
-        };
-        
-        // Add to history (at the beginning)
-        notifications.unshift(notificationItem);
-        
-        // Keep only the last 50 notifications
-        const trimmedNotifications = notifications.slice(0, 50);
-        
-        // Save to localStorage
-        localStorage.setItem(NOTIFICATIONS_STORAGE_KEY, JSON.stringify(trimmedNotifications));
-        
-        // Update badge count if needed
-        updateNotificationBadge();
-        
-        return notificationItem;
-    } catch (error) {
-        console.error('Error saving notification to history:', error);
-        return null;
+        // Save trimmed list
+        localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(trimmedNotifications));
+    } else {
+        // Save full list
+        localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifications));
     }
 }
 
-// Get notification history
-export function getNotificationHistory() {
+/**
+ * Get notifications from localStorage
+ * @returns {Array} Array of notification objects
+ */
+export function getNotifications() {
     try {
-        const notificationsJson = localStorage.getItem(NOTIFICATIONS_STORAGE_KEY);
+        const notificationsJson = localStorage.getItem(NOTIFICATIONS_KEY);
         return notificationsJson ? JSON.parse(notificationsJson) : [];
     } catch (error) {
-        console.error('Error getting notification history:', error);
+        console.error('Error getting notifications:', error);
         return [];
     }
 }
 
-// Mark notification as read
-export function markNotificationAsRead(notificationId) {
-    try {
-        const notifications = getNotificationHistory();
-        const index = notifications.findIndex(n => n.id === notificationId);
-        
-        if (index !== -1) {
-            notifications[index].read = true;
-            localStorage.setItem(NOTIFICATIONS_STORAGE_KEY, JSON.stringify(notifications));
-            
-            // Update badge count
-            updateNotificationBadge();
-            
-            return true;
-        }
-        
-        return false;
-    } catch (error) {
-        console.error('Error marking notification as read:', error);
-        return false;
-    }
+/**
+ * Get unread notification count for current user
+ * @returns {number} Count of unread notifications
+ */
+export function getUnreadCount() {
+    const currentUser = getCurrentUser();
+    if (!currentUser) return 0;
+    
+    const notifications = getNotifications();
+    return notifications.filter(n => 
+        n.userId === currentUser.id && !n.read
+    ).length;
 }
 
-// Mark all notifications as read
-export function markAllNotificationsAsRead() {
-    try {
-        const notifications = getNotificationHistory();
-        
-        notifications.forEach(notification => {
-            notification.read = true;
-        });
-        
-        localStorage.setItem(NOTIFICATIONS_STORAGE_KEY, JSON.stringify(notifications));
-        
-        // Update badge count
-        updateNotificationBadge();
-        
-        return true;
-    } catch (error) {
-        console.error('Error marking all notifications as read:', error);
-        return false;
-    }
-}
-
-// Delete notification
-export function deleteNotification(notificationId) {
-    try {
-        const notifications = getNotificationHistory();
-        const updatedNotifications = notifications.filter(n => n.id !== notificationId);
-        
-        localStorage.setItem(NOTIFICATIONS_STORAGE_KEY, JSON.stringify(updatedNotifications));
-        
-        // Update badge count
-        updateNotificationBadge();
-        
-        return true;
-    } catch (error) {
-        console.error('Error deleting notification:', error);
-        return false;
-    }
-}
-
-// Clear all notifications
-export function clearAllNotifications() {
-    try {
-        localStorage.setItem(NOTIFICATIONS_STORAGE_KEY, JSON.stringify([]));
-        
-        // Update badge count
-        updateNotificationBadge();
-        
-        return true;
-    } catch (error) {
-        console.error('Error clearing all notifications:', error);
-        return false;
-    }
-}
-
-// Get unread notification count
-export function getUnreadNotificationCount() {
-    try {
-        const notifications = getNotificationHistory();
-        return notifications.filter(n => !n.read).length;
-    } catch (error) {
-        console.error('Error getting unread notification count:', error);
-        return 0;
-    }
-}
-
-// Update notification badge in the UI
+/**
+ * Update notification badge with unread count
+ */
 export function updateNotificationBadge() {
-    const unreadCount = getUnreadNotificationCount();
+    const badge = document.getElementById('notificationBadge');
+    if (!badge) return;
     
-    // Update all notification badges on the page
-    const badges = document.querySelectorAll('.notification-badge, #notificationBadge');
+    const count = getUnreadCount();
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+}
+
+/**
+ * Mark notification as read
+ * @param {string} notificationId - ID of notification to mark as read
+ */
+export function markAsRead(notificationId) {
+    const notifications = getNotifications();
     
-    badges.forEach(badge => {
-        badge.textContent = unreadCount;
-        badge.style.display = unreadCount > 0 ? 'flex' : 'none';
+    // Update notification read status
+    const updatedNotifications = notifications.map(n => {
+        if (n.id === notificationId) {
+            return { ...n, read: true };
+        }
+        return n;
     });
     
-    return unreadCount;
+    // Save updated notifications
+    localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(updatedNotifications));
+    
+    // Update badge
+    updateNotificationBadge();
 }
 
-// Generate a unique ID for notifications
-function generateNotificationId() {
-    return 'notif_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now().toString(36);
+/**
+ * Mark all notifications as read for current user
+ */
+export function markAllAsRead() {
+    const currentUser = getCurrentUser();
+    if (!currentUser) return;
+    
+    const notifications = getNotifications();
+    
+    // Update all notifications for current user
+    const updatedNotifications = notifications.map(n => {
+        if (n.userId === currentUser.id) {
+            return { ...n, read: true };
+        }
+        return n;
+    });
+    
+    // Save updated notifications
+    localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(updatedNotifications));
+    
+    // Update badge
+    updateNotificationBadge();
+}
+
+/**
+ * Delete notification by ID
+ * @param {string} notificationId - ID of notification to delete
+ */
+export function deleteNotification(notificationId) {
+    const notifications = getNotifications();
+    
+    // Filter out notification with matching ID
+    const updatedNotifications = notifications.filter(n => n.id !== notificationId);
+    
+    // Save updated notifications
+    localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(updatedNotifications));
+    
+    // Update badge
+    updateNotificationBadge();
+}
+
+/**
+ * Delete all notifications for current user
+ */
+export function deleteAllNotifications() {
+    const currentUser = getCurrentUser();
+    if (!currentUser) return;
+    
+    const notifications = getNotifications();
+    
+    // Filter out all notifications for current user
+    const updatedNotifications = notifications.filter(n => n.userId !== currentUser.id);
+    
+    // Save updated notifications
+    localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(updatedNotifications));
+    
+    // Update badge
+    updateNotificationBadge();
+}
+
+/**
+ * Create notification item element
+ * @param {Object} notification - Notification object
+ * @returns {HTMLElement} Notification item element
+ */
+export function createNotificationItem(notification) {
+    const item = document.createElement('div');
+    item.className = `notification-item ${notification.read ? 'read' : 'unread'}`;
+    item.dataset.id = notification.id;
+    
+    // Set icon based on type
+    let iconClass = 'fas fa-info-circle';
+    if (notification.type === 'success') iconClass = 'fas fa-check-circle';
+    if (notification.type === 'warning') iconClass = 'fas fa-exclamation-triangle';
+    if (notification.type === 'error') iconClass = 'fas fa-exclamation-circle';
+    
+    // Format date
+    const date = new Date(notification.timestamp);
+    const formattedDate = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+    
+    const formattedTime = date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    
+    item.innerHTML = `
+        <div class="notification-icon ${notification.type}">
+            <i class="${iconClass}"></i>
+        </div>
+        <div class="notification-content">
+            <h3 class="notification-title">${notification.title}</h3>
+            <p class="notification-message">${notification.message}</p>
+            <p class="notification-time">${formattedDate}, ${formattedTime}</p>
+        </div>
+        <div class="notification-actions">
+            <button class="mark-btn" title="${notification.read ? 'Mark as unread' : 'Mark as read'}">
+                <i class="${notification.read ? 'far fa-envelope' : 'fas fa-envelope-open'}"></i>
+            </button>
+            <button class="delete-btn" title="Delete">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+    
+    // Add event listeners
+    const markBtn = item.querySelector('.mark-btn');
+    markBtn.addEventListener('click', () => {
+        markAsRead(notification.id);
+        item.classList.add('read');
+        item.classList.remove('unread');
+        markBtn.innerHTML = '<i class="far fa-envelope"></i>';
+        markBtn.title = 'Mark as unread';
+    });
+    
+    const deleteBtn = item.querySelector('.delete-btn');
+    deleteBtn.addEventListener('click', () => {
+        deleteNotification(notification.id);
+        item.remove();
+    });
+    
+    return item;
+}
+
+/**
+ * Get current user from localStorage
+ * @returns {Object|null} Current user object or null if not logged in
+ */
+function getCurrentUser() {
+    const currentUserId = localStorage.getItem('currentUserId');
+    if (!currentUserId) return null;
+    
+    const users = getUsers();
+    return users.find(u => u.id === currentUserId);
+}
+
+/**
+ * Get users from localStorage
+ * @returns {Array} Array of user objects
+ */
+function getUsers() {
+    try {
+        const usersJson = localStorage.getItem('users');
+        return usersJson ? JSON.parse(usersJson) : [];
+    } catch (error) {
+        console.error('Error getting users:', error);
+        return [];
+    }
+}
+
+/**
+ * Show toast notification
+ * @param {string} message - Message to display
+ * @param {string} type - Type of notification (success, error, warning, info)
+ */
+function showToast(message, type = 'info') {
+    const toastContainer = document.getElementById('toastContainer');
+    if (!toastContainer) return;
+    
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    
+    const icon = document.createElement('i');
+    icon.className = type === 'success' ? 'fas fa-check-circle' : 
+                   type === 'error' ? 'fas fa-exclamation-circle' : 
+                   type === 'warning' ? 'fas fa-exclamation-triangle' :
+                   'fas fa-info-circle';
+    
+    const content = document.createElement('span');
+    content.textContent = message;
+    
+    toast.appendChild(icon);
+    toast.appendChild(content);
+    toastContainer.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 100);
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            toastContainer.removeChild(toast);
+        }, 300);
+    }, 3000);
 } 
