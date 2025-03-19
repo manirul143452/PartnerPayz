@@ -5,175 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - PartnerPayz</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/auth.css">
     <link rel="stylesheet" href="css/toast.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .login-container {
-            max-width: 400px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .login-header img {
-            width: 100px;
-            margin-bottom: 1rem;
-        }
-        
-        .login-form .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .login-form label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        
-        .login-form input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        
-        .login-form .password-toggle {
-            position: relative;
-        }
-        
-        .login-form .toggle-icon {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #777;
-        }
-        
-        .login-form .submit-btn {
-            width: 100%;
-            padding: 0.75rem;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .login-form .submit-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        
-        .login-form .submit-btn:disabled {
-            background: #cccccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .login-options {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .login-options .remember-me {
-            display: flex;
-            align-items: center;
-        }
-        
-        .login-options .remember-me input {
-            width: auto;
-            margin-right: 0.5rem;
-        }
-        
-        .login-options .forgot-password {
-            margin-left: auto;
-            color: #2575fc;
-            text-decoration: none;
-        }
-        
-        .login-options .forgot-password:hover {
-            text-decoration: underline;
-        }
-        
-        .login-form .separator {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 1.5rem 0;
-        }
-        
-        .login-form .separator::before,
-        .login-form .separator::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .login-form .separator span {
-            padding: 0 10px;
-            color: #777;
-            font-size: 0.9rem;
-        }
-        
-        .social-login-buttons {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .social-login-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.75rem;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            background-color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .social-login-button:hover {
-            background-color: #f8f9fa;
-        }
-        
-        .social-login-button i {
-            margin-right: 0.5rem;
-        }
-        
-        .social-login-button.google i {
-            color: #DB4437;
-        }
-        
-        .register-link {
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-        
-        .register-link a {
-            color: #2575fc;
-            text-decoration: none;
-        }
-        
-        .register-link a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Debug panel styles */
         .debug-panel {
             position: fixed;
             bottom: 10px;
@@ -234,16 +68,164 @@
             line-height: 1.3;
         }
         
-        .test-user-login {
-            background: #2575fc;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-form h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input {
             width: 100%;
-            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .form-group input:focus {
+            border-color: #6a11cb;
+            outline: none;
+        }
+        
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
-            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.2);
+        }
+        
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .login-options .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .login-options .remember-me input {
+            margin-right: 5px;
+        }
+        
+        .login-options .forgot-password {
+            color: #2575fc;
+            text-decoration: none;
+        }
+        
+        .login-options .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .or-divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #777;
+        }
+        
+        .or-divider:before,
+        .or-divider:after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .or-divider span {
+            padding: 0 10px;
+        }
+        
+        .google-login {
+            width: 100%;
+            background: white;
+            color: #333;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .google-login i {
+            color: #DB4437;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .google-login:hover {
+            background-color: #f8f9fa;
+            border-color: #ccc;
+        }
+        
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+        
+        .signup-link a {
+            color: #2575fc;
+            text-decoration: none;
+        }
+        
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .test-login-btn {
+            margin-top: 15px;
+            width: 100%;
+            background: #28a745;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: none;
+        }
+        
+        .test-login-btn:hover {
+            background: #218838;
         }
     </style>
 </head>
@@ -265,65 +247,43 @@
         </div>
     </header>
 
-    <div class="auth-container">
-        <div class="auth-box">
-            <div class="auth-header">
-                <img src="images/logo.png" alt="PartnerPayz Logo" class="auth-logo">
-                <h1>Welcome Back</h1>
-                <p>Sign in to your PartnerPayz account</p>
-            </div>
-            
-            <form id="loginForm" class="auth-form">
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <div class="input-group">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" required placeholder="Enter your email">
+    <main>
+        <div class="container" style="padding-top: 30px;">
+            <div class="login-form">
+                <h2>Login to PartnerPayz</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="input-group">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="password" required placeholder="Enter your password">
-                        <button type="button" class="toggle-password">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password" required>
                     </div>
-                </div>
-                
-                <div class="form-options">
-                    <label class="remember-me">
-                        <input type="checkbox" id="remember">
-                        <span>Remember me</span>
-                    </label>
-                    
-                    <a href="#" class="forgot-password">Forgot Password?</a>
-                </div>
-                
-                <button type="submit" class="btn-primary btn-block">
-                    <i class="fas fa-sign-in-alt"></i> Sign In
-                </button>
-
-                <!-- Test User Login Button -->
-                <button type="button" id="testUserLogin" class="btn-secondary btn-block" style="margin-top: 10px;">
-                    <i class="fas fa-user-check"></i> Quick Login (Test User)
-                </button>
-                
-                <div class="social-login">
-                    <p>Or sign in with</p>
-                    <button type="button" class="btn-google" id="googleLogin">
-                        <i class="fab fa-google"></i> Google
+                    <div class="login-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">Remember me</label>
+                        </div>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="login-btn">Login</button>
+                    <div class="or-divider">
+                        <span>OR</span>
+                    </div>
+                    <button type="button" class="google-login" id="googleLogin">
+                        <i class="fab fa-google"></i> Login with Google
                     </button>
-                </div>
-            </form>
-            
-            <div class="auth-footer">
-                <p>Don't have an account? <a href="register.html">Create Account</a></p>
+                    <div class="signup-link">
+                        Don't have an account? <a href="register.html">Sign up</a>
+                    </div>
+                    <button type="button" id="testLoginBtn" class="test-login-btn">
+                        <i class="fas fa-user-check"></i> Quick Login (Test User)
+                    </button>
+                </form>
             </div>
         </div>
-    </div>
+    </main>
 
     <!-- Debug Panel -->
     <button class="debug-toggle" id="debugToggle">Debug</button>
@@ -334,57 +294,211 @@
             <button id="checkStorage">Check Storage</button>
             <button id="createTestUser">Create Test User</button>
             <button id="clearData">Clear All Data</button>
-            <button id="showTestUserBtn">Show Test Login</button>
+            <button id="showTestBtn">Show Test Login</button>
         </div>
     </div>
 
     <div id="toastContainer" class="toast-container"></div>
     
     <script type="module">
-        import { loginUser, loginWithGoogle, isLoggedIn, logoutUser } from './js/local-auth.js';
-        import { requestNotificationPermission } from './js/local-notifications.js';
-        import { fixUserData, verifyLocalStorage, displayAllUsers, createTestUser, clearAllAppData } from './js/local-storage-debug.js';
+        import { loginUser, googleLogin, isLoggedIn, logoutUser } from './js/local-auth.js';
+        import { showNotification, requestNotificationPermission } from './js/local-notifications.js';
+        import { fixUserData, verifyLocalStorage, displayAllUsers, createTestUser, clearAllData } from './js/local-storage-debug.js';
         
         // Debug functionality
         const debugToggle = document.getElementById('debugToggle');
         const debugPanel = document.getElementById('debugPanel');
         const debugInfo = document.getElementById('debugInfo');
-        const testUserLoginBtn = document.getElementById('testUserLogin');
+        const testLoginBtn = document.getElementById('testLoginBtn');
         
+        // Show debug panel on click
         if (debugToggle) {
             debugToggle.addEventListener('click', () => {
                 debugPanel.classList.toggle('show');
             });
         }
         
-        // Add debug listeners
+        // Debug action listeners
         document.getElementById('checkStorage').addEventListener('click', () => {
-            const storageWorks = verifyLocalStorage();
-            updateDebugInfo('Storage check: ' + (storageWorks ? 'WORKING' : 'FAILED'));
-            displayAllUsers();
+            try {
+                const storageWorks = verifyLocalStorage();
+                updateDebugInfo('Storage check: ' + (storageWorks ? 'WORKING' : 'FAILED'));
+                
+                const users = displayAllUsers();
+                updateDebugInfo(`Found ${users.length} users in storage`);
+            } catch (error) {
+                updateDebugInfo('Error checking storage: ' + error.message);
+            }
         });
         
         document.getElementById('createTestUser').addEventListener('click', () => {
-            const testUser = createTestUser();
-            if (testUser) {
-                updateDebugInfo('Test user created: ' + testUser.email);
-                showToast('Test user created! Email: test@example.com, Password: password123', 'success');
-            } else {
-                updateDebugInfo('Failed to create test user');
+            try {
+                const testUser = createTestUser();
+                if (testUser) {
+                    updateDebugInfo(`Test user created: ${testUser.email}`);
+                    showToast('Test user created! You can now test login', 'success');
+                    
+                    // Show test login button
+                    testLoginBtn.style.display = 'block';
+                    
+                    // Pre-fill login form with test user credentials
+                    document.getElementById('email').value = 'test@example.com';
+                    document.getElementById('password').value = 'password123';
+                }
+            } catch (error) {
+                updateDebugInfo('Error creating test user: ' + error.message);
+                showToast('Failed to create test user', 'error');
             }
         });
         
         document.getElementById('clearData').addEventListener('click', () => {
-            if (confirm('This will delete ALL user data. Are you sure?')) {
-                const cleared = clearAllAppData();
-                updateDebugInfo('Data cleared: ' + (cleared ? 'SUCCESS' : 'FAILED'));
-                showToast('All data cleared', 'info');
+            try {
+                if (confirm('This will delete ALL app data including users and settings. Continue?')) {
+                    clearAllData();
+                    updateDebugInfo('All app data cleared');
+                    showToast('All data has been cleared', 'info');
+                }
+            } catch (error) {
+                updateDebugInfo('Error clearing data: ' + error.message);
             }
         });
         
-        document.getElementById('showTestUserBtn').addEventListener('click', () => {
-            testUserLoginBtn.style.display = testUserLoginBtn.style.display === 'none' ? 'block' : 'none';
-            updateDebugInfo('Test user login button ' + (testUserLoginBtn.style.display === 'none' ? 'hidden' : 'shown'));
+        document.getElementById('showTestBtn').addEventListener('click', () => {
+            testLoginBtn.style.display = testLoginBtn.style.display === 'none' ? 'block' : 'none';
+            updateDebugInfo('Test login button ' + (testLoginBtn.style.display === 'none' ? 'hidden' : 'shown'));
+        });
+        
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.querySelector('.login-btn');
+            
+            try {
+                updateDebugInfo(`Login attempt: ${email}`);
+                
+                // Disable button and show loading state
+                loginBtn.disabled = true;
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+                
+                // Fix any localStorage corruption first
+                fixUserData();
+                
+                // Attempt login
+                const user = await loginUser(email, password);
+                
+                if (user) {
+                    updateDebugInfo(`Login successful: ${user.email}`);
+                    showToast('Login successful! Redirecting...', 'success');
+                    
+                    // Request notification permission
+                    await requestNotificationPermission();
+                    
+                    // Wait a moment before redirecting
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                } else {
+                    updateDebugInfo('Login failed: Invalid credentials');
+                    showToast('Invalid email or password', 'error');
+                    
+                    // Reset button state
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = 'Login';
+                }
+            } catch (error) {
+                updateDebugInfo(`Login error: ${error.message}`);
+                showToast('An error occurred during login', 'error');
+                
+                // Reset button state
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = 'Login';
+            }
+        });
+        
+        // Google login
+        document.getElementById('googleLogin').addEventListener('click', async () => {
+            try {
+                updateDebugInfo('Google login attempt');
+                
+                // Fix any localStorage corruption first
+                fixUserData();
+                
+                // Attempt Google login
+                const user = await googleLogin();
+                
+                if (user) {
+                    updateDebugInfo(`Google login successful: ${user.email}`);
+                    showToast('Login successful! Redirecting...', 'success');
+                    
+                    // Request notification permission
+                    await requestNotificationPermission();
+                    
+                    // Wait a moment before redirecting
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                } else {
+                    updateDebugInfo('Google login failed');
+                    showToast('Failed to login with Google', 'error');
+                }
+            } catch (error) {
+                updateDebugInfo(`Google login error: ${error.message}`);
+                showToast('An error occurred during Google login', 'error');
+            }
+        });
+        
+        // Test user login
+        if (testLoginBtn) {
+            testLoginBtn.addEventListener('click', async () => {
+                try {
+                    updateDebugInfo('Test login attempt');
+                    
+                    // Create test user if it doesn't exist
+                    const testUser = createTestUser();
+                    
+                    if (testUser) {
+                        updateDebugInfo(`Test login successful: ${testUser.email}`);
+                        showToast('Login successful! Redirecting...', 'success');
+                        
+                        // Request notification permission
+                        await requestNotificationPermission();
+                        
+                        // Wait a moment before redirecting
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1000);
+                    } else {
+                        updateDebugInfo('Test login failed');
+                        showToast('Failed to login with test user', 'error');
+                    }
+                } catch (error) {
+                    updateDebugInfo(`Test login error: ${error.message}`);
+                    showToast('An error occurred during test login', 'error');
+                }
+            });
+        }
+        
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fix any localStorage corruption
+            fixUserData();
+            
+            // If already logged in, redirect to dashboard
+            if (isLoggedIn()) {
+                updateDebugInfo('User is already logged in, redirecting to dashboard');
+                window.location.href = 'dashboard.html';
+            } else {
+                updateDebugInfo('User is not logged in');
+                
+                // Show test login button if in debug mode
+                if (window.location.hash === '#debug') {
+                    debugPanel.classList.add('show');
+                    testLoginBtn.style.display = 'block';
+                }
+            }
         });
         
         function updateDebugInfo(info) {
@@ -392,158 +506,8 @@
             debugInfo.innerHTML = `<div>[${timestamp}] ${info}</div>` + debugInfo.innerHTML;
         }
         
-        document.addEventListener('DOMContentLoaded', () => {
-            // Fix any corrupted localStorage data
-            fixUserData();
-            updateDebugInfo('localStorage fixed');
-            
-            // If already logged in, redirect to dashboard
-            if (isLoggedIn()) {
-                updateDebugInfo('User is already logged in, redirecting to dashboard');
-                window.location.href = 'dashboard.html';
-                return;
-            }
-            
-            updateDebugInfo('User is not logged in');
-            
-            // Toggle password visibility
-            const togglePassword = document.querySelector('.toggle-password');
-            const passwordInput = document.getElementById('password');
-            
-            if (togglePassword && passwordInput) {
-                togglePassword.addEventListener('click', () => {
-                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                    passwordInput.setAttribute('type', type);
-                    togglePassword.querySelector('i').classList.toggle('fa-eye');
-                    togglePassword.querySelector('i').classList.toggle('fa-eye-slash');
-                });
-            }
-            
-            // Handle form submission
-            const loginForm = document.getElementById('loginForm');
-            if (loginForm) {
-                loginForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    
-                    // Disable form during login
-                    const submitButton = e.target.querySelector('button[type="submit"]');
-                    submitButton.disabled = true;
-                    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
-                    
-                    const email = document.getElementById('email').value;
-                    const password = document.getElementById('password').value;
-                    const remember = document.getElementById('remember').checked;
-                    
-                    updateDebugInfo(`Login attempt: ${email}`);
-                    
-                    try {
-                        const result = await loginUser(email, password);
-                        
-                        if (result.success) {
-                            // Request notification permission after successful login
-                            await requestNotificationPermission();
-                            
-                            updateDebugInfo('Login successful, redirecting to dashboard');
-                            showToast('Login successful!', 'success');
-                            
-                            // Set a short timeout to make sure localStorage is updated
-                            setTimeout(() => {
-                                try {
-                                    window.location.href = 'dashboard.html';
-                                } catch (e) {
-                                    updateDebugInfo('Redirect error: ' + e.message);
-                                    showToast('Error redirecting to dashboard', 'error');
-                                }
-                            }, 1000);
-                        } else {
-                            updateDebugInfo('Login failed: ' + result.error);
-                            showToast(result.error, 'error');
-                            
-                            // Re-enable form
-                            submitButton.disabled = false;
-                            submitButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
-                        }
-                    } catch (error) {
-                        updateDebugInfo('Login error: ' + error.message);
-                        showToast(error.message || 'An error occurred', 'error');
-                        
-                        // Re-enable form
-                        submitButton.disabled = false;
-                        submitButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
-                    }
-                });
-            }
-            
-            // Handle test user login
-            const testUserLogin = document.getElementById('testUserLogin');
-            if (testUserLogin) {
-                testUserLogin.addEventListener('click', async () => {
-                    // Create test user if it doesn't exist
-                    createTestUser();
-                    
-                    // Login with test credentials
-                    try {
-                        updateDebugInfo('Logging in with test user');
-                        const result = await loginUser('test@example.com', 'password123');
-                        
-                        if (result.success) {
-                            updateDebugInfo('Test login successful, redirecting to dashboard');
-                            showToast('Test login successful!', 'success');
-                            
-                            setTimeout(() => {
-                                window.location.href = 'dashboard.html';
-                            }, 1000);
-                        } else {
-                            updateDebugInfo('Test login failed: ' + result.error);
-                            showToast(result.error, 'error');
-                        }
-                    } catch (error) {
-                        updateDebugInfo('Test login error: ' + error.message);
-                        showToast(error.message || 'An error occurred', 'error');
-                    }
-                });
-            }
-            
-            // Handle Google login
-            const googleLoginBtn = document.getElementById('googleLogin');
-            if (googleLoginBtn) {
-                googleLoginBtn.addEventListener('click', async () => {
-                    try {
-                        updateDebugInfo('Google login attempt');
-                        const result = await loginWithGoogle();
-                        
-                        if (result.success) {
-                            // Request notification permission after successful login
-                            await requestNotificationPermission();
-                            
-                            updateDebugInfo('Google login successful, redirecting to dashboard');
-                            showToast('Google login successful!', 'success');
-                            
-                            setTimeout(() => {
-                                window.location.href = 'dashboard.html';
-                            }, 1000);
-                        } else {
-                            updateDebugInfo('Google login failed: ' + result.error);
-                            showToast(result.error, 'error');
-                        }
-                    } catch (error) {
-                        updateDebugInfo('Google login error: ' + error.message);
-                        showToast(error.message || 'An error occurred', 'error');
-                    }
-                });
-            }
-            
-            // Handle logout in navigation (should be hidden when not logged in)
-            const navLogoutBtn = document.getElementById('navLogoutBtn');
-            if (navLogoutBtn) {
-                // Hide logout button when not logged in
-                navLogoutBtn.parentElement.style.display = 'none';
-            }
-        });
-        
-        // Toast notification function
         function showToast(message, type = 'info') {
-            const toastContainer = document.getElementById('toastContainer') || document.body;
+            const toastContainer = document.getElementById('toastContainer');
             
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
@@ -551,6 +515,7 @@
             const icon = document.createElement('i');
             icon.className = type === 'success' ? 'fas fa-check-circle' : 
                            type === 'error' ? 'fas fa-exclamation-circle' : 
+                           type === 'warning' ? 'fas fa-exclamation-triangle' :
                            'fas fa-info-circle';
             
             const content = document.createElement('span');
