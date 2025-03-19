@@ -6,788 +6,173 @@
     <title>Register - PartnerPayz</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/auth.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <img src="images/logo (2).svg" alt="PartnerPayz Logo - Financial Platform for Couples">
-                <h1>PartnerPayz</h1>
-            </div>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="dashboard.html">Dashboard</a>
-                <a href="partners.html">Find Partners</a>
-                <a href="invest.html">Invest Together</a>
-                <a href="blog.html">Blog</a>
-                <a href="community.html">Community</a>
-            </div>
-            <div class="auth-buttons">
-                <a href="login.html" class="btn btn-secondary">Log In</a>
-                <a href="register.html" class="btn btn-primary active">Sign Up</a>
-            </div>
-            <div class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </div>
-        </nav>
-    </header>
-
-    <main class="auth-container">
-        <div class="auth-card registration-card">
+    <div class="auth-container">
+        <div class="auth-box">
             <div class="auth-header">
-                <h1>Join PartnerPayz</h1>
-                <p>Create your account to find the perfect partner and start your financial journey together</p>
+                <img src="images/logo.png" alt="PartnerPayz Logo" class="auth-logo">
+                <h1>Create Account</h1>
+                <p>Join PartnerPayz today</p>
             </div>
             
-            <div class="registration-progress">
-                <div class="progress-step active" data-step="1">
-                    <div class="step-number">1</div>
-                    <div class="step-label">Basic Info</div>
-                </div>
-                <div class="progress-step" data-step="2">
-                    <div class="step-number">2</div>
-                    <div class="step-label">Verification</div>
-                </div>
-                <div class="progress-step" data-step="3">
-                    <div class="step-number">3</div>
-                    <div class="step-label">Profile</div>
-                </div>
-                <div class="progress-step" data-step="4">
-                    <div class="step-number">4</div>
-                    <div class="step-label">Preferences</div>
-                </div>
-            </div>
-            
-            <form id="registrationForm" class="auth-form multi-step-form">
-                <!-- Step 1: Basic Information -->
-                <div class="form-step active" data-step="1">
-                    <div class="form-group">
-                        <label for="fullName">Full Name</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-user"></i>
-                            <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-envelope"></i>
-                            <input type="email" id="email" name="email" placeholder="Enter your email address" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-phone"></i>
-                            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password">Create Password</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" id="password" name="password" placeholder="Create a strong password" required>
-                            <i class="fas fa-eye toggle-password"></i>
-                        </div>
-                        <div class="password-strength">
-                            <div class="strength-meter">
-                                <div class="strength-bar"></div>
-                            </div>
-                            <div class="strength-text">Password strength: <span>Weak</span></div>
-                        </div>
-                        <ul class="password-requirements">
-                            <li class="requirement" data-requirement="length">8+ characters</li>
-                            <li class="requirement" data-requirement="uppercase">Uppercase letter</li>
-                            <li class="requirement" data-requirement="lowercase">Lowercase letter</li>
-                            <li class="requirement" data-requirement="number">Number</li>
-                            <li class="requirement" data-requirement="special">Special character</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm Password</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
-                            <i class="fas fa-eye toggle-password"></i>
-                        </div>
-                    </div>
-                    
-                    <button type="button" class="btn btn-primary btn-block next-step" data-next="2">Continue</button>
-                    
-                    <div class="auth-footer">
-                        <p>Already have an account? <a href="login.html">Log In</a></p>
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="name" required placeholder="Enter your name">
                     </div>
                 </div>
                 
-                <!-- Step 2: Verification -->
-                <div class="form-step" data-step="2">
-                    <div class="verification-header">
-                        <h3>Identity Verification</h3>
-                        <p>We need to verify your identity to ensure a safe community</p>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="documentType">Document Type</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-id-card"></i>
-                            <select id="documentType" name="documentType" required>
-                                <option value="" disabled selected>Select ID document type</option>
-                                <option value="aadhar">Aadhar Card</option>
-                                <option value="voter">Voter ID</option>
-                                <option value="pan">PAN Card</option>
-                                <option value="passport">Passport</option>
-                                <option value="driving">Driving License</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group document-upload">
-                        <label>Upload Front Side</label>
-                        <div class="upload-area" id="frontUpload">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>Drag and drop or click to upload</p>
-                            <p class="file-format">Supported formats: JPG, PNG, PDF (Max: 5MB)</p>
-                            <input type="file" class="file-input" name="frontDocument" accept="image/jpeg,image/png,application/pdf">
-                        </div>
-                        <div class="upload-preview hidden">
-                            <img src="#" alt="Document Preview">
-                            <button type="button" class="remove-upload"><i class="fas fa-times"></i></button>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group document-upload">
-                        <label>Upload Back Side</label>
-                        <div class="upload-area" id="backUpload">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>Drag and drop or click to upload</p>
-                            <p class="file-format">Supported formats: JPG, PNG, PDF (Max: 5MB)</p>
-                            <input type="file" class="file-input" name="backDocument" accept="image/jpeg,image/png,application/pdf">
-                        </div>
-                        <div class="upload-preview hidden">
-                            <img src="#" alt="Document Preview">
-                            <button type="button" class="remove-upload"><i class="fas fa-times"></i></button>
-                        </div>
-                    </div>
-                    
-                    <div class="verification-note">
-                        <i class="fas fa-shield-alt"></i>
-                        <p>Your documents are encrypted and securely stored. We comply with all data protection regulations.</p>
-                    </div>
-                    
-                    <div class="form-navigation">
-                        <button type="button" class="btn btn-secondary prev-step" data-prev="1">Back</button>
-                        <button type="button" class="btn btn-primary next-step" data-next="3">Continue</button>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" required placeholder="Enter your email">
                     </div>
                 </div>
                 
-                <!-- Step 3: Profile Creation -->
-                <div class="form-step" data-step="3">
-                    <div class="profile-header">
-                        <h3>Create Your Profile</h3>
-                        <p>Tell us about yourself so we can match you with compatible partners</p>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="dateOfBirth">Date of Birth</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-calendar-alt"></i>
-                            <input type="date" id="dateOfBirth" name="dateOfBirth" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Gender</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="gender" value="male" required>
-                                <span class="radio-label">Male</span>
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="gender" value="female">
-                                <span class="radio-label">Female</span>
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="gender" value="other">
-                                <span class="radio-label">Other</span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="location">Location</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <input type="text" id="location" name="location" placeholder="Enter your city" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="occupation">Occupation</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-briefcase"></i>
-                            <input type="text" id="occupation" name="occupation" placeholder="Enter your occupation">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="incomeRange">Income Range (Optional)</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-rupee-sign"></i>
-                            <select id="incomeRange" name="incomeRange">
-                                <option value="" selected>Prefer not to say</option>
-                                <option value="below-5l">Below ₹5 Lakhs/year</option>
-                                <option value="5l-10l">₹5-10 Lakhs/year</option>
-                                <option value="10l-15l">₹10-15 Lakhs/year</option>
-                                <option value="15l-25l">₹15-25 Lakhs/year</option>
-                                <option value="above-25l">Above ₹25 Lakhs/year</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group profile-picture">
-                        <label>Profile Picture</label>
-                        <div class="profile-upload">
-                            <div class="profile-preview">
-                                <img src="images/default-avatar.jpg" alt="Profile Preview">
-                            </div>
-                            <div class="upload-buttons">
-                                <button type="button" class="btn btn-outline upload-profile-btn">
-                                    <i class="fas fa-upload"></i> Upload Photo
-                                </button>
-                                <button type="button" class="btn btn-text remove-profile-btn hidden">
-                                    <i class="fas fa-trash"></i> Remove
-                                </button>
-                                <input type="file" class="file-input" name="profilePicture" accept="image/jpeg,image/png">
-                            </div>
-                        </div>
-                        <p class="upload-tip">Upload a clear face photo for better matching</p>
-                    </div>
-                    
-                    <div class="form-navigation">
-                        <button type="button" class="btn btn-secondary prev-step" data-prev="2">Back</button>
-                        <button type="button" class="btn btn-primary next-step" data-next="4">Continue</button>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" required placeholder="Create a password" minlength="6">
+                        <button type="button" class="toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
                     </div>
                 </div>
                 
-                <!-- Step 4: Preferences -->
-                <div class="form-step" data-step="4">
-                    <div class="preferences-header">
-                        <h3>Your Preferences</h3>
-                        <p>Help us understand what you're looking for in a partner</p>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="confirmPassword" required placeholder="Confirm your password" minlength="6">
                     </div>
-                    
-                    <div class="form-group">
-                        <label>Relationship Goals</label>
-                        <div class="goal-chips">
-                            <label class="chip-option">
-                                <input type="checkbox" name="relationshipGoals[]" value="long-term">
-                                <span class="chip-label">Long-term Relationship</span>
-                            </label>
-                            <label class="chip-option">
-                                <input type="checkbox" name="relationshipGoals[]" value="marriage">
-                                <span class="chip-label">Marriage</span>
-                            </label>
-                            <label class="chip-option">
-                                <input type="checkbox" name="relationshipGoals[]" value="financial-planning">
-                                <span class="chip-label">Financial Planning</span>
-                            </label>
-                            <label class="chip-option">
-                                <input type="checkbox" name="relationshipGoals[]" value="investment">
-                                <span class="chip-label">Joint Investments</span>
-                            </label>
-                            <label class="chip-option">
-                                <input type="checkbox" name="relationshipGoals[]" value="home-buying">
-                                <span class="chip-label">Home Buying</span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Interests</label>
-                        <div class="interest-chips">
-                            <label class="chip-option">
-                                <input type="checkbox" name="interests[]" value="travel">
-                                <span class="chip-label">Travel</span>
-                            </label>
-                            <label class="chip-option">
-                                <input type="checkbox" name="interests[]" value="fitness">
-                                <span class="chip-label">Fitness</span>
-                            </label>
-                            <label class="chip-option">
-                                <input type="checkbox" name="interests[]" value="cooking">
-                                <span class="chip-label">Cooking</span>
-                            </label>
-                            <label class="chip-option">
-                                <input type="checkbox" name="interests[]" value="music">
-                                <span class="chip-label">Music</span>
-                            </label>
-                            <label class="chip-option">
-                                <input type="checkbox" name="interests[]" value="reading">
-                                <span class="chip-label">Reading</span>
-                            </label>
-                            <label class="chip-option">
-                                <input type="checkbox" name="interests[]" value="movies">
-                                <span class="chip-label">Movies</span>
-                            </label>
-                            <label class="chip-option">
-                                <input type="checkbox" name="interests[]" value="investing">
-                                <span class="chip-label">Investing</span>
-                            </label>
-                            <label class="chip-option">
-                                <input type="checkbox" name="interests[]" value="technology">
-                                <span class="chip-label">Technology</span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group age-range">
-                        <label>Partner Age Preference</label>
-                        <div class="range-slider">
-                            <div class="range-values">
-                                <span id="minAgeValue">18</span> - <span id="maxAgeValue">35</span> years
-                            </div>
-                            <div class="range-inputs">
-                                <input type="range" id="minAge" name="minAge" min="18" max="60" value="18" class="range-input">
-                                <input type="range" id="maxAge" name="maxAge" min="18" max="60" value="35" class="range-input">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="maxDistance">Maximum Distance</label>
-                        <div class="range-slider">
-                            <div class="range-values">
-                                <span id="distanceValue">50</span> km
-                            </div>
-                            <input type="range" id="maxDistance" name="maxDistance" min="5" max="500" value="50" class="range-input single-range">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="socialLinks">Social Media (Optional)</label>
-                        <div class="social-links">
-                            <div class="input-with-icon">
-                                <i class="fab fa-instagram"></i>
-                                <input type="text" id="instagramLink" name="instagramLink" placeholder="Instagram Username">
-                            </div>
-                            <div class="input-with-icon">
-                                <i class="fab fa-linkedin-in"></i>
-                                <input type="text" id="linkedinLink" name="linkedinLink" placeholder="LinkedIn URL">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="consent-check">
-                        <label class="checkbox-container">
-                            <input type="checkbox" name="termsConsent" required>
-                            <span class="checkmark"></span>
-                            <span class="checkbox-text">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
-                        </label>
-                    </div>
-                    
-                    <div class="form-navigation">
-                        <button type="button" class="btn btn-secondary prev-step" data-prev="3">Back</button>
-                        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
-                    </div>
+                </div>
+                
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="terms" required>
+                        <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn-primary btn-block">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+                
+                <div class="social-login">
+                    <p>Or sign up with</p>
+                    <button type="button" class="btn-google" id="googleSignUp">
+                        <i class="fab fa-google"></i> Google
+                    </button>
                 </div>
             </form>
+            
+            <div class="auth-footer">
+                <p>Already have an account? <a href="login.html">Sign in</a></p>
+            </div>
         </div>
-    </main>
+    </div>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="images/logo (2).svg" alt="PartnerPayz Logo - Financial Platform for Couples">
-                <h3>PartnerPayz</h3>
-            </div>
-            <div class="footer-links">
-                <div class="link-group">
-                    <h4>Company</h4>
-                    <a href="about.html">About Us</a>
-                    <a href="careers.html">Careers</a>
-                    <a href="press.html">Press</a>
-                </div>
-                <div class="link-group">
-                    <h4>Features</h4>
-                    <a href="partners.html">Partner Finding</a>
-                    <a href="invest.html">Joint Investments</a>
-                    <a href="dashboard.html">Financial Planning</a>
-                </div>
-                <div class="link-group">
-                    <h4>Resources</h4>
-                    <a href="blog.html">Blog</a>
-                    <a href="community.html">Community</a>
-                    <a href="help.html">Help Center</a>
-                </div>
-                <div class="link-group">
-                    <h4>Legal</h4>
-                    <a href="privacy.html">Privacy Policy</a>
-                    <a href="terms.html">Terms of Service</a>
-                    <a href="cookies.html">Cookie Policy</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2023 PartnerPayz. All rights reserved.</p>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-        </div>
-    </footer>
-
-    <script src="js/main.js"></script>
     <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
+        import { registerUser, loginWithGoogle } from './js/local-auth.js';
+        import { requestNotificationPermission } from './js/local-notifications.js';
+
+        // Toggle password visibility
+        const togglePassword = document.querySelector('.toggle-password');
+        const passwordInput = document.getElementById('password');
         
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBiwaYxkiyWCupQVGgUIOv7zuztdzlkPtc",
-            authDomain: "partnerpayz.firebaseapp.com",
-            projectId: "partnerpayz",
-            storageBucket: "partnerpayz.appspot.com",
-            messagingSenderId: "140540750518",
-            appId: "1:140540750518:web:2bc8427ed17e2481b51417",
-            measurementId: "G-YLCV2CGV57"
-        };
-        
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        
-        // Import firebase authentication functions
-        import { registerUser, signInWithGoogle, signInWithFacebook } from "./js/firebase-auth.js";
-        
-        // Registration form event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get form elements
-            const registrationForm = document.getElementById('registrationForm');
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('confirmPassword');
-            const nextStepBtns = document.querySelectorAll('.next-step');
-            const prevStepBtns = document.querySelectorAll('.prev-step');
-            const progressSteps = document.querySelectorAll('.progress-step');
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.querySelector('i').classList.toggle('fa-eye');
+            togglePassword.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+
+        // Handle form submission
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
             
-            // Handle password visibility toggle
-            const togglePasswordBtns = document.querySelectorAll('.toggle-password');
-            if (togglePasswordBtns.length) {
-                togglePasswordBtns.forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const input = this.previousElementSibling;
-                        
-                        // Toggle password visibility
-                        if (input.type === 'password') {
-                            input.type = 'text';
-                            this.classList.remove('fa-eye');
-                            this.classList.add('fa-eye-slash');
-                        } else {
-                            input.type = 'password';
-                            this.classList.remove('fa-eye-slash');
-                            this.classList.add('fa-eye');
-                        }
-                    });
-                });
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const agreeToTerms = document.getElementById('terms').checked;
+            
+            // Basic validation
+            if (password !== confirmPassword) {
+                showToast('Passwords do not match', 'error');
+                return;
             }
             
-            // Password strength check
-            if (passwordInput) {
-                passwordInput.addEventListener('input', function() {
-                    const password = this.value;
-                    updatePasswordStrength(password);
-                    updatePasswordRequirements(password);
-                });
+            if (!agreeToTerms) {
+                showToast('You must agree to the Terms of Service and Privacy Policy', 'error');
+                return;
             }
             
-            // Next step buttons
-            if (nextStepBtns.length) {
-                nextStepBtns.forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const currentStep = parseInt(this.closest('.form-step').getAttribute('data-step'));
-                        const nextStep = parseInt(this.getAttribute('data-next'));
-                        
-                        // Validate current step before proceeding
-                        if (!validateStep(currentStep)) {
-                            return;
-                        }
-                        
-                        // Update progress steps
-                        updateProgressSteps(nextStep);
-                        
-                        // Hide current step and show next step
-                        document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
-                        document.querySelector(`.form-step[data-step="${nextStep}"]`).classList.add('active');
-                        
-                        // Scroll to top of form
-                        registrationForm.scrollIntoView({ behavior: 'smooth' });
-                    });
-                });
-            }
-            
-            // Previous step buttons
-            if (prevStepBtns.length) {
-                prevStepBtns.forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const currentStep = parseInt(this.closest('.form-step').getAttribute('data-step'));
-                        const prevStep = parseInt(this.getAttribute('data-prev'));
-                        
-                        // Update progress steps
-                        updateProgressSteps(prevStep);
-                        
-                        // Hide current step and show previous step
-                        document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
-                        document.querySelector(`.form-step[data-step="${prevStep}"]`).classList.add('active');
-                        
-                        // Scroll to top of form
-                        registrationForm.scrollIntoView({ behavior: 'smooth' });
-                    });
-                });
-            }
-            
-            // Form submission
-            if (registrationForm) {
-                registrationForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
+            try {
+                const result = await registerUser(email, password, name);
+                
+                if (result.success) {
+                    // Request notification permission after successful registration
+                    await requestNotificationPermission();
                     
-                    // Validate final step
-                    if (!validateStep(4)) {
-                        return;
-                    }
+                    showToast('Account created successfully!', 'success');
                     
-                    // Get form data
-                    const userData = {
-                        fullName: document.getElementById('fullName').value,
-                        phone: document.getElementById('phone').value,
-                        dateOfBirth: document.getElementById('dateOfBirth').value,
-                        gender: document.querySelector('input[name="gender"]:checked')?.value,
-                        location: document.getElementById('location').value,
-                        occupation: document.getElementById('occupation').value,
-                        incomeRange: document.getElementById('incomeRange').value,
-                        // Add other fields as needed
-                    };
-                    
-                    // Show loading state
-                    const submitBtn = this.querySelector('button[type="submit"]');
-                    const originalText = submitBtn.textContent;
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
-                    submitBtn.disabled = true;
-                    
-                    try {
-                        const email = document.getElementById('email').value;
-                        const password = document.getElementById('password').value;
-                        
-                        // Register with Firebase
-                        const user = await registerUser(email, password, userData);
-                        
-                        // Redirect to dashboard on success
-                        setTimeout(() => {
-                            window.location.href = 'dashboard.html';
-                        }, 1500);
-                    } catch (error) {
-                        // Error is handled by the registerUser function
-                        submitBtn.innerHTML = originalText;
-                        submitBtn.disabled = false;
-                    }
-                });
-            }
-            
-            // Social sign up
-            const googleSignUpBtn = document.querySelector('.btn-google');
-            if (googleSignUpBtn) {
-                googleSignUpBtn.addEventListener('click', async function() {
-                    try {
-                        const user = await signInWithGoogle();
-                        
-                        // Redirect to dashboard on success
-                        setTimeout(() => {
-                            window.location.href = 'dashboard.html';
-                        }, 1000);
-                    } catch (error) {
-                        // Error is handled by the signInWithGoogle function
-                    }
-                });
-            }
-            
-            const facebookSignUpBtn = document.querySelector('.btn-facebook');
-            if (facebookSignUpBtn) {
-                facebookSignUpBtn.addEventListener('click', async function() {
-                    try {
-                        const user = await signInWithFacebook();
-                        
-                        // Redirect to dashboard on success
-                        setTimeout(() => {
-                            window.location.href = 'dashboard.html';
-                        }, 1000);
-                    } catch (error) {
-                        // Error is handled by the signInWithFacebook function
-                    }
-                });
+                    // Redirect to dashboard after a short delay
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    showToast(result.error, 'error');
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
             }
         });
-        
-        // Update progress steps
-        function updateProgressSteps(currentStep) {
-            const progressSteps = document.querySelectorAll('.progress-step');
-            progressSteps.forEach(step => {
-                const stepNum = parseInt(step.getAttribute('data-step'));
-                if (stepNum <= currentStep) {
-                    step.classList.add('active');
-                } else {
-                    step.classList.remove('active');
-                }
-            });
-        }
-        
-        // Validate form step
-        function validateStep(step) {
-            const stepElement = document.querySelector(`.form-step[data-step="${step}"]`);
-            
-            if (!stepElement) return true;
-            
-            let isValid = true;
-            
-            // Get all required inputs in the current step
-            const requiredInputs = stepElement.querySelectorAll('[required]');
-            
-            requiredInputs.forEach(input => {
-                if (!input.value.trim()) {
-                    showToast(`Please fill in the ${input.getAttribute('placeholder') || input.getAttribute('name')}`, 'error');
-                    input.focus();
-                    isValid = false;
-                    return;
-                }
+
+        // Handle Google sign up
+        document.getElementById('googleSignUp').addEventListener('click', async () => {
+            try {
+                const result = await loginWithGoogle();
                 
-                // Email validation for step 1
-                if (step === 1 && input.type === 'email') {
-                    if (!isValidEmail(input.value.trim())) {
-                        showToast('Please enter a valid email address', 'error');
-                        input.focus();
-                        isValid = false;
-                        return;
-                    }
-                }
-                
-                // Password confirmation check for step 1
-                if (step === 1 && input.id === 'confirmPassword') {
-                    const password = document.getElementById('password').value;
+                if (result.success) {
+                    // Request notification permission after successful registration
+                    await requestNotificationPermission();
                     
-                    if (input.value !== password) {
-                        showToast('Passwords do not match', 'error');
-                        input.focus();
-                        isValid = false;
-                        return;
-                    }
-                }
-            });
-            
-            return isValid;
-        }
-        
-        // Check password strength
-        function updatePasswordStrength(password) {
-            const strengthBar = document.querySelector('.strength-bar');
-            const strengthText = document.querySelector('.strength-text span');
-            
-            if (!strengthBar || !strengthText) return;
-            
-            let strength = 0;
-            let status = '';
-            
-            if (password.length >= 8) strength += 1;
-            if (password.match(/[A-Z]/)) strength += 1;
-            if (password.match(/[a-z]/)) strength += 1;
-            if (password.match(/[0-9]/)) strength += 1;
-            if (password.match(/[^A-Za-z0-9]/)) strength += 1;
-            
-            switch (strength) {
-                case 0:
-                    strengthBar.style.width = '0%';
-                    strengthBar.style.backgroundColor = '#ff4d4d';
-                    status = 'Very Weak';
-                    break;
-                case 1:
-                    strengthBar.style.width = '20%';
-                    strengthBar.style.backgroundColor = '#ff4d4d';
-                    status = 'Weak';
-                    break;
-                case 2:
-                    strengthBar.style.width = '40%';
-                    strengthBar.style.backgroundColor = '#ffaa00';
-                    status = 'Fair';
-                    break;
-                case 3:
-                    strengthBar.style.width = '60%';
-                    strengthBar.style.backgroundColor = '#ffaa00';
-                    status = 'Good';
-                    break;
-                case 4:
-                    strengthBar.style.width = '80%';
-                    strengthBar.style.backgroundColor = '#47c9a2';
-                    status = 'Strong';
-                    break;
-                case 5:
-                    strengthBar.style.width = '100%';
-                    strengthBar.style.backgroundColor = '#47c9a2';
-                    status = 'Very Strong';
-                    break;
-            }
-            
-            strengthText.textContent = status;
-        }
-        
-        // Update password requirements visual feedback
-        function updatePasswordRequirements(password) {
-            const requirements = document.querySelectorAll('.requirement');
-            
-            if (!requirements.length) return;
-            
-            requirements.forEach(req => {
-                const type = req.getAttribute('data-requirement');
-                let isMet = false;
-                
-                switch (type) {
-                    case 'length':
-                        isMet = password.length >= 8;
-                        break;
-                    case 'uppercase':
-                        isMet = /[A-Z]/.test(password);
-                        break;
-                    case 'lowercase':
-                        isMet = /[a-z]/.test(password);
-                        break;
-                    case 'number':
-                        isMet = /[0-9]/.test(password);
-                        break;
-                    case 'special':
-                        isMet = /[^A-Za-z0-9]/.test(password);
-                        break;
-                }
-                
-                if (isMet) {
-                    req.classList.add('met');
-                    req.innerHTML = `<i class="fas fa-check"></i> ${req.textContent}`;
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
                 } else {
-                    req.classList.remove('met');
-                    req.innerHTML = req.textContent.replace('<i class="fas fa-check"></i> ', '');
+                    showToast(result.error, 'error');
                 }
-            });
-        }
-        
-        // Email validation
-        function isValidEmail(email) {
-            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(String(email).toLowerCase());
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        });
+
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
         }
     </script>
-    <script src="js/auth.js"></script>
 </body>
 </html> 

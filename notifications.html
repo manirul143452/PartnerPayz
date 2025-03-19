@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - PartnerPayz</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .notifications-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .notifications-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(145deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        .notifications-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .notifications-header .actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .notifications-header .btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .notifications-header .btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .notifications-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .notification-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .notification-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .notification-item.unread {
+            background-color: rgba(var(--primary-color-rgb), 0.05);
+        }
+        
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .notification-content {
+            flex-grow: 1;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .notification-text {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .notification-time {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .notification-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+        
+        .notification-actions button {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 13px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .notification-actions button:hover {
+            background-color: rgba(var(--primary-color-rgb), 0.1);
+        }
+        
+        .empty-notifications {
+            padding: 50px 20px;
+            text-align: center;
+            color: #999;
+        }
+        
+        .empty-notifications i {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        
+        .empty-notifications p {
+            font-size: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .notifications-container {
+                margin: 10px;
+                border-radius: 0;
+            }
+            
+            .notifications-header {
+                padding: 15px;
+            }
+            
+            .notifications-header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo.png" alt="PartnerPayz Logo">
+                <h1>PartnerPayz</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="partners.html">Find Partners</a>
+                <a href="messages.html">Messages</a>
+                <a href="notifications.html" class="active">Notifications</a>
+            </div>
+            <div class="user-menu">
+                <div class="notifications-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notification-badge">0</span>
+                </div>
+                <div class="user-profile">
+                    <img src="images/default-avatar.jpg" alt="User Avatar" id="userAvatar">
+                    <span id="userName">User</span>
+                </div>
+            </div>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="notifications-container">
+            <div class="notifications-header">
+                <h1>Notifications</h1>
+                <div class="actions">
+                    <button class="btn" id="markAllRead"><i class="fas fa-check-double"></i> Mark All as Read</button>
+                    <button class="btn" id="clearAll"><i class="fas fa-trash"></i> Clear All</button>
+                </div>
+            </div>
+            
+            <ul class="notifications-list" id="notificationsList">
+                <!-- Notifications will be populated here -->
+            </ul>
+        </div>
+    </main>
+
+    <script type="module">
+        import { getCurrentUser, isLoggedIn } from './js/local-auth.js';
+        import * as notificationService from './js/local-notifications.js';
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check if user is logged in
+            if (!isLoggedIn()) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Set user info
+            const user = getCurrentUser();
+            document.getElementById('userName').textContent = user.name || user.email.split('@')[0];
+            
+            // Update notification badge
+            updateNotificationBadge();
+            
+            // Load notifications
+            loadNotifications();
+            
+            // Event listeners
+            document.getElementById('markAllRead').addEventListener('click', () => {
+                notificationService.markAllAsRead();
+                loadNotifications();
+                updateNotificationBadge();
+            });
+            
+            document.getElementById('clearAll').addEventListener('click', () => {
+                if (confirm('Are you sure you want to clear all notifications?')) {
+                    notificationService.clearAllNotifications();
+                    loadNotifications();
+                    updateNotificationBadge();
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        });
+        
+        // Load notifications
+        function loadNotifications() {
+            const notifications = getNotifications();
+            const notificationsList = document.getElementById('notificationsList');
+            
+            if (notifications.length === 0) {
+                notificationsList.innerHTML = `
+                    <div class="empty-notifications">
+                        <i class="far fa-bell-slash"></i>
+                        <p>You don't have any notifications yet.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            notificationsList.innerHTML = '';
+            
+            notifications.forEach(notification => {
+                const li = document.createElement('li');
+                li.className = `notification-item ${notification.read ? '' : 'unread'}`;
+                li.dataset.id = notification.id;
+                
+                const iconClass = getNotificationIcon(notification.type);
+                
+                li.innerHTML = `
+                    <div class="notification-icon">
+                        <i class="${iconClass}"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">${notification.title}</div>
+                        <div class="notification-text">${notification.body}</div>
+                        <div class="notification-time">${formatTimestamp(notification.createdAt)}</div>
+                        <div class="notification-actions">
+                            <button class="mark-read" ${notification.read ? 'style="display:none"' : ''}>Mark as Read</button>
+                            <button class="delete">Delete</button>
+                        </div>
+                    </div>
+                `;
+                
+                notificationsList.appendChild(li);
+                
+                // Add event listeners
+                li.querySelector('.mark-read')?.addEventListener('click', () => {
+                    markAsRead(notification.id);
+                });
+                
+                li.querySelector('.delete').addEventListener('click', () => {
+                    deleteNotification(notification.id);
+                });
+            });
+        }
+        
+        // Get notifications from service
+        function getNotifications() {
+            return JSON.parse(localStorage.getItem('partnerpayz_notifications') || '[]');
+        }
+        
+        // Mark notification as read
+        function markAsRead(id) {
+            notificationService.markAsRead(id);
+            const item = document.querySelector(`.notification-item[data-id="${id}"]`);
+            if (item) {
+                item.classList.remove('unread');
+                item.querySelector('.mark-read').style.display = 'none';
+            }
+            updateNotificationBadge();
+        }
+        
+        // Delete notification
+        function deleteNotification(id) {
+            const notifications = getNotifications();
+            const index = notifications.findIndex(n => n.id === id);
+            
+            if (index !== -1) {
+                notifications.splice(index, 1);
+                localStorage.setItem('partnerpayz_notifications', JSON.stringify(notifications));
+                
+                const item = document.querySelector(`.notification-item[data-id="${id}"]`);
+                if (item) {
+                    item.remove();
+                }
+                
+                // Check if list is empty
+                if (notifications.length === 0) {
+                    document.getElementById('notificationsList').innerHTML = `
+                        <div class="empty-notifications">
+                            <i class="far fa-bell-slash"></i>
+                            <p>You don't have any notifications yet.</p>
+                        </div>
+                    `;
+                }
+                
+                updateNotificationBadge();
+            }
+        }
+        
+        // Update notification badge
+        function updateNotificationBadge() {
+            const count = notificationService.getUnreadCount();
+            const badge = document.getElementById('notification-badge');
+            
+            if (count > 0) {
+                badge.textContent = count;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+        
+        // Get icon class based on notification type
+        function getNotificationIcon(type) {
+            switch (type) {
+                case 'new_match':
+                    return 'fas fa-heart';
+                case 'new_message':
+                    return 'fas fa-envelope';
+                case 'payment_received':
+                    return 'fas fa-money-bill-wave';
+                case 'anniversary_reminder':
+                    return 'fas fa-calendar-check';
+                default:
+                    return 'fas fa-bell';
+            }
+        }
+        
+        // Format timestamp to relative time
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffSecs = Math.floor(diffMs / 1000);
+            const diffMins = Math.floor(diffSecs / 60);
+            const diffHours = Math.floor(diffMins / 60);
+            const diffDays = Math.floor(diffHours / 24);
+            
+            if (diffSecs < 60) {
+                return 'just now';
+            } else if (diffMins < 60) {
+                return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+            } else if (diffHours < 24) {
+                return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+            } else if (diffDays < 7) {
+                return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+            } else {
+                return date.toLocaleDateString();
+            }
+        }
+    </script>
+</body>
+</html> 

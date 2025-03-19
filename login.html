@@ -64,8 +64,8 @@
     </div>
 
     <script type="module">
-        import { signIn, signInWithGoogle } from './js/auth-service.js';
-        import { requestNotificationPermission } from './js/firebase-config.js';
+        import { loginUser, loginWithGoogle } from './js/local-auth.js';
+        import { requestNotificationPermission } from './js/local-notifications.js';
 
         // Toggle password visibility
         const togglePassword = document.querySelector('.toggle-password');
@@ -87,15 +87,11 @@
             const remember = document.getElementById('remember').checked;
             
             try {
-                const result = await signIn(email, password);
+                const result = await loginUser(email, password);
                 
                 if (result.success) {
                     // Request notification permission after successful login
-                    const token = await requestNotificationPermission();
-                    if (token) {
-                        // Here you would typically send the token to your backend
-                        console.log('Notification token:', token);
-                    }
+                    await requestNotificationPermission();
                     
                     // Redirect to dashboard
                     window.location.href = 'dashboard.html';
@@ -110,15 +106,11 @@
         // Handle Google sign in
         document.getElementById('googleSignIn').addEventListener('click', async () => {
             try {
-                const result = await signInWithGoogle();
+                const result = await loginWithGoogle();
                 
                 if (result.success) {
                     // Request notification permission after successful login
-                    const token = await requestNotificationPermission();
-                    if (token) {
-                        // Here you would typically send the token to your backend
-                        console.log('Notification token:', token);
-                    }
+                    await requestNotificationPermission();
                     
                     // Redirect to dashboard
                     window.location.href = 'dashboard.html';
