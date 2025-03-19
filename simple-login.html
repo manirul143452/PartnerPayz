@@ -80,6 +80,26 @@
             background: #28a745;
         }
         
+        .google-btn {
+            margin-top: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .google-btn i {
+            color: #DB4437;
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        .google-btn:hover {
+            background: #f8f9fa;
+        }
+        
         .message {
             margin-top: 20px;
             padding: 10px;
@@ -133,6 +153,25 @@
             max-height: 200px;
             overflow: auto;
         }
+        
+        .or-divider {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            color: #777;
+            text-align: center;
+        }
+        
+        .or-divider:before,
+        .or-divider:after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .or-divider span {
+            padding: 0 10px;
+        }
     </style>
 </head>
 <body>
@@ -150,8 +189,16 @@
                 <input type="password" id="password" placeholder="Enter your password" required>
             </div>
             
-            <button type="submit">Login</button>
+            <button type="submit" id="loginBtn">Login</button>
         </form>
+        
+        <div class="or-divider">
+            <span>OR</span>
+        </div>
+        
+        <button id="googleBtn" class="google-btn">
+            <i class="fab fa-google"></i> Login with Google
+        </button>
         
         <button id="testUserBtn" class="test-btn">Login as Test User</button>
         
@@ -177,6 +224,8 @@
         const loginForm = document.getElementById('loginForm');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const googleBtn = document.getElementById('googleBtn');
         const messageDiv = document.getElementById('message');
         const debugInfo = document.getElementById('debugInfo');
         const testUserBtn = document.getElementById('testUserBtn');
@@ -191,6 +240,7 @@
             
             // Add event listeners
             loginForm.addEventListener('submit', handleLogin);
+            googleBtn.addEventListener('click', handleGoogleLogin);
             testUserBtn.addEventListener('click', loginAsTestUser);
             showUsersBtn.addEventListener('click', displayAllUsers);
             createTestBtn.addEventListener('click', createTestUser);
@@ -205,7 +255,15 @@
                     localStorage.setItem(USERS_KEY, JSON.stringify([]));
                     log('Initialized empty users array');
                 } else {
-                    log('Found existing users data');
+                    try {
+                        // Validate JSON format
+                        JSON.parse(users);
+                        log('Found existing users data');
+                    } catch (e) {
+                        // Reset if corrupt
+                        localStorage.setItem(USERS_KEY, JSON.stringify([]));
+                        log('Reset corrupted users data');
+                    }
                 }
             } catch (error) {
                 log('Error initializing storage: ' + error.message);
@@ -217,7 +275,7 @@
             try {
                 const currentUserId = localStorage.getItem(CURRENT_USER_KEY);
                 if (currentUserId) {
-                    const users = JSON.parse(localStorage.getItem(USERS_KEY));
+                    const users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
                     const user = users.find(u => u.id === currentUserId);
                     if (user) {
                         log('User already logged in: ' + user.email);
@@ -244,11 +302,19 @@
             const email = emailInput.value.trim();
             const password = passwordInput.value;
             
+            // Disable button to prevent multiple submissions
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging in...';
+            
             try {
                 log('Attempting login: ' + email);
                 
-                const users = JSON.parse(localStorage.getItem(USERS_KEY));
-                const user = users.find(u => u.email === email && u.password === password);
+                if (!email || !password) {
+                    throw new Error('Email and password are required');
+                }
+                
+                const users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+                const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
                 
                 if (user) {
                     // Update last login
@@ -267,10 +333,77 @@
                 } else {
                     log('Login failed: Invalid credentials');
                     showMessage('Invalid email or password', 'error');
+                    
+                    // Reset button
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Login';
                 }
             } catch (error) {
                 log('Login error: ' + error.message);
-                showMessage('An error occurred. Please try again.', 'error');
+                showMessage('Error: ' + error.message, 'error');
+                
+                // Reset button
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+            }
+        }
+        
+        // Handle Google login (simulated)
+        function handleGoogleLogin() {
+            try {
+                log('Attempting Google login');
+                
+                // Disable button to prevent multiple clicks
+                googleBtn.disabled = true;
+                googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+                
+                // Generate random Google user
+                const randomNum = Math.floor(Math.random() * 10000);
+                const email = `user${randomNum}@gmail.com`;
+                const name = `Google User ${randomNum}`;
+                
+                log('Simulated Google auth for: ' + email);
+                
+                // Check if this Google user already exists
+                let users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+                let user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+                
+                if (!user) {
+                    // Create new Google user
+                    user = {
+                        id: 'google_' + Date.now(),
+                        email: email,
+                        name: name,
+                        isGoogleUser: true,
+                        createdAt: new Date().toISOString(),
+                        lastLogin: new Date().toISOString()
+                    };
+                    
+                    users.push(user);
+                    log('Created new Google user: ' + email);
+                } else {
+                    // Update last login for existing user
+                    user.lastLogin = new Date().toISOString();
+                    log('Google user exists: ' + email);
+                }
+                
+                // Save changes and set current user
+                localStorage.setItem(USERS_KEY, JSON.stringify(users));
+                localStorage.setItem(CURRENT_USER_KEY, user.id);
+                
+                log('Google login successful');
+                showMessage('Google login successful! Redirecting...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            } catch (error) {
+                log('Google login error: ' + error.message);
+                showMessage('Error: ' + error.message, 'error');
+                
+                // Reset button
+                googleBtn.disabled = false;
+                googleBtn.innerHTML = '<i class="fab fa-google"></i> Login with Google';
             }
         }
         
@@ -278,6 +411,10 @@
         function loginAsTestUser() {
             try {
                 log('Creating/using test user');
+                
+                // Disable button to prevent multiple clicks
+                testUserBtn.disabled = true;
+                testUserBtn.textContent = 'Logging in...';
                 
                 // Create test user if needed
                 const testUser = createTestUser(true);
@@ -291,17 +428,23 @@
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
                     }, 1500);
+                } else {
+                    throw new Error('Failed to create test user');
                 }
             } catch (error) {
                 log('Test login error: ' + error.message);
-                showMessage('An error occurred. Please try again.', 'error');
+                showMessage('Error: ' + error.message, 'error');
+                
+                // Reset button
+                testUserBtn.disabled = false;
+                testUserBtn.textContent = 'Login as Test User';
             }
         }
         
         // Create test user
         function createTestUser(silent = false) {
             try {
-                let users = JSON.parse(localStorage.getItem(USERS_KEY));
+                let users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
                 
                 // Check if test user already exists
                 let testUser = users.find(u => u.email === 'test@example.com');
@@ -353,7 +496,7 @@
         // Display all users
         function displayAllUsers() {
             try {
-                const users = JSON.parse(localStorage.getItem(USERS_KEY));
+                const users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
                 const currentUserId = localStorage.getItem(CURRENT_USER_KEY);
                 
                 log('Total users: ' + users.length);
@@ -411,6 +554,7 @@
         function log(message) {
             const timestamp = new Date().toLocaleTimeString();
             debugInfo.textContent = `[${timestamp}] ${message}\n` + debugInfo.textContent;
+            console.log(`[${timestamp}] ${message}`);
         }
     </script>
 </body>
