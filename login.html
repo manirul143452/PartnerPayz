@@ -6,249 +6,149 @@
     <title>Login - PartnerPayz</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/auth.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <img src="images/logo (2).svg" alt="PartnerPayz Logo - Financial Platform for Couples">
-                <h1>PartnerPayz</h1>
-            </div>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="dashboard.html">Dashboard</a>
-                <a href="partners.html">Find Partners</a>
-                <a href="invest.html">Invest Together</a>
-                <a href="blog.html">Blog</a>
-                <a href="community.html">Community</a>
-            </div>
-            <div class="auth-buttons">
-                <a href="login.html" class="btn btn-secondary active">Log In</a>
-                <a href="register.html" class="btn btn-primary">Sign Up</a>
-            </div>
-            <div class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </div>
-        </nav>
-    </header>
-
-    <main class="auth-container">
-        <div class="auth-card">
+    <div class="auth-container">
+        <div class="auth-box">
             <div class="auth-header">
+                <img src="images/logo.png" alt="PartnerPayz Logo" class="auth-logo">
                 <h1>Welcome Back</h1>
-                <p>Log in to continue your journey toward financial harmony and relationship growth</p>
+                <p>Sign in to continue to PartnerPayz</p>
             </div>
             
             <form id="loginForm" class="auth-form">
                 <div class="form-group">
-                    <label for="email">Email or Phone Number</label>
-                    <div class="input-with-icon">
+                    <label for="email">Email Address</label>
+                    <div class="input-group">
                         <i class="fas fa-envelope"></i>
-                        <input type="text" id="email" name="email" placeholder="Enter your email or phone number" required>
+                        <input type="email" id="email" required placeholder="Enter your email">
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <div class="input-with-icon">
+                    <div class="input-group">
                         <i class="fas fa-lock"></i>
-                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                        <i class="fas fa-eye toggle-password"></i>
+                        <input type="password" id="password" required placeholder="Enter your password">
+                        <button type="button" class="toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
                     </div>
                 </div>
                 
                 <div class="form-options">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">Remember me</label>
-                    </div>
-                    <a href="#" class="forgot-password" id="forgotPasswordLink">Forgot Password?</a>
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
                 </div>
                 
-                <button type="submit" class="btn btn-primary btn-block">Log In</button>
-                
-                <div class="or-divider">
-                    <span>or</span>
-                </div>
+                <button type="submit" class="btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
                 
                 <div class="social-login">
-                    <button type="button" class="btn btn-google" id="googleLoginBtn">
-                        <img src="images/google-icon.svg" alt="Google">
-                        Continue with Google
-                    </button>
-                    <button type="button" class="btn btn-facebook" id="facebookLoginBtn">
-                        <i class="fab fa-facebook-f"></i>
-                        Continue with Facebook
+                    <p>Or continue with</p>
+                    <button type="button" class="btn-google" id="googleSignIn">
+                        <i class="fab fa-google"></i> Google
                     </button>
                 </div>
             </form>
             
             <div class="auth-footer">
-                <p>Don't have an account? <a href="register.html">Sign Up</a></p>
+                <p>Don't have an account? <a href="register.html">Sign up</a></p>
             </div>
         </div>
-    </main>
+    </div>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="images/logo (2).svg" alt="PartnerPayz Logo">
-                <h3>PartnerPayz</h3>
-            </div>
-            <div class="footer-links">
-                <div class="link-group">
-                    <h4>Company</h4>
-                    <a href="about.html">About Us</a>
-                    <a href="careers.html">Careers</a>
-                    <a href="press.html">Press</a>
-                </div>
-                <div class="link-group">
-                    <h4>Features</h4>
-                    <a href="partners.html">Partner Finding</a>
-                    <a href="invest.html">Joint Investments</a>
-                    <a href="dashboard.html">Financial Planning</a>
-                </div>
-                <div class="link-group">
-                    <h4>Resources</h4>
-                    <a href="blog.html">Blog</a>
-                    <a href="community.html">Community</a>
-                    <a href="help.html">Help Center</a>
-                </div>
-                <div class="link-group">
-                    <h4>Legal</h4>
-                    <a href="privacy.html">Privacy Policy</a>
-                    <a href="terms.html">Terms of Service</a>
-                    <a href="cookies.html">Cookie Policy</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2023 PartnerPayz. All rights reserved.</p>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Firebase config -->
     <script type="module">
-      // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
-      
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyBiwaYxkiyWCupQVGgUIOv7zuztdzlkPtc",
-        authDomain: "partnerpayz.firebaseapp.com",
-        projectId: "partnerpayz",
-        storageBucket: "partnerpayz.appspot.com",
-        messagingSenderId: "140540750518",
-        appId: "1:140540750518:web:2bc8427ed17e2481b51417",
-        measurementId: "G-YLCV2CGV57"
-      };
-    
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-      
-      // Import and initialize Firebase auth functions
-      import { 
-        loginUser, 
-        signInWithGoogle, 
-        signInWithFacebook, 
-        resetPassword 
-      } from "./js/firebase-auth.js";
-      
-      // Event listeners for authentication
-      document.addEventListener('DOMContentLoaded', function() {
-        // Login form submission
-        const loginForm = document.getElementById('loginForm');
-        if (loginForm) {
-          loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            
-            // Show loading state
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
-            submitBtn.disabled = true;
-            
-            try {
-              // Authenticate with Firebase
-              const user = await loginUser(email, password);
-              
-              // Redirect to dashboard on success
-              setTimeout(() => {
-                window.location.href = 'dashboard.html';
-              }, 1000);
-            } catch (error) {
-              // Error is handled by the loginUser function
-              submitBtn.innerHTML = originalText;
-              submitBtn.disabled = false;
-            }
-          });
-        }
-        
-        // Google login
-        const googleLoginBtn = document.getElementById('googleLoginBtn');
-        if (googleLoginBtn) {
-          googleLoginBtn.addEventListener('click', async function() {
-            try {
-              const user = await signInWithGoogle();
-              
-              // Redirect to dashboard on success
-              setTimeout(() => {
-                window.location.href = 'dashboard.html';
-              }, 1000);
-            } catch (error) {
-              // Error is handled by the signInWithGoogle function
-            }
-          });
-        }
-        
-        // Facebook login
-        const facebookLoginBtn = document.getElementById('facebookLoginBtn');
-        if (facebookLoginBtn) {
-          facebookLoginBtn.addEventListener('click', async function() {
-            try {
-              const user = await signInWithFacebook();
-              
-              // Redirect to dashboard on success
-              setTimeout(() => {
-                window.location.href = 'dashboard.html';
-              }, 1000);
-            } catch (error) {
-              // Error is handled by the signInWithFacebook function
-            }
-          });
-        }
-        
-        // Forgot password
-        const forgotPasswordLink = document.getElementById('forgotPasswordLink');
-        if (forgotPasswordLink) {
-          forgotPasswordLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value.trim();
-            if (!email) {
-              showToast('Please enter your email address to reset your password.', 'error');
-              return;
-            }
-            
-            resetPassword(email);
-          });
-        }
-      });
-    </script>
+        import { signIn, signInWithGoogle } from './js/auth-service.js';
+        import { requestNotificationPermission } from './js/firebase-config.js';
 
-    <script src="js/main.js"></script>
+        // Toggle password visibility
+        const togglePassword = document.querySelector('.toggle-password');
+        const passwordInput = document.getElementById('password');
+        
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.querySelector('i').classList.toggle('fa-eye');
+            togglePassword.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+            
+            try {
+                const result = await signIn(email, password);
+                
+                if (result.success) {
+                    // Request notification permission after successful login
+                    const token = await requestNotificationPermission();
+                    if (token) {
+                        // Here you would typically send the token to your backend
+                        console.log('Notification token:', token);
+                    }
+                    
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                } else {
+                    showToast(result.error, 'error');
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        });
+
+        // Handle Google sign in
+        document.getElementById('googleSignIn').addEventListener('click', async () => {
+            try {
+                const result = await signInWithGoogle();
+                
+                if (result.success) {
+                    // Request notification permission after successful login
+                    const token = await requestNotificationPermission();
+                    if (token) {
+                        // Here you would typically send the token to your backend
+                        console.log('Notification token:', token);
+                    }
+                    
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                } else {
+                    showToast(result.error, 'error');
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        });
+
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+    </script>
 </body>
 </html> 
