@@ -228,6 +228,169 @@
             opacity: 0.9;
             transform: translateY(-1px);
         }
+        
+        /* Styles for SMS Notification System */
+        .sms-controls {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .phone-input {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .phone-input i {
+            color: #6a11cb;
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        .phone-input input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+        
+        .btn-small {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .sms-toggle {
+            display: flex;
+            align-items: center;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-right: 10px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        
+        input:checked + .slider {
+            background-color: #6a11cb;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .slider.round {
+            border-radius: 34px;
+        }
+        
+        .slider.round:before {
+            border-radius: 50%;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 30px 0;
+            color: #888;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+        
+        .amount-input {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .currency-symbol {
+            position: absolute;
+            left: 12px;
+            color: #555;
+        }
+        
+        #billAmount {
+            padding-left: 24px;
+        }
+        
+        /* Bill item styles */
+        .activity-icon.home {
+            background-color: rgba(233, 30, 99, 0.1);
+            color: #e91e63;
+        }
+        
+        .activity-icon.utilities {
+            background-color: rgba(33, 150, 243, 0.1);
+            color: #2196f3;
+        }
+        
+        .activity-icon.insurance {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: #4caf50;
+        }
+        
+        .activity-icon.subscription {
+            background-color: rgba(156, 39, 176, 0.1);
+            color: #9c27b0;
+        }
+        
+        .activity-icon.other {
+            background-color: rgba(158, 158, 158, 0.1);
+            color: #9e9e9e;
+        }
+        
+        /* SMS Sent Badge */
+        .sms-badge {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background-color: #4caf50;
+            color: white;
+            margin-left: 5px;
+        }
+        
+        .sms-badge.pending {
+            background-color: #ff9800;
+        }
     </style>
 </head>
 <body>
@@ -349,39 +512,89 @@
                 
                 <div class="widget">
                     <div class="widget-header">
-                        <h2 class="widget-title">Upcoming Bills</h2>
-                        <a href="#" class="widget-action">View All</a>
+                        <h2 class="widget-title">Bill Reminders SMS</h2>
+                        <a href="#" class="widget-action" id="addBillBtn">Add New</a>
                     </div>
                     <div class="widget-content">
-                        <ul class="activity-list">
-                            <li class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="fas fa-home"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <h3 class="activity-title">Rent Payment</h3>
-                                    <p class="activity-time">Due in 5 days</p>
-                                </div>
-                            </li>
-                            <li class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="fas fa-wifi"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <h3 class="activity-title">Internet Bill</h3>
-                                    <p class="activity-time">Due in 8 days</p>
-                                </div>
-                            </li>
-                            <li class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="fas fa-bolt"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <h3 class="activity-title">Electricity Bill</h3>
-                                    <p class="activity-time">Due in 12 days</p>
-                                </div>
+                        <div class="sms-controls">
+                            <div class="phone-input">
+                                <i class="fas fa-mobile-alt"></i>
+                                <input type="tel" id="phoneNumber" placeholder="Enter phone number" pattern="[0-9]{10}" maxlength="10">
+                                <button id="verifyPhoneBtn" class="btn-small">Verify</button>
+                            </div>
+                            <div class="sms-toggle">
+                                <label class="switch">
+                                    <input type="checkbox" id="smsEnabledToggle" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                                <span>Enable SMS Notifications</span>
+                            </div>
+                        </div>
+                        
+                        <ul class="activity-list" id="billsList">
+                            <!-- Empty list that will be filled with bills -->
+                            <li class="empty-state" id="emptyBillsState">
+                                <i class="fas fa-receipt"></i>
+                                <p>No bill reminders added yet</p>
+                                <button class="btn-small" id="addFirstBillBtn">Add Your First Bill</button>
                             </li>
                         </ul>
+                    </div>
+                </div>
+                
+                <!-- Bill Add/Edit Modal -->
+                <div class="modal" id="billModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 id="billModalTitle">Add New Bill</h2>
+                            <span class="close-modal" id="closeBillModal">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <form id="billForm">
+                                <div class="form-group">
+                                    <label for="billTitle">Bill Title</label>
+                                    <input type="text" id="billTitle" placeholder="e.g. Rent, Internet, Electricity" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billAmount">Amount</label>
+                                    <div class="amount-input">
+                                        <span class="currency-symbol">$</span>
+                                        <input type="number" id="billAmount" min="0.01" step="0.01" placeholder="0.00" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billDueDate">Due Date</label>
+                                    <input type="date" id="billDueDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billCategory">Category</label>
+                                    <select id="billCategory" required>
+                                        <option value="home">Home</option>
+                                        <option value="utilities">Utilities</option>
+                                        <option value="insurance">Insurance</option>
+                                        <option value="subscription">Subscription</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group reminder-options">
+                                    <label>SMS Reminder</label>
+                                    <div class="reminder-checkbox">
+                                        <input type="checkbox" id="sendSmsReminder" checked>
+                                        <label for="sendSmsReminder">Send SMS</label>
+                                    </div>
+                                    <select id="smsReminderTime" class="reminder-select">
+                                        <option value="0">On the due date</option>
+                                        <option value="1" selected>1 day before</option>
+                                        <option value="3">3 days before</option>
+                                        <option value="7">1 week before</option>
+                                    </select>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-secondary" id="cancelBillBtn">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Save Bill</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 
@@ -681,6 +894,344 @@
                 case 'date-night': return 'fa-calendar-alt';
                 case 'holiday': return 'fa-gift';
                 default: return 'fa-calendar-check';
+            }
+        }
+    });
+    </script>
+
+    <script>
+    // Bills Management Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Bill Modal Elements
+        const billModal = document.getElementById('billModal');
+        const addBillBtn = document.getElementById('addBillBtn');
+        const addFirstBillBtn = document.getElementById('addFirstBillBtn');
+        const closeBillModal = document.getElementById('closeBillModal');
+        const cancelBillBtn = document.getElementById('cancelBillBtn');
+        const billForm = document.getElementById('billForm');
+        const billsList = document.getElementById('billsList');
+        const emptyBillsState = document.getElementById('emptyBillsState');
+        const billModalTitle = document.getElementById('billModalTitle');
+        const verifyPhoneBtn = document.getElementById('verifyPhoneBtn');
+        const phoneNumber = document.getElementById('phoneNumber');
+        const smsEnabledToggle = document.getElementById('smsEnabledToggle');
+        
+        // Sample bill data (for demonstration)
+        const sampleBills = [
+            {
+                title: 'Rent Payment',
+                amount: 1200,
+                dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
+                category: 'home',
+                sendSms: true,
+                smsReminderDays: 1,
+                smsSent: false
+            },
+            {
+                title: 'Internet Bill',
+                amount: 65.99,
+                dueDate: new Date(Date.now() + 8 * 24 * 60 * 60 * 1000), // 8 days from now
+                category: 'utilities',
+                sendSms: true,
+                smsReminderDays: 1,
+                smsSent: false
+            }
+        ];
+        
+        // Load sample bills when page loads
+        loadSampleBills();
+        
+        // Phone verification
+        verifyPhoneBtn.addEventListener('click', function() {
+            const phone = phoneNumber.value.trim();
+            
+            if (phone.length === 10 && /^\d+$/.test(phone)) {
+                // Simulate verification process
+                showToast('Verification code sent to your phone', 'info');
+                
+                // After a delay, simulate successful verification
+                setTimeout(() => {
+                    showToast('Phone number verified successfully!', 'success');
+                    phoneNumber.disabled = true;
+                    verifyPhoneBtn.textContent = 'Verified';
+                    verifyPhoneBtn.classList.add('verified');
+                }, 2000);
+            } else {
+                showToast('Please enter a valid 10-digit phone number', 'error');
+            }
+        });
+        
+        // SMS toggle
+        smsEnabledToggle.addEventListener('change', function() {
+            if (this.checked) {
+                showToast('SMS notifications enabled', 'success');
+            } else {
+                showToast('SMS notifications disabled', 'info');
+            }
+        });
+        
+        // Show modal when Add New is clicked
+        addBillBtn.addEventListener('click', showBillModal);
+        addFirstBillBtn.addEventListener('click', showBillModal);
+        
+        function showBillModal() {
+            billModalTitle.textContent = 'Add New Bill';
+            billForm.reset();
+            
+            // Set default due date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('billDueDate').valueAsDate = tomorrow;
+            
+            billModal.style.display = 'flex';
+        }
+        
+        // Close modal functions
+        function closeBillModalFunction() {
+            billModal.style.display = 'none';
+        }
+        
+        closeBillModal.addEventListener('click', closeBillModalFunction);
+        cancelBillBtn.addEventListener('click', closeBillModalFunction);
+        
+        // Close when clicking outside the modal
+        window.addEventListener('click', function(event) {
+            if (event.target === billModal) {
+                closeBillModalFunction();
+            }
+        });
+        
+        // Edit bill function
+        function setupEditButtons() {
+            document.querySelectorAll('.bill-item .item-button.edit').forEach(button => {
+                button.addEventListener('click', function() {
+                    const item = this.closest('.activity-item');
+                    const title = item.querySelector('.activity-title').textContent;
+                    const amountText = item.querySelector('.bill-amount').textContent;
+                    const amount = parseFloat(amountText.replace(/[^0-9.-]+/g, ''));
+                    
+                    // Set values in form
+                    document.getElementById('billTitle').value = title;
+                    document.getElementById('billAmount').value = amount;
+                    
+                    // Get the category from the item
+                    let category = 'other';
+                    if (item.querySelector('.activity-icon.home')) category = 'home';
+                    else if (item.querySelector('.activity-icon.utilities')) category = 'utilities';
+                    else if (item.querySelector('.activity-icon.insurance')) category = 'insurance';
+                    else if (item.querySelector('.activity-icon.subscription')) category = 'subscription';
+                    
+                    document.getElementById('billCategory').value = category;
+                    
+                    // Set modal title to Edit
+                    billModalTitle.textContent = 'Edit Bill';
+                    billModal.style.display = 'flex';
+                });
+            });
+        }
+        
+        // Send SMS function
+        function setupSmsButtons() {
+            document.querySelectorAll('.bill-item .item-button.send-sms').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (!smsEnabledToggle.checked) {
+                        showToast('SMS notifications are disabled. Please enable them first.', 'error');
+                        return;
+                    }
+                    
+                    if (!verifyPhoneBtn.classList.contains('verified')) {
+                        showToast('Please verify your phone number first', 'error');
+                        return;
+                    }
+                    
+                    const item = this.closest('.activity-item');
+                    const title = item.querySelector('.activity-title').textContent;
+                    const amount = item.querySelector('.bill-amount').textContent;
+                    const dueDate = item.querySelector('.activity-time').textContent.replace('Due: ', '');
+                    
+                    // Show sending animation
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    
+                    // After a delay, simulate SMS sent
+                    setTimeout(() => {
+                        // Add SMS sent badge to the bill item if it doesn't exist
+                        if (!item.querySelector('.sms-badge')) {
+                            const badge = document.createElement('span');
+                            badge.className = 'sms-badge';
+                            badge.textContent = 'SMS Sent';
+                            item.querySelector('.activity-title').appendChild(badge);
+                        }
+                        
+                        // Update button
+                        this.innerHTML = '<i class="fas fa-paper-plane"></i>';
+                        
+                        showToast(`SMS reminder sent for ${title}`, 'success');
+                    }, 1500);
+                });
+            });
+        }
+        
+        // Delete bill function
+        function setupDeleteButtons() {
+            document.querySelectorAll('.bill-item .item-button.delete').forEach(button => {
+                button.addEventListener('click', function() {
+                    const item = this.closest('.activity-item');
+                    const title = item.querySelector('.activity-title').textContent.replace('SMS Sent', '').trim();
+                    
+                    // Remove with animation
+                    item.style.opacity = '0';
+                    setTimeout(() => {
+                        item.remove();
+                        showToast(`${title} removed from bills`, 'info');
+                        
+                        // Show empty state if no bills left
+                        if (billsList.querySelectorAll('.activity-item:not(.empty-state)').length === 0) {
+                            emptyBillsState.style.display = 'block';
+                        }
+                    }, 300);
+                });
+            });
+        }
+        
+        // Form submission
+        billForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('billTitle').value;
+            const amount = parseFloat(document.getElementById('billAmount').value);
+            const dueDate = new Date(document.getElementById('billDueDate').value);
+            const category = document.getElementById('billCategory').value;
+            const sendSms = document.getElementById('sendSmsReminder').checked;
+            const smsReminderDays = parseInt(document.getElementById('smsReminderTime').value);
+            
+            // Hide empty state if visible
+            emptyBillsState.style.display = 'none';
+            
+            // Get icon based on category
+            const iconClass = getBillIconByCategory(category);
+            
+            // Format the date and calculate days until due
+            const formattedDate = dueDate.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            const today = new Date();
+            const diffTime = Math.abs(dueDate - today);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            // Format amount as currency
+            const formattedAmount = new Intl.NumberFormat('en-US', { 
+                style: 'currency', 
+                currency: 'USD' 
+            }).format(amount);
+            
+            // Create new bill item
+            const newItem = document.createElement('li');
+            newItem.className = 'activity-item bill-item';
+            newItem.innerHTML = `
+                <div class="activity-icon ${category}">
+                    <i class="fas ${iconClass}"></i>
+                </div>
+                <div class="activity-details">
+                    <h3 class="activity-title">${title}</h3>
+                    <p class="activity-time">Due: ${formattedDate} (In ${diffDays} days)</p>
+                    <p class="bill-amount">${formattedAmount}</p>
+                </div>
+                <div class="item-actions">
+                    <button class="item-button send-sms" title="Send SMS Reminder"><i class="fas fa-paper-plane"></i></button>
+                    <button class="item-button edit" title="Edit Bill"><i class="fas fa-edit"></i></button>
+                    <button class="item-button delete" title="Delete Bill"><i class="fas fa-trash"></i></button>
+                </div>
+            `;
+            
+            // Add to list
+            billsList.appendChild(newItem);
+            
+            // Set up button handlers for the new item
+            setupEditButtons();
+            setupSmsButtons();
+            setupDeleteButtons();
+            
+            // Show toast notification
+            showToast(`${billModalTitle.textContent === 'Add New Bill' ? 'Added' : 'Updated'}: ${title}`, 'success');
+            
+            // If SMS reminder is enabled and phone is verified
+            if (sendSms && verifyPhoneBtn.classList.contains('verified') && smsEnabledToggle.checked) {
+                showToast(`SMS reminder will be sent ${smsReminderDays === 0 ? 'on the due date' : smsReminderDays + ' day(s) before due date'}`, 'info');
+            }
+            
+            // Close modal
+            closeBillModalFunction();
+        });
+        
+        // Load sample bills on page load
+        function loadSampleBills() {
+            if (sampleBills.length > 0) {
+                // Hide empty state
+                emptyBillsState.style.display = 'none';
+                
+                // Add sample bills
+                sampleBills.forEach(bill => {
+                    const category = bill.category;
+                    const iconClass = getBillIconByCategory(category);
+                    
+                    // Format the date and calculate days until due
+                    const formattedDate = bill.dueDate.toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    });
+                    
+                    const today = new Date();
+                    const diffTime = Math.abs(bill.dueDate - today);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    
+                    // Format amount as currency
+                    const formattedAmount = new Intl.NumberFormat('en-US', { 
+                        style: 'currency', 
+                        currency: 'USD' 
+                    }).format(bill.amount);
+                    
+                    // Create bill item
+                    const newItem = document.createElement('li');
+                    newItem.className = 'activity-item bill-item';
+                    newItem.innerHTML = `
+                        <div class="activity-icon ${category}">
+                            <i class="fas ${iconClass}"></i>
+                        </div>
+                        <div class="activity-details">
+                            <h3 class="activity-title">${bill.title}</h3>
+                            <p class="activity-time">Due: ${formattedDate} (In ${diffDays} days)</p>
+                            <p class="bill-amount">${formattedAmount}</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="item-button send-sms" title="Send SMS Reminder"><i class="fas fa-paper-plane"></i></button>
+                            <button class="item-button edit" title="Edit Bill"><i class="fas fa-edit"></i></button>
+                            <button class="item-button delete" title="Delete Bill"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                    
+                    // Add to list
+                    billsList.appendChild(newItem);
+                });
+                
+                // Set up button handlers
+                setupEditButtons();
+                setupSmsButtons();
+                setupDeleteButtons();
+            }
+        }
+        
+        // Helper function to get icon based on bill category
+        function getBillIconByCategory(category) {
+            switch(category) {
+                case 'home': return 'fa-home';
+                case 'utilities': return 'fa-bolt';
+                case 'insurance': return 'fa-shield-alt';
+                case 'subscription': return 'fa-credit-card';
+                default: return 'fa-receipt';
             }
         }
     });
