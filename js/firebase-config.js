@@ -4,6 +4,7 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-messaging.js";
 
 // Your web app's Firebase configuration
+// Auth handler URL: https://partnerpayz.firebaseapp.com/__/auth/handler
 const firebaseConfig = {
     apiKey: "AIzaSyBiwaYxkiyWCupQVGgUIOv7zuztdzlkPtc",
     authDomain: "partnerpayz.firebaseapp.com",
