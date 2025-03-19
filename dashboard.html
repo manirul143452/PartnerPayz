@@ -652,217 +652,245 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <img src="images/logo.svg" alt="PartnerPayz Logo - Financial Platform for Couples">
-                <h1>PartnerPayz</h1>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="PartnerPayz" class="logo">
             </div>
-            <div class="nav-links">
-                <a href="index.html" class="active">Dashboard</a>
-                <a href="features.html">Features</a>
-                <a href="about.html">About Us</a>
-                <a href="contact.html">Contact</a>
-            </div>
-            <div class="auth-buttons">
-                <div class="user-menu">
-                    <div class="user-avatar">
-                        <img src="images/user-avatar.jpg" alt="User Avatar">
-                    </div>
-                    <span class="user-name">Rajiv Sharma</span>
+            <nav class="main-nav">
+                <ul>
+                    <li class="active"><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                    <li><a href="features.html"><i class="fas fa-star"></i> Features</a></li>
+                    <li><a href="partners.html"><i class="fas fa-users"></i> Partners</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+                </ul>
+            </nav>
+            <div class="user-menu">
+                <div class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notificationBadge">0</span>
+                </div>
+                <div class="user-profile" id="userProfileMenu">
+                    <img src="images/user-avatar.svg" alt="User Avatar" class="avatar">
+                    <span class="username" id="usernameDisplay">User</span>
                     <i class="fas fa-chevron-down"></i>
                     <div class="dropdown-menu">
-                        <a href="#"><i class="fas fa-user"></i> Profile</a>
-                        <a href="#"><i class="fas fa-cog"></i> Settings</a>
-                        <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        <a href="#" id="profileLink"><i class="fas fa-user"></i> Profile</a>
+                        <a href="#" id="settingsLink"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </div>
                 </div>
+                <button class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
-            <div class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </div>
-        </nav>
-    </header>
+        </header>
 
-    <main class="dashboard-main">
-        <div class="dashboard-sidebar">
-            <div class="user-profile">
-                <div class="user-avatar">
-                    <img src="images/user-avatar.jpg" alt="User Avatar">
-                </div>
-                <h3>Rajiv Sharma</h3>
-                <p>Diamond Member</p>
-                <div class="user-badges">
-                    <span class="user-badge" data-badge-info="Master Investor: Generated 25% returns in 12 months">
-                        <i class="fas fa-chart-line"></i>
-                    </span>
-                    <span class="user-badge" data-badge-info="Financial Genius: Saved ₹12 lakh in 10 months">
-                        <i class="fas fa-piggy-bank"></i>
-                    </span>
-                    <span class="user-badge" data-badge-info="Top Contributor: Provided valuable advice to 50+ members">
-                        <i class="fas fa-award"></i>
-                    </span>
-                    <span class="user-badge" data-badge-info="Power Couple: Successfully matched with perfect partner">
-                        <i class="fas fa-heart"></i>
-                    </span>
-                </div>
-            </div>
-            <ul class="sidebar-menu">
-                <li class="active">
-                    <a href="#"><i class="fas fa-th-large"></i> Overview</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fas fa-bell"></i> Anniversary Reminder</a>
-                    <span class="feature-badge">New</span>
-                </li>
-                <li>
-                    <a href="#"><i class="fas fa-utensils"></i> Date Assistant</a>
-                    <span class="feature-badge">New</span>
-                </li>
-                <li>
-                    <a href="#"><i class="fas fa-history"></i> Special Dates</a>
-                    <span class="feature-badge">New</span>
-                </li>
-                <li>
-                    <a href="#"><i class="fas fa-heart"></i> Love Tracker</a>
-                    <span class="feature-badge">New</span>
-                </li>
-                <li>
-                    <a href="#"><i class="fas fa-cog"></i> Settings</a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="dashboard-content">
-            <div class="dashboard-header">
-                <h2>Dashboard Overview</h2>
-                <div class="date">
-                    <i class="far fa-calendar"></i>
-                    <span>Thursday, July 18, 2024</span>
-                </div>
-            </div>
-
-            <!-- Featured Banner -->
-            <div class="featured-banner">
-                <div class="banner-content">
-                    <h2>Celebrate Your Love Journey</h2>
-                    <p>Track special moments, plan perfect dates, and strengthen your bond with our new relationship features</p>
-                    <div class="banner-buttons">
-                        <a href="#" class="banner-btn anniversary-btn" data-section="anniversary-reminder-section">
-                            <i class="fas fa-bell"></i> Set Anniversary Reminders
-                        </a>
-                        <a href="#" class="banner-btn date-plan-btn" data-section="date-assistant-section">
-                            <i class="fas fa-utensils"></i> Plan Your Next Date
-                        </a>
-                        <a href="#" class="banner-btn timeline-btn" data-section="special-dates-section">
-                            <i class="fas fa-history"></i> Create Memories
-                        </a>
-                        <a href="#" class="banner-btn love-meter-btn" data-section="love-tracker-section">
-                            <i class="fas fa-heart"></i> Track Your Journey
-                        </a>
-                    </div>
-                </div>
-                <div class="banner-decoration">
-                    <div class="decoration-item heart-item" style="--delay: 0s;">❤️</div>
-                    <div class="decoration-item ring-item" style="--delay: 1s;">💍</div>
-                    <div class="decoration-item gift-item" style="--delay: 2s;">🎁</div>
-                    <div class="decoration-item sparkle-item" style="--delay: 3s;">✨</div>
-                    <div class="decoration-item star-item" style="--delay: 4s;">🌟</div>
-                </div>
-            </div>
-
-            <!-- Main Menu Frame -->
-            <div class="main-menu-frame">
-                <h2 class="menu-frame-title">Quick Access Menu</h2>
-                <div class="menu-frame-cards">
-                    <div class="menu-card" data-section="overview-section">
-                        <div class="menu-card-icon">
-                            <i class="fas fa-th-large"></i>
-                        </div>
-                        <h3>Dashboard Overview</h3>
-                        <p>View your financial summary and partner updates</p>
-                        <div class="menu-card-overlay">
-                            <button class="btn">Go to Dashboard</button>
+        <main class="app-content">
+            <!-- User Profile Section -->
+            <section class="profile-section" id="profileSection" style="display: block;">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <img src="images/user-avatar.svg" alt="User Avatar" class="profile-avatar">
+                        <div class="profile-info">
+                            <h2 id="profileName">User Name</h2>
+                            <p id="profileEmail">user@example.com</p>
+                            <p id="profileJoined">Member since: </p>
                         </div>
                     </div>
-                    <div class="menu-card new-feature" data-section="anniversary-reminder-section">
-                        <div class="menu-card-icon">
-                            <i class="fas fa-bell"></i>
+                    <div class="profile-actions">
+                        <button class="btn-primary" id="editProfileBtn">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                        <button class="btn-outline" id="hideProfileBtn">
+                            Hide Profile
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="dashboard-main">
+                <div class="dashboard-sidebar">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <img src="images/user-avatar.jpg" alt="User Avatar">
                         </div>
-                        <h3>Anniversary Reminder</h3>
-                        <p>Never forget special moments and dates</p>
-                        <span class="new-tag">NEW</span>
-                        <div class="menu-card-overlay">
-                            <button class="btn">Set Reminders</button>
+                        <h3>Rajiv Sharma</h3>
+                        <p>Diamond Member</p>
+                        <div class="user-badges">
+                            <span class="user-badge" data-badge-info="Master Investor: Generated 25% returns in 12 months">
+                                <i class="fas fa-chart-line"></i>
+                            </span>
+                            <span class="user-badge" data-badge-info="Financial Genius: Saved ₹12 lakh in 10 months">
+                                <i class="fas fa-piggy-bank"></i>
+                            </span>
+                            <span class="user-badge" data-badge-info="Top Contributor: Provided valuable advice to 50+ members">
+                                <i class="fas fa-award"></i>
+                            </span>
+                            <span class="user-badge" data-badge-info="Power Couple: Successfully matched with perfect partner">
+                                <i class="fas fa-heart"></i>
+                            </span>
                         </div>
                     </div>
-                    <div class="menu-card new-feature" data-section="date-assistant-section">
-                        <div class="menu-card-icon">
+                    <ul class="sidebar-menu">
+                        <li class="active">
+                            <a href="#"><i class="fas fa-th-large"></i> Overview</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-bell"></i> Anniversary Reminder</a>
+                            <span class="feature-badge">New</span>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-utensils"></i> Date Assistant</a>
+                            <span class="feature-badge">New</span>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-history"></i> Special Dates</a>
+                            <span class="feature-badge">New</span>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-heart"></i> Love Tracker</a>
+                            <span class="feature-badge">New</span>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="dashboard-header">
+                        <h2>Dashboard Overview</h2>
+                        <div class="date">
+                            <i class="far fa-calendar"></i>
+                            <span>Thursday, July 18, 2024</span>
+                        </div>
+                    </div>
+
+                    <!-- Featured Banner -->
+                    <div class="featured-banner">
+                        <div class="banner-content">
+                            <h2>Celebrate Your Love Journey</h2>
+                            <p>Track special moments, plan perfect dates, and strengthen your bond with our new relationship features</p>
+                            <div class="banner-buttons">
+                                <a href="#" class="banner-btn anniversary-btn" data-section="anniversary-reminder-section">
+                                    <i class="fas fa-bell"></i> Set Anniversary Reminders
+                                </a>
+                                <a href="#" class="banner-btn date-plan-btn" data-section="date-assistant-section">
+                                    <i class="fas fa-utensils"></i> Plan Your Next Date
+                                </a>
+                                <a href="#" class="banner-btn timeline-btn" data-section="special-dates-section">
+                                    <i class="fas fa-history"></i> Create Memories
+                                </a>
+                                <a href="#" class="banner-btn love-meter-btn" data-section="love-tracker-section">
+                                    <i class="fas fa-heart"></i> Track Your Journey
+                                </a>
+                            </div>
+                        </div>
+                        <div class="banner-decoration">
+                            <div class="decoration-item heart-item" style="--delay: 0s;">❤️</div>
+                            <div class="decoration-item ring-item" style="--delay: 1s;">💍</div>
+                            <div class="decoration-item gift-item" style="--delay: 2s;">🎁</div>
+                            <div class="decoration-item sparkle-item" style="--delay: 3s;">✨</div>
+                            <div class="decoration-item star-item" style="--delay: 4s;">🌟</div>
+                        </div>
+                    </div>
+
+                    <!-- Main Menu Frame -->
+                    <div class="main-menu-frame">
+                        <h2 class="menu-frame-title">Quick Access Menu</h2>
+                        <div class="menu-frame-cards">
+                            <div class="menu-card" data-section="overview-section">
+                                <div class="menu-card-icon">
+                                    <i class="fas fa-th-large"></i>
+                                </div>
+                                <h3>Dashboard Overview</h3>
+                                <p>View your financial summary and partner updates</p>
+                                <div class="menu-card-overlay">
+                                    <button class="btn">Go to Dashboard</button>
+                                </div>
+                            </div>
+                            <div class="menu-card new-feature" data-section="anniversary-reminder-section">
+                                <div class="menu-card-icon">
+                                    <i class="fas fa-bell"></i>
+                                </div>
+                                <h3>Anniversary Reminder</h3>
+                                <p>Never forget special moments and dates</p>
+                                <span class="new-tag">NEW</span>
+                                <div class="menu-card-overlay">
+                                    <button class="btn">Set Reminders</button>
+                                </div>
+                            </div>
+                            <div class="menu-card new-feature" data-section="date-assistant-section">
+                                <div class="menu-card-icon">
                                     <i class="fas fa-utensils"></i>
                                 </div>
-                        <h3>Date Assistant</h3>
-                        <p>Plan the perfect dates with personalized suggestions</p>
-                        <span class="new-tag">NEW</span>
-                        <div class="menu-card-overlay">
-                            <button class="btn">Plan Date</button>
+                                <h3>Date Assistant</h3>
+                                <p>Plan the perfect dates with personalized suggestions</p>
+                                <span class="new-tag">NEW</span>
+                                <div class="menu-card-overlay">
+                                    <button class="btn">Plan Date</button>
                                 </div>
-                                </div>
-                    <div class="menu-card new-feature" data-section="special-dates-section">
-                        <div class="menu-card-icon">
-                            <i class="fas fa-history"></i>
                             </div>
-                        <h3>Special Dates</h3>
-                        <p>Track and celebrate your relationship milestones</p>
-                        <span class="new-tag">NEW</span>
-                        <div class="menu-card-overlay">
-                            <button class="btn">View Timeline</button>
+                            <div class="menu-card new-feature" data-section="special-dates-section">
+                                <div class="menu-card-icon">
+                                    <i class="fas fa-history"></i>
                                 </div>
+                                <h3>Special Dates</h3>
+                                <p>Track and celebrate your relationship milestones</p>
+                                <span class="new-tag">NEW</span>
+                                <div class="menu-card-overlay">
+                                    <button class="btn">View Timeline</button>
                                 </div>
-                    <div class="menu-card new-feature" data-section="love-tracker-section">
-                        <div class="menu-card-icon">
+                            </div>
+                            <div class="menu-card new-feature" data-section="love-tracker-section">
+                                <div class="menu-card-icon">
                                     <i class="fas fa-heart"></i>
                                 </div>
-                        <h3>Love Tracker</h3>
-                        <p>Measure and strengthen your relationship</p>
-                        <span class="new-tag">NEW</span>
-                        <div class="menu-card-overlay">
-                            <button class="btn">Check Status</button>
-                                </div>
-                                </div>
-                    <div class="menu-card" data-section="settings-section">
-                        <div class="menu-card-icon">
-                            <i class="fas fa-cog"></i>
-                            </div>
-                        <h3>Settings</h3>
-                        <p>Customize your account preferences</p>
-                        <div class="menu-card-overlay">
-                            <button class="btn">Manage Settings</button>
-                                </div>
-                                </div>
+                                <h3>Love Tracker</h3>
+                                <p>Measure and strengthen your relationship</p>
+                                <span class="new-tag">NEW</span>
+                                <div class="menu-card-overlay">
+                                    <button class="btn">Check Status</button>
                                 </div>
                             </div>
+                            <div class="menu-card" data-section="settings-section">
+                                <div class="menu-card-icon">
+                                    <i class="fas fa-cog"></i>
+                                </div>
+                                <h3>Settings</h3>
+                                <p>Customize your account preferences</p>
+                                <div class="menu-card-overlay">
+                                    <button class="btn">Manage Settings</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Main Content Sections -->
-            <!-- For each section (Overview, Anniversary Reminder, etc.), 
-                 include only essential content that demonstrates functionality -->
+                    <!-- Main Content Sections -->
+                    <!-- For each section (Overview, Anniversary Reminder, etc.), 
+                         include only essential content that demonstrates functionality -->
 
-            <!-- Toast Notifications Container -->
-            <div id="toastContainer" class="toast-container"></div>
-        </div>
-    </main>
+                    <!-- Toast Notifications Container -->
+                    <div id="toastContainer" class="toast-container"></div>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <footer>
         <div class="footer-content">
             <div class="footer-logo">
                 <img src="images/logo.svg" alt="PartnerPayz Logo">
                 <h3>PartnerPayz</h3>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 PartnerPayz. All rights reserved.</p>
-            <div class="social-icons">
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PartnerPayz. All rights reserved.</p>
+                <div class="social-icons">
                     <a href="https://github.com/manirul143452"><i class="fab fa-github"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
         </div>
@@ -871,27 +899,121 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="js/main.js"></script>
-    <script>
-        // Simple navigation between sections
-        document.querySelectorAll('.menu-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const sectionId = this.dataset.section;
-                console.log(`Navigate to section: ${sectionId}`);
-            });
+    <script src="js/dashboard.js"></script>
+
+    <!-- User authentication and profile management -->
+    <script type="module">
+        import { getCurrentUser, isLoggedIn, logoutUser } from './js/local-auth.js';
+        
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!isLoggedIn()) {
+                // Redirect to login page if not logged in
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Display user information
+            const user = getCurrentUser();
+            updateUserProfile(user);
         });
         
-        // Banner button click handlers
-        document.querySelectorAll('.banner-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
+        // Update user profile information
+        function updateUserProfile(user) {
+            if (!user) return;
+            
+            // Update header username
+            const usernameDisplay = document.getElementById('usernameDisplay');
+            if (usernameDisplay) {
+                usernameDisplay.textContent = user.name || user.email.split('@')[0];
+            }
+            
+            // Update profile section
+            const profileName = document.getElementById('profileName');
+            const profileEmail = document.getElementById('profileEmail');
+            const profileJoined = document.getElementById('profileJoined');
+            
+            if (profileName) profileName.textContent = user.name || user.email.split('@')[0];
+            if (profileEmail) profileEmail.textContent = user.email;
+            if (profileJoined) {
+                const joinDate = user.createdAt ? new Date(user.createdAt) : new Date();
+                profileJoined.textContent = `Member since: ${joinDate.toLocaleDateString()}`;
+            }
+        }
+        
+        // Handle logout
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
-                const sectionId = this.dataset.section;
-                console.log(`Navigate to section: ${sectionId}`);
+                
+                try {
+                    await logoutUser();
+                    window.location.href = 'login.html';
+                } catch (error) {
+                    showToast(error.message, 'error');
+                }
             });
-        });
+        }
         
-        // Simple toast notification
+        // Profile toggle functionality
+        const profileLink = document.getElementById('profileLink');
+        const profileSection = document.getElementById('profileSection');
+        const hideProfileBtn = document.getElementById('hideProfileBtn');
+        
+        if (profileLink && profileSection && hideProfileBtn) {
+            // Show profile when clicking on profile link
+            profileLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                profileSection.style.display = 'block';
+                scrollToElement(profileSection);
+            });
+            
+            // Hide profile section
+            hideProfileBtn.addEventListener('click', () => {
+                profileSection.style.display = 'none';
+            });
+        }
+        
+        // Helper function to scroll to element
+        function scrollToElement(element) {
+            window.scrollTo({
+                top: element.offsetTop - 100,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Toast notification function
         function showToast(message, type = 'info') {
-            console.log(`Toast: ${message} (${type})`);
+            const toastContainer = document.getElementById('toastContainer') || document.body;
+            
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icon = document.createElement('i');
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 
+                             type === 'error' ? 'fas fa-exclamation-circle' : 
+                             'fas fa-info-circle';
+            
+            const content = document.createElement('span');
+            content.textContent = message;
+            
+            toast.appendChild(icon);
+            toast.appendChild(content);
+            toastContainer.appendChild(toast);
+            
+            // Show toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            // Hide toast
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toastContainer.removeChild(toast);
+                }, 300);
+            }, 3000);
         }
     </script>
 </body>
