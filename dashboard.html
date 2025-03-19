@@ -242,6 +242,21 @@
 
     <div id="toastContainer" class="toast-container"></div>
 
+    <!-- Add debug button and panel at end of body but before scripts -->
+    <div class="debug-button" id="debugButton" style="position: fixed; bottom: 20px; right: 20px; background: #6a11cb; color: white; padding: 10px 15px; border-radius: 50px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 9999;">
+        Debug Panel
+    </div>
+
+    <div class="debug-panel" id="debugPanel" style="display: none; position: fixed; bottom: 70px; right: 20px; background: rgba(0,0,0,0.9); color: #00ff00; padding: 20px; border-radius: 10px; width: 400px; max-height: 400px; overflow: auto; z-index: 9999; font-family: monospace; font-size: 12px;">
+        <h3 style="margin-top: 0; color: white;">Dashboard Debug Panel</h3>
+        <div id="debugOutput" style="margin-bottom: 10px;"></div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button id="checkUserBtn" style="background: #333; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Check Current User</button>
+            <button id="fixLoginBtn" style="background: #1877f2; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Fix Login</button>
+            <button id="logoutBtn" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Force Logout</button>
+        </div>
+    </div>
+
     <script type="module">
         import { isLoggedIn, getCurrentUser, logoutUser } from './js/local-auth.js';
         import { getUnreadNotificationCount, updateNotificationBadge, getNotificationHistory } from './js/local-notifications.js';
@@ -439,6 +454,161 @@
                 }, 300);
             }, 3000);
         }
+    </script>
+
+    <script>
+        // Debug functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const debugButton = document.getElementById('debugButton');
+            const debugPanel = document.getElementById('debugPanel');
+            const debugOutput = document.getElementById('debugOutput');
+            const checkUserBtn = document.getElementById('checkUserBtn');
+            const fixLoginBtn = document.getElementById('fixLoginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            // Toggle debug panel
+            debugButton.addEventListener('click', function() {
+                debugPanel.style.display = debugPanel.style.display === 'none' ? 'block' : 'none';
+                if (debugPanel.style.display === 'block') {
+                    checkCurrentUser();
+                }
+            });
+            
+            // Check current user
+            checkUserBtn.addEventListener('click', checkCurrentUser);
+            
+            // Fix login
+            fixLoginBtn.addEventListener('click', fixLogin);
+            
+            // Force logout
+            logoutBtn.addEventListener('click', forceLogout);
+            
+            // Log to debug panel
+            function debugLog(message) {
+                const timestamp = new Date().toLocaleTimeString();
+                const logItem = document.createElement('div');
+                logItem.innerHTML = `<span style="color:#888;">[${timestamp}]</span> ${message}`;
+                debugOutput.appendChild(logItem);
+                console.log(`[${timestamp}] ${message}`);
+            }
+            
+            // Check current user
+            function checkCurrentUser() {
+                try {
+                    debugLog('Checking current user...');
+                    
+                    // Get current user ID
+                    const currentUserId = localStorage.getItem('currentUserId');
+                    
+                    if (!currentUserId) {
+                        debugLog('<span style="color:red;">No current user ID found in localStorage</span>');
+                        return;
+                    }
+                    
+                    debugLog(`Current user ID: ${currentUserId}`);
+                    
+                    // Get users
+                    const usersJson = localStorage.getItem('users');
+                    
+                    if (!usersJson) {
+                        debugLog('<span style="color:red;">No users found in localStorage</span>');
+                        return;
+                    }
+                    
+                    // Parse users
+                    const users = JSON.parse(usersJson);
+                    
+                    // Find current user
+                    const currentUser = users.find(user => user.id === currentUserId);
+                    
+                    if (!currentUser) {
+                        debugLog('<span style="color:red;">Current user ID does not match any user in localStorage</span>');
+                        return;
+                    }
+                    
+                    // Display user info
+                    debugLog(`<span style="color:#00ff00;">Current user found: ${currentUser.email}</span>`);
+                    debugLog(`Name: ${currentUser.name || 'N/A'}`);
+                    debugLog(`Last login: ${new Date(currentUser.lastLogin).toLocaleString()}`);
+                } catch (error) {
+                    debugLog(`<span style="color:red;">Error checking user: ${error.message}</span>`);
+                }
+            }
+            
+            // Fix login
+            function fixLogin() {
+                try {
+                    debugLog('Attempting to fix login...');
+                    
+                    // Create test user
+                    const testUser = {
+                        id: 'test_user_' + Date.now(),
+                        email: 'test@example.com',
+                        password: 'password123',
+                        name: 'Test User',
+                        createdAt: new Date().toISOString(),
+                        lastLogin: new Date().toISOString()
+                    };
+                    
+                    // Get users
+                    let users = [];
+                    try {
+                        const usersJson = localStorage.getItem('users');
+                        if (usersJson) {
+                            users = JSON.parse(usersJson);
+                        }
+                    } catch (e) {
+                        debugLog('Error parsing users, resetting');
+                        users = [];
+                    }
+                    
+                    // Ensure users is an array
+                    if (!Array.isArray(users)) {
+                        debugLog('Users is not an array, resetting');
+                        users = [];
+                    }
+                    
+                    // Remove old test user if exists
+                    const testUserIndex = users.findIndex(u => u.email === 'test@example.com');
+                    if (testUserIndex !== -1) {
+                        users.splice(testUserIndex, 1);
+                    }
+                    
+                    // Add new test user
+                    users.push(testUser);
+                    
+                    // Save users
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    // Set current user
+                    localStorage.setItem('currentUserId', testUser.id);
+                    
+                    debugLog('<span style="color:#00ff00;">Login fixed! Test user created and set as current user</span>');
+                    debugLog('Refresh the page to see if it worked');
+                } catch (error) {
+                    debugLog(`<span style="color:red;">Error fixing login: ${error.message}</span>`);
+                }
+            }
+            
+            // Force logout
+            function forceLogout() {
+                try {
+                    debugLog('Forcing logout...');
+                    
+                    // Remove current user
+                    localStorage.removeItem('currentUserId');
+                    
+                    debugLog('<span style="color:#00ff00;">Logged out successfully</span>');
+                    debugLog('Redirecting to login page in 2 seconds...');
+                    
+                    setTimeout(function() {
+                        window.location.href = 'minimal-login.html';
+                    }, 2000);
+                } catch (error) {
+                    debugLog(`<span style="color:red;">Error logging out: ${error.message}</span>`);
+                }
+            }
+        });
     </script>
 </body>
 </html> 
