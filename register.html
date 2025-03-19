@@ -445,6 +445,349 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
+        
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBiwaYxkiyWCupQVGgUIOv7zuztdzlkPtc",
+            authDomain: "partnerpayz.firebaseapp.com",
+            projectId: "partnerpayz",
+            storageBucket: "partnerpayz.appspot.com",
+            messagingSenderId: "140540750518",
+            appId: "1:140540750518:web:2bc8427ed17e2481b51417",
+            measurementId: "G-YLCV2CGV57"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        
+        // Import firebase authentication functions
+        import { registerUser, signInWithGoogle, signInWithFacebook } from "./js/firebase-auth.js";
+        
+        // Registration form event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get form elements
+            const registrationForm = document.getElementById('registrationForm');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const nextStepBtns = document.querySelectorAll('.next-step');
+            const prevStepBtns = document.querySelectorAll('.prev-step');
+            const progressSteps = document.querySelectorAll('.progress-step');
+            
+            // Handle password visibility toggle
+            const togglePasswordBtns = document.querySelectorAll('.toggle-password');
+            if (togglePasswordBtns.length) {
+                togglePasswordBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const input = this.previousElementSibling;
+                        
+                        // Toggle password visibility
+                        if (input.type === 'password') {
+                            input.type = 'text';
+                            this.classList.remove('fa-eye');
+                            this.classList.add('fa-eye-slash');
+                        } else {
+                            input.type = 'password';
+                            this.classList.remove('fa-eye-slash');
+                            this.classList.add('fa-eye');
+                        }
+                    });
+                });
+            }
+            
+            // Password strength check
+            if (passwordInput) {
+                passwordInput.addEventListener('input', function() {
+                    const password = this.value;
+                    updatePasswordStrength(password);
+                    updatePasswordRequirements(password);
+                });
+            }
+            
+            // Next step buttons
+            if (nextStepBtns.length) {
+                nextStepBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const currentStep = parseInt(this.closest('.form-step').getAttribute('data-step'));
+                        const nextStep = parseInt(this.getAttribute('data-next'));
+                        
+                        // Validate current step before proceeding
+                        if (!validateStep(currentStep)) {
+                            return;
+                        }
+                        
+                        // Update progress steps
+                        updateProgressSteps(nextStep);
+                        
+                        // Hide current step and show next step
+                        document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
+                        document.querySelector(`.form-step[data-step="${nextStep}"]`).classList.add('active');
+                        
+                        // Scroll to top of form
+                        registrationForm.scrollIntoView({ behavior: 'smooth' });
+                    });
+                });
+            }
+            
+            // Previous step buttons
+            if (prevStepBtns.length) {
+                prevStepBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const currentStep = parseInt(this.closest('.form-step').getAttribute('data-step'));
+                        const prevStep = parseInt(this.getAttribute('data-prev'));
+                        
+                        // Update progress steps
+                        updateProgressSteps(prevStep);
+                        
+                        // Hide current step and show previous step
+                        document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
+                        document.querySelector(`.form-step[data-step="${prevStep}"]`).classList.add('active');
+                        
+                        // Scroll to top of form
+                        registrationForm.scrollIntoView({ behavior: 'smooth' });
+                    });
+                });
+            }
+            
+            // Form submission
+            if (registrationForm) {
+                registrationForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    // Validate final step
+                    if (!validateStep(4)) {
+                        return;
+                    }
+                    
+                    // Get form data
+                    const userData = {
+                        fullName: document.getElementById('fullName').value,
+                        phone: document.getElementById('phone').value,
+                        dateOfBirth: document.getElementById('dateOfBirth').value,
+                        gender: document.querySelector('input[name="gender"]:checked')?.value,
+                        location: document.getElementById('location').value,
+                        occupation: document.getElementById('occupation').value,
+                        incomeRange: document.getElementById('incomeRange').value,
+                        // Add other fields as needed
+                    };
+                    
+                    // Show loading state
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+                    submitBtn.disabled = true;
+                    
+                    try {
+                        const email = document.getElementById('email').value;
+                        const password = document.getElementById('password').value;
+                        
+                        // Register with Firebase
+                        const user = await registerUser(email, password, userData);
+                        
+                        // Redirect to dashboard on success
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1500);
+                    } catch (error) {
+                        // Error is handled by the registerUser function
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                });
+            }
+            
+            // Social sign up
+            const googleSignUpBtn = document.querySelector('.btn-google');
+            if (googleSignUpBtn) {
+                googleSignUpBtn.addEventListener('click', async function() {
+                    try {
+                        const user = await signInWithGoogle();
+                        
+                        // Redirect to dashboard on success
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1000);
+                    } catch (error) {
+                        // Error is handled by the signInWithGoogle function
+                    }
+                });
+            }
+            
+            const facebookSignUpBtn = document.querySelector('.btn-facebook');
+            if (facebookSignUpBtn) {
+                facebookSignUpBtn.addEventListener('click', async function() {
+                    try {
+                        const user = await signInWithFacebook();
+                        
+                        // Redirect to dashboard on success
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1000);
+                    } catch (error) {
+                        // Error is handled by the signInWithFacebook function
+                    }
+                });
+            }
+        });
+        
+        // Update progress steps
+        function updateProgressSteps(currentStep) {
+            const progressSteps = document.querySelectorAll('.progress-step');
+            progressSteps.forEach(step => {
+                const stepNum = parseInt(step.getAttribute('data-step'));
+                if (stepNum <= currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+        
+        // Validate form step
+        function validateStep(step) {
+            const stepElement = document.querySelector(`.form-step[data-step="${step}"]`);
+            
+            if (!stepElement) return true;
+            
+            let isValid = true;
+            
+            // Get all required inputs in the current step
+            const requiredInputs = stepElement.querySelectorAll('[required]');
+            
+            requiredInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    showToast(`Please fill in the ${input.getAttribute('placeholder') || input.getAttribute('name')}`, 'error');
+                    input.focus();
+                    isValid = false;
+                    return;
+                }
+                
+                // Email validation for step 1
+                if (step === 1 && input.type === 'email') {
+                    if (!isValidEmail(input.value.trim())) {
+                        showToast('Please enter a valid email address', 'error');
+                        input.focus();
+                        isValid = false;
+                        return;
+                    }
+                }
+                
+                // Password confirmation check for step 1
+                if (step === 1 && input.id === 'confirmPassword') {
+                    const password = document.getElementById('password').value;
+                    
+                    if (input.value !== password) {
+                        showToast('Passwords do not match', 'error');
+                        input.focus();
+                        isValid = false;
+                        return;
+                    }
+                }
+            });
+            
+            return isValid;
+        }
+        
+        // Check password strength
+        function updatePasswordStrength(password) {
+            const strengthBar = document.querySelector('.strength-bar');
+            const strengthText = document.querySelector('.strength-text span');
+            
+            if (!strengthBar || !strengthText) return;
+            
+            let strength = 0;
+            let status = '';
+            
+            if (password.length >= 8) strength += 1;
+            if (password.match(/[A-Z]/)) strength += 1;
+            if (password.match(/[a-z]/)) strength += 1;
+            if (password.match(/[0-9]/)) strength += 1;
+            if (password.match(/[^A-Za-z0-9]/)) strength += 1;
+            
+            switch (strength) {
+                case 0:
+                    strengthBar.style.width = '0%';
+                    strengthBar.style.backgroundColor = '#ff4d4d';
+                    status = 'Very Weak';
+                    break;
+                case 1:
+                    strengthBar.style.width = '20%';
+                    strengthBar.style.backgroundColor = '#ff4d4d';
+                    status = 'Weak';
+                    break;
+                case 2:
+                    strengthBar.style.width = '40%';
+                    strengthBar.style.backgroundColor = '#ffaa00';
+                    status = 'Fair';
+                    break;
+                case 3:
+                    strengthBar.style.width = '60%';
+                    strengthBar.style.backgroundColor = '#ffaa00';
+                    status = 'Good';
+                    break;
+                case 4:
+                    strengthBar.style.width = '80%';
+                    strengthBar.style.backgroundColor = '#47c9a2';
+                    status = 'Strong';
+                    break;
+                case 5:
+                    strengthBar.style.width = '100%';
+                    strengthBar.style.backgroundColor = '#47c9a2';
+                    status = 'Very Strong';
+                    break;
+            }
+            
+            strengthText.textContent = status;
+        }
+        
+        // Update password requirements visual feedback
+        function updatePasswordRequirements(password) {
+            const requirements = document.querySelectorAll('.requirement');
+            
+            if (!requirements.length) return;
+            
+            requirements.forEach(req => {
+                const type = req.getAttribute('data-requirement');
+                let isMet = false;
+                
+                switch (type) {
+                    case 'length':
+                        isMet = password.length >= 8;
+                        break;
+                    case 'uppercase':
+                        isMet = /[A-Z]/.test(password);
+                        break;
+                    case 'lowercase':
+                        isMet = /[a-z]/.test(password);
+                        break;
+                    case 'number':
+                        isMet = /[0-9]/.test(password);
+                        break;
+                    case 'special':
+                        isMet = /[^A-Za-z0-9]/.test(password);
+                        break;
+                }
+                
+                if (isMet) {
+                    req.classList.add('met');
+                    req.innerHTML = `<i class="fas fa-check"></i> ${req.textContent}`;
+                } else {
+                    req.classList.remove('met');
+                    req.innerHTML = req.textContent.replace('<i class="fas fa-check"></i> ', '');
+                }
+            });
+        }
+        
+        // Email validation
+        function isValidEmail(email) {
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+    </script>
     <script src="js/auth.js"></script>
 </body>
 </html> 

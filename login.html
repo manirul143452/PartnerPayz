@@ -64,7 +64,7 @@
                         <input type="checkbox" id="remember" name="remember">
                         <label for="remember">Remember me</label>
                     </div>
-                    <a href="#" class="forgot-password">Forgot Password?</a>
+                    <a href="#" class="forgot-password" id="forgotPasswordLink">Forgot Password?</a>
                 </div>
                 
                 <button type="submit" class="btn btn-primary btn-block">Log In</button>
@@ -73,29 +73,12 @@
                     <span>or</span>
                 </div>
                 
-                <div class="two-factor-auth">
-                    <h3>Two-Factor Authentication</h3>
-                    <p>Enhanced security for your account</p>
-                    <div class="form-group otp-container hidden" id="otpContainer">
-                        <label for="otp">Enter One-Time Password</label>
-                        <div class="otp-inputs">
-                            <input type="text" maxlength="1" class="otp-input" data-index="1">
-                            <input type="text" maxlength="1" class="otp-input" data-index="2">
-                            <input type="text" maxlength="1" class="otp-input" data-index="3">
-                            <input type="text" maxlength="1" class="otp-input" data-index="4">
-                            <input type="text" maxlength="1" class="otp-input" data-index="5">
-                            <input type="text" maxlength="1" class="otp-input" data-index="6">
-                        </div>
-                        <p class="resend-otp">Didn't receive code? <a href="#">Resend OTP</a></p>
-                    </div>
-                </div>
-                
                 <div class="social-login">
-                    <button type="button" class="btn btn-google">
+                    <button type="button" class="btn btn-google" id="googleLoginBtn">
                         <img src="images/google-icon.svg" alt="Google">
                         Continue with Google
                     </button>
-                    <button type="button" class="btn btn-facebook">
+                    <button type="button" class="btn btn-facebook" id="facebookLoginBtn">
                         <i class="fab fa-facebook-f"></i>
                         Continue with Facebook
                     </button>
@@ -152,7 +135,120 @@
         </div>
     </footer>
 
+    <!-- Firebase config -->
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
+      
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBiwaYxkiyWCupQVGgUIOv7zuztdzlkPtc",
+        authDomain: "partnerpayz.firebaseapp.com",
+        projectId: "partnerpayz",
+        storageBucket: "partnerpayz.appspot.com",
+        messagingSenderId: "140540750518",
+        appId: "1:140540750518:web:2bc8427ed17e2481b51417",
+        measurementId: "G-YLCV2CGV57"
+      };
+    
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      
+      // Import and initialize Firebase auth functions
+      import { 
+        loginUser, 
+        signInWithGoogle, 
+        signInWithFacebook, 
+        resetPassword 
+      } from "./js/firebase-auth.js";
+      
+      // Event listeners for authentication
+      document.addEventListener('DOMContentLoaded', function() {
+        // Login form submission
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+          loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            submitBtn.disabled = true;
+            
+            try {
+              // Authenticate with Firebase
+              const user = await loginUser(email, password);
+              
+              // Redirect to dashboard on success
+              setTimeout(() => {
+                window.location.href = 'dashboard.html';
+              }, 1000);
+            } catch (error) {
+              // Error is handled by the loginUser function
+              submitBtn.innerHTML = originalText;
+              submitBtn.disabled = false;
+            }
+          });
+        }
+        
+        // Google login
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+        if (googleLoginBtn) {
+          googleLoginBtn.addEventListener('click', async function() {
+            try {
+              const user = await signInWithGoogle();
+              
+              // Redirect to dashboard on success
+              setTimeout(() => {
+                window.location.href = 'dashboard.html';
+              }, 1000);
+            } catch (error) {
+              // Error is handled by the signInWithGoogle function
+            }
+          });
+        }
+        
+        // Facebook login
+        const facebookLoginBtn = document.getElementById('facebookLoginBtn');
+        if (facebookLoginBtn) {
+          facebookLoginBtn.addEventListener('click', async function() {
+            try {
+              const user = await signInWithFacebook();
+              
+              // Redirect to dashboard on success
+              setTimeout(() => {
+                window.location.href = 'dashboard.html';
+              }, 1000);
+            } catch (error) {
+              // Error is handled by the signInWithFacebook function
+            }
+          });
+        }
+        
+        // Forgot password
+        const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+        if (forgotPasswordLink) {
+          forgotPasswordLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            if (!email) {
+              showToast('Please enter your email address to reset your password.', 'error');
+              return;
+            }
+            
+            resetPassword(email);
+          });
+        }
+      });
+    </script>
+
     <script src="js/main.js"></script>
-    <script src="js/auth.js"></script>
 </body>
 </html> 
