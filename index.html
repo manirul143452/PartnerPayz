@@ -886,39 +886,16 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="js/main.js"></script>
 
-    <!-- Add Firebase configuration before the closing body tag -->
+    <!-- Local notification system -->
     <script type="module">
-      // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
-      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-      import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-messaging.js";
-      
-      // Import our authentication functions
-      import { setupNotifications, currentUser } from "./js/firebase-auth.js";
-
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyBiwaYxkiyWCupQVGgUIOv7zuztdzlkPtc",
-        authDomain: "partnerpayz.firebaseapp.com",
-        projectId: "partnerpayz",
-        storageBucket: "partnerpayz.appspot.com",
-        messagingSenderId: "140540750518",
-        appId: "1:140540750518:web:2bc8427ed17e2481b51417",
-        measurementId: "G-YLCV2CGV57"
-      };
-
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-      const messaging = getMessaging(app);
+      import { requestNotificationPermission } from './js/local-notifications.js';
       
       // Check if the browser supports notifications
       if ('Notification' in window) {
         document.addEventListener('DOMContentLoaded', function() {
           // Request permission for notifications on page load
           if (Notification.permission !== 'denied') {
-            setupNotifications();
+            requestNotificationPermission();
           }
         });
       }
