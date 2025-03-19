@@ -76,6 +76,253 @@
         .debug-actions button:hover {
             background: #555;
         }
+
+        /* Messaging System Styles */
+        .messaging-panel {
+            position: fixed;
+            bottom: -600px;
+            right: 20px;
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            transition: bottom 0.3s ease;
+            overflow: hidden;
+        }
+
+        .messaging-panel.show {
+            bottom: 20px;
+        }
+
+        .messaging-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+        }
+
+        .messaging-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .messaging-header button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .messaging-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+
+        .messages-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-item {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .message-sent {
+            align-self: flex-end;
+            background: #2575fc;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-received {
+            align-self: flex-start;
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-time {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .message-sender {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .messaging-footer {
+            padding: 15px;
+            border-top: 1px solid #e9ecef;
+            background: white;
+        }
+
+        .message-composer {
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-recipient {
+            width: 120px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .send-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #adb5bd;
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #ff3b30;
+            color: white;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .notification-icon {
+            position: relative;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        .notification-icon i {
+            font-size: 18px;
+            color: #555;
+        }
+
+        @media (max-width: 576px) {
+            .messaging-panel {
+                width: 90%;
+                right: 5%;
+                left: 5%;
+                height: 400px;
+            }
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 350px;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            opacity: 0.95;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .toast-success {
+            border-left: 4px solid #28a745;
+        }
+
+        .toast-error {
+            border-left: 4px solid #dc3545;
+        }
+
+        .toast-warning {
+            border-left: 4px solid #ffc107;
+        }
+
+        .toast-info {
+            border-left: 4px solid #17a2b8;
+        }
+
+        .toast-success i {
+            color: #28a745;
+        }
+
+        .toast-error i {
+            color: #dc3545;
+        }
+
+        .toast-warning i {
+            color: #ffc107;
+        }
+
+        .toast-info i {
+            color: #17a2b8;
+        }
     </style>
 </head>
 <body>
@@ -185,6 +432,30 @@
         </div>
     </div>
 
+    <div class="auth-buttons">
+        <div class="user-menu">
+            <div class="notification-icon" id="notificationIcon">
+                <i class="fas fa-bell"></i>
+                <span class="badge" id="notificationBadge">0</span>
+            </div>
+            <div class="notification-icon" id="messagesIcon">
+                <i class="fas fa-envelope"></i>
+                <span class="badge" id="messagesBadge">0</span>
+            </div>
+            <div class="user-profile" id="userProfileMenu">
+                <img src="images/user-avatar.svg" alt="User Avatar" class="avatar" id="headerAvatar">
+                <span class="username" id="usernameDisplay">User</span>
+                <i class="fas fa-chevron-down"></i>
+                <div class="dropdown-menu">
+                    <a href="profile.html" id="profileLink"><i class="fas fa-user"></i> Profile</a>
+                    <a href="notifications.html" id="notificationsLink"><i class="fas fa-bell"></i> Notifications</a>
+                    <a href="#" id="settingsLink"><i class="fas fa-cog"></i> Settings</a>
+                    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         // Import storage debug utilities
         import { verifyLocalStorage, createTestUser, displayAllUsers, clearAllData } from './js/local-storage-debug.js';
@@ -211,6 +482,29 @@
             setupEventListeners();
             checkAutoLogin();
             verifyLocalStorage();
+            
+            // Auto-login button for quick demo
+            const testLoginBtn = document.getElementById('testUserBtn');
+            if (testLoginBtn) {
+                testLoginBtn.addEventListener('click', function() {
+                    window.location.href = 'dashboard.html';
+                });
+            }
+            
+            // Google login button
+            if (googleLoginBtn) {
+                googleLoginBtn.addEventListener('click', function() {
+                    window.location.href = 'dashboard.html';
+                });
+            }
+            
+            // Login form submission
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    window.location.href = 'dashboard.html';
+                });
+            }
         });
         
         // Set up event listeners
@@ -499,5 +793,10 @@
             console.log(`[${timestamp}] ${message}`);
         }
     </script>
+    <script type="module" src="js/local-storage-debug.js"></script>
+    <script type="module" src="js/local-notifications.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <!-- Page-specific script if any -->
+    <script src="js/partners.js"></script>
 </body>
 </html> 
